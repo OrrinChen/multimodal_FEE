@@ -1,0 +1,12 @@
+# Initial evaluation target for the first vertical slice.
+gold_task_target: 10
+verdict_labels:
+  - support
+  - contradict
+  - insufficient
+metrics:
+  - evidence_recall_at_k
+  - citation_exactness
+  - numeric_correctness
+  - fiscal_period_correctness
+  - unsupported_claim_rate
