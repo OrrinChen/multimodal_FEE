@@ -27,7 +27,7 @@ awk '/[ \t]$/ {print FILENAME ":" FNR ": trailing whitespace"; bad=1} END {exit 
 Run these once Python source or tests exist:
 
 ```bash
-if [ -d src ]; then python3 -m compileall src; else echo "SKIP compileall: src/ not created yet"; fi
+if [ -d src ]; then python3 -m compileall src scripts; else echo "SKIP compileall: src/ not created yet"; fi
 ```
 
 ```bash
@@ -57,6 +57,14 @@ Run this once the SEC/XBRL document registry exists:
 
 ```bash
 python3 scripts/smoke_phase1_registry.py
+```
+
+## Phase 2 Extraction Smoke Check
+
+Run this once extraction modules exist:
+
+```bash
+python3 scripts/smoke_phase2_extraction.py
 ```
 
 ## Phase-Specific Validation

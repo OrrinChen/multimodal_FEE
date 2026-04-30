@@ -11,40 +11,39 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-Phase 1 document registry commit in this repository history.
+Phase 2 extraction commit in this repository history.
 ```
 
 Current phase:
 
 ```text
-Phase 2: text / table / XBRL / transcript extraction
+Phase 3: financial normalization layer
 ```
 
 Main blocker:
 
 ```text
-Evidence unit extraction has not been implemented yet.
+Financial normalization and guardrails have not been implemented yet.
 ```
 
 Next recommended action:
 
 ```text
-Implement SEC filing text section splitting and XBRL fact extraction into traceable evidence units.
+Implement fiscal period resolution, metric aliases, unit/currency normalization, and annual-vs-quarterly guardrails.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 1 SEC/XBRL document registry.
+Completed Phase 2 local extraction layer.
 
 Added:
-- CompanyUniverseIndex for ticker <-> CIK lookup
-- DocumentMetadata and CachedPayload models
-- SourceCache with stable SHA-256 JSON version hashes
-- SecClient for SEC submissions and company facts endpoints
-- document registry builder for 10-K and XBRL company facts metadata
-- SEC ingestion orchestration that fetches, caches, and registers company documents
-- Phase 1 smoke script
+- EvidenceUnit and SourceSpan models
+- SEC filing 10-K section splitter
+- XBRL company facts extractor
+- transcript section/speaker parser
+- markdown table numeric extractor
+- Phase 2 smoke script
 ```
 
 Latest validation:
@@ -58,6 +57,7 @@ Passed:
 - python3 -m pytest
 - config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
 - phase1 registry smoke check: companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check: sections=4 xbrl=1 transcripts=1 tables=1
 
 Skipped:
 - none
@@ -141,6 +141,48 @@ Investor deck registry remains deferred until SEC/XBRL extraction is stable.
 No evidence unit extraction, text parsing, graph construction, validators, or memo generation are implemented yet.
 ```
 
+### Phase 2: Text / Table / XBRL / Transcript Extraction
+
+Commit:
+
+```text
+Phase 2 extraction commit in this repository history.
+```
+
+What changed:
+
+```text
+Implemented the local extraction layer that converts filing text, XBRL company facts, transcript text, and markdown tables into traceable evidence units.
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_phase2_extraction.py -q initially failed because text_extractor, xbrl_extractor, transcript_parser, and table_extractor were missing.
+- After implementation, the Phase 2 test file passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+```
+
+Known limitations:
+
+```text
+Filing text extraction handles HTML/text fixtures and SEC item section splitting, but not full PDF binary extraction.
+Transcript parsing works from supplied transcript text; FMP transcript ingestion remains deferred pending paid/external API approval.
+Table extraction supports markdown-style tables only.
+Chart extraction and investor deck parsing remain deferred.
+No financial normalization guardrails, retrieval, graph construction, validators, or memo generation are implemented yet.
+```
+
 ## Current State
 
 Project folder created as:
@@ -166,7 +208,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, and version hashes. Extraction, retrieval, graph construction, claim verification, and memo generation are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, and local extraction into evidence units. Financial normalization, retrieval, graph construction, claim verification, and memo generation are not implemented yet.
 
 ## Project Identity
 
@@ -333,11 +375,11 @@ deck narrative vs filing evidence
 ### Step 3: Extraction Layer
 
 ```text
-[ ] Extract filing text
-[ ] Split filing sections
-[ ] Parse XBRL facts
-[ ] Parse transcripts
-[ ] Extract tables
+[x] Extract filing text
+[x] Split filing sections
+[x] Parse XBRL facts
+[x] Parse transcripts
+[x] Extract tables
 [ ] Add deck PDF parsing
 [ ] Add chart extraction only after table/text pipeline works
 ```

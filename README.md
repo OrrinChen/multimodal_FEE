@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-Phase 1 is complete for the local SEC/XBRL document registry slice.
+Phase 2 is complete for the local extraction slice.
 
 The repository now includes:
 
@@ -37,8 +37,12 @@ The repository now includes:
 - package layout under `src/financial_evidence_engine/`
 - SEC submissions and XBRL company facts metadata registry code
 - source payload cache and stable version hashes
-- Phase 0 and Phase 1 tests under `tests/`
+- SEC filing section splitting
+- XBRL fact extraction into evidence units
+- transcript speaker/section parsing
+- markdown table numeric extraction
+- Phase 0, Phase 1, and Phase 2 tests under `tests/`
 
-The next recommended action is Phase 2: text, table, XBRL, and transcript extraction. Start with SEC filing text section splitting and XBRL fact extraction before investor decks or charts.
+The next recommended action is Phase 3: financial normalization. Start with fiscal period resolution, metric aliases, unit/currency normalization, and annual-vs-quarterly guardrails before retrieval or graph work.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.

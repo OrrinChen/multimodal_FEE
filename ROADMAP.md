@@ -22,19 +22,26 @@ Completed:
   - document metadata schema
   - source payload cache and version hashes
   - filing date, publication date, and fiscal period kept separate
+- [x] Phase 2 extraction implemented:
+  - SEC filing text section splitting
+  - XBRL fact extraction into traceable evidence units
+  - transcript speaker/section parsing
+  - markdown table numeric extraction
+  - `EvidenceUnit` schema with source spans
 
 Current phase:
 
-- Phase 2: text / table / XBRL / transcript extraction
+- Phase 3: financial normalization layer
 
 Next recommended action:
 
-- Implement the first extraction layer:
-  - SEC filing text extraction scaffold
-  - 10-K / 10-Q section splitter
-  - XBRL fact extraction into evidence units
-  - evidence unit schema that traces back to `DocumentMetadata.document_id`
-  - tests proving evidence units retain source document, fiscal period, metric, unit, and citation span
+- Implement financial normalization:
+  - entity and ticker/CIK resolver integration
+  - fiscal year / fiscal quarter resolver
+  - period end date resolver
+  - metric alias mapper
+  - unit and currency normalizers
+  - annual vs quarterly guardrails
 
 Near-term vertical slice:
 
@@ -54,6 +61,7 @@ Deferred:
 - full 5-10 company corpus
 - FMP transcript ingestion until paid API use is explicitly approved
 - investor deck registry until SEC/XBRL extraction is stable
+- PDF binary extraction beyond simple HTML/text fixtures
 - chart extraction
 - UI
 - broad GraphRAG experimentation before validators work

@@ -41,7 +41,7 @@ awk '/[ \t]$/ {print FILENAME ":" FNR ": trailing whitespace"; bad=1} END {exit 
 ```
 
 ```bash
-if [ -d src ]; then python3 -m compileall src; else echo "SKIP compileall: src/ not created yet"; fi
+if [ -d src ]; then python3 -m compileall src scripts; else echo "SKIP compileall: src/ not created yet"; fi
 ```
 
 ```bash
@@ -63,6 +63,10 @@ PY
 
 ```bash
 python3 scripts/smoke_phase1_registry.py
+```
+
+```bash
+python3 scripts/smoke_phase2_extraction.py
 ```
 
 ## Development Notes
