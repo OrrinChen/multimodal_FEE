@@ -11,48 +11,40 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-Phase 0 skeleton commit in this repository history.
+Phase 1 document registry commit in this repository history.
 ```
 
 Current phase:
 
 ```text
-Phase 1: document registry and ingestion
+Phase 2: text / table / XBRL / transcript extraction
 ```
 
 Main blocker:
 
 ```text
-SEC/XBRL ingestion has not been implemented yet.
+Evidence unit extraction has not been implemented yet.
 ```
 
 Next recommended action:
 
 ```text
-Implement the SEC/XBRL document registry for the initial 3-company universe.
+Implement SEC filing text section splitting and XBRL fact extraction into traceable evidence units.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 0 repository skeleton.
+Completed Phase 1 SEC/XBRL document registry.
 
-Added the standard Codex automation workflow files:
-- AGENTS.md
-- README.md
-- VALIDATION.md
-- RUNBOOK.md
-
-Added project skeleton:
-- .gitignore
-- pyproject.toml
-- configs/companies.yaml
-- placeholder config files for future phases
-- src/financial_evidence_engine/ package layout
-- tests/test_phase0_skeleton.py
-
-ROADMAP.md now has a Current State and Automation Workflow section.
-This lets future Codex runs identify the current phase, deferred work, validation commands, and next recommended action without re-reading chat history.
+Added:
+- CompanyUniverseIndex for ticker <-> CIK lookup
+- DocumentMetadata and CachedPayload models
+- SourceCache with stable SHA-256 JSON version hashes
+- SecClient for SEC submissions and company facts endpoints
+- document registry builder for 10-K and XBRL company facts metadata
+- SEC ingestion orchestration that fetches, caches, and registers company documents
+- Phase 1 smoke script
 ```
 
 Latest validation:
@@ -65,6 +57,7 @@ Passed:
 - python3 -m compileall src
 - python3 -m pytest
 - config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check: companies=3 documents=6 aligned_periods=3
 
 Skipped:
 - none
@@ -108,6 +101,46 @@ Known limitations:
 No SEC data ingestion, document registry, cache, extraction, retrieval, evidence graph, validators, or memo generation are implemented yet.
 ```
 
+### Phase 1: SEC/XBRL Document Registry and Ingestion
+
+Commit:
+
+```text
+Phase 1 document registry commit in this repository history.
+```
+
+What changed:
+
+```text
+Implemented the local SEC/XBRL document registry slice for the initial company universe.
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_phase1_document_registry.py -q initially failed because document_registry, cache, sec_client, ingestion, and CompanyUniverseIndex were missing.
+- After implementation, the Phase 1 test file passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+```
+
+Known limitations:
+
+```text
+SEC client supports public endpoints but final validation uses offline fixtures to avoid depending on network availability.
+FMP transcript ingestion remains deferred because it requires paid/external service approval.
+Investor deck registry remains deferred until SEC/XBRL extraction is stable.
+No evidence unit extraction, text parsing, graph construction, validators, or memo generation are implemented yet.
+```
+
 ## Current State
 
 Project folder created as:
@@ -133,7 +166,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-The only implementation code so far is a small configuration loader for the initial company universe. SEC ingestion, extraction, retrieval, graph construction, and claim verification are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, and version hashes. Extraction, retrieval, graph construction, claim verification, and memo generation are not implemented yet.
 
 ## Project Identity
 
@@ -288,11 +321,11 @@ deck narrative vs filing evidence
 ### Step 2: Data Layer
 
 ```text
-[ ] Implement SEC client
-[ ] Implement FMP client
-[ ] Implement document registry
-[ ] Implement cache/version hash
-[ ] Store filing metadata
+[x] Implement SEC client
+[ ] Implement FMP client (deferred pending paid/external API approval)
+[x] Implement document registry
+[x] Implement cache/version hash
+[x] Store filing metadata
 [ ] Store transcript metadata
 [ ] Store investor deck metadata
 ```

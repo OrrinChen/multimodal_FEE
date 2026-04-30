@@ -61,6 +61,10 @@ print([company.ticker for company in companies])
 PY
 ```
 
+```bash
+python3 scripts/smoke_phase1_registry.py
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.

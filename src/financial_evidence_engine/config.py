@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Tuple, Union
+from typing import Dict, Iterable, Tuple, Union
 
 import yaml
 
@@ -19,6 +19,37 @@ class CompanyUniverseEntry:
     sector: str
     fiscal_year: int
     required_documents: Tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class CompanyUniverseIndex:
+    """Bidirectional lookup for configured companies."""
+
+    companies: Tuple[CompanyUniverseEntry, ...]
+    by_ticker: Dict[str, CompanyUniverseEntry]
+    by_cik: Dict[str, CompanyUniverseEntry]
+
+    @classmethod
+    def from_companies(cls, companies: Iterable[CompanyUniverseEntry]) -> "CompanyUniverseIndex":
+        normalized_companies = tuple(companies)
+        by_ticker = {company.ticker.upper(): company for company in normalized_companies}
+        by_cik = {_normalize_cik(company.cik): company for company in normalized_companies}
+
+        if len(by_ticker) != len(normalized_companies):
+            raise ValueError("company universe contains duplicate tickers")
+        if len(by_cik) != len(normalized_companies):
+            raise ValueError("company universe contains duplicate CIKs")
+
+        return cls(companies=normalized_companies, by_ticker=by_ticker, by_cik=by_cik)
+
+    def company_for_ticker(self, ticker: str) -> CompanyUniverseEntry:
+        return self.by_ticker[ticker.upper()]
+
+    def cik_for_ticker(self, ticker: str) -> str:
+        return self.company_for_ticker(ticker).cik
+
+    def ticker_for_cik(self, cik: str) -> str:
+        return self.by_cik[_normalize_cik(cik)].ticker
 
 
 def load_company_universe(path: Union[Path, str]) -> Tuple[CompanyUniverseEntry, ...]:
@@ -85,3 +116,10 @@ def _required_string_sequence(value: object) -> Tuple[str, ...]:
     if len(normalized) != len(value):
         raise ValueError("required_documents must contain only non-empty strings")
     return normalized
+
+
+def _normalize_cik(cik: str) -> str:
+    digits = "".join(character for character in str(cik) if character.isdigit())
+    if not digits:
+        raise ValueError("CIK must contain digits")
+    return digits.zfill(10)

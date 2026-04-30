@@ -51,6 +51,14 @@ print([company.ticker for company in companies])
 PY
 ```
 
+## Phase 1 Registry Smoke Check
+
+Run this once the SEC/XBRL document registry exists:
+
+```bash
+python3 scripts/smoke_phase1_registry.py
+```
+
 ## Phase-Specific Validation
 
 For each phase, run the phase acceptance checks listed in `ROADMAP.md`.

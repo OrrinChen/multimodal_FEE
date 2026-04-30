@@ -28,15 +28,17 @@ financial claim
 
 ## Current Status
 
-Phase 0 is the planning and repository skeleton phase.
+Phase 1 is complete for the local SEC/XBRL document registry slice.
 
 The repository now includes:
 
 - Python project metadata in `pyproject.toml`
 - the initial 3-company universe in `configs/companies.yaml`
 - package layout under `src/financial_evidence_engine/`
-- Phase 0 tests under `tests/`
+- SEC submissions and XBRL company facts metadata registry code
+- source payload cache and stable version hashes
+- Phase 0 and Phase 1 tests under `tests/`
 
-The next recommended action is Phase 1: document registry and ingestion for SEC filings and XBRL company facts.
+The next recommended action is Phase 2: text, table, XBRL, and transcript extraction. Start with SEC filing text section splitting and XBRL fact extraction before investor decks or charts.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.

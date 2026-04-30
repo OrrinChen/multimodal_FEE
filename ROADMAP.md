@@ -16,19 +16,25 @@ Completed:
 - [x] `configs/` created with first 3-company universe
 - [x] `src/financial_evidence_engine/` package layout created
 - [x] `tests/` layout created with Phase 0 skeleton tests
+- [x] Phase 1 SEC/XBRL document registry implemented:
+  - ticker <-> CIK lookup
+  - SEC submissions and XBRL company facts client endpoints
+  - document metadata schema
+  - source payload cache and version hashes
+  - filing date, publication date, and fiscal period kept separate
 
 Current phase:
 
-- Phase 1: document registry and ingestion
+- Phase 2: text / table / XBRL / transcript extraction
 
 Next recommended action:
 
-- Implement the SEC/XBRL document registry for the initial 3-company universe:
-  - load configured companies
-  - resolve SEC submissions and company facts endpoints
-  - define document metadata records
-  - implement cache/version hash behavior
-  - validate fiscal year, filing date, and publication date are tracked separately
+- Implement the first extraction layer:
+  - SEC filing text extraction scaffold
+  - 10-K / 10-Q section splitter
+  - XBRL fact extraction into evidence units
+  - evidence unit schema that traces back to `DocumentMetadata.document_id`
+  - tests proving evidence units retain source document, fiscal period, metric, unit, and citation span
 
 Near-term vertical slice:
 
@@ -46,6 +52,8 @@ Deferred:
 - cloud deployment
 - production integration
 - full 5-10 company corpus
+- FMP transcript ingestion until paid API use is explicitly approved
+- investor deck registry until SEC/XBRL extraction is stable
 - chart extraction
 - UI
 - broad GraphRAG experimentation before validators work
