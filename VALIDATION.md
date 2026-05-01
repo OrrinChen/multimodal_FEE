@@ -67,6 +67,14 @@ Run this once extraction modules exist:
 python3 scripts/smoke_phase2_extraction.py
 ```
 
+## Phase 3 Normalization Smoke Check
+
+Run this once normalization modules exist:
+
+```bash
+python3 scripts/smoke_phase3_normalization.py
+```
+
 ## Phase-Specific Validation
 
 For each phase, run the phase acceptance checks listed in `ROADMAP.md`.

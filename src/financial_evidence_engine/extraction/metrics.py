@@ -4,29 +4,15 @@ from __future__ import annotations
 
 from typing import Optional, Tuple
 
+from financial_evidence_engine.normalization.currency_normalizer import CurrencyNormalizer
+from financial_evidence_engine.normalization.metric_mapper import DEFAULT_METRIC_ALIASES, MetricAliasMapper
 
-DEFAULT_METRIC_ALIASES = {
-    "revenue": "revenue",
-    "revenues": "revenue",
-    "net sales": "revenue",
-    "sales": "revenue",
-    "us-gaap:revenues": "revenue",
-    "operating income": "operating_income",
-    "operatingincomeloss": "operating_income",
-    "us-gaap:operatingincomeloss": "operating_income",
-    "net income": "net_income",
-    "netincomeloss": "net_income",
-    "us-gaap:netincomeloss": "net_income",
-    "cash flow from operations": "operating_cash_flow",
-    "netcashprovidedbyusedinoperatingactivities": "operating_cash_flow",
-    "us-gaap:netcashprovidedbyusedinoperatingactivities": "operating_cash_flow",
-}
+_METRIC_MAPPER = MetricAliasMapper(DEFAULT_METRIC_ALIASES)
+_CURRENCY_NORMALIZER = CurrencyNormalizer()
 
 
 def normalize_metric(raw_metric: str) -> Optional[str]:
-    key = raw_metric.strip().lower().replace("_", " ")
-    compact_key = raw_metric.strip().lower().replace("_", "").replace(" ", "")
-    return DEFAULT_METRIC_ALIASES.get(key) or DEFAULT_METRIC_ALIASES.get(compact_key)
+    return _METRIC_MAPPER.normalize(raw_metric)
 
 
 def parse_unit_and_currency(raw_unit: str) -> Tuple[Optional[str], Optional[str]]:
@@ -34,9 +20,14 @@ def parse_unit_and_currency(raw_unit: str) -> Tuple[Optional[str], Optional[str]
     if not tokens:
         return None, None
 
-    currency = tokens[0].upper() if tokens[0].upper() in {"USD", "EUR", "GBP", "JPY", "CNY"} else None
+    currency = _CURRENCY_NORMALIZER.normalize(raw_unit)
+    lowered = raw_unit.lower()
+    for scale in ("billions", "millions", "thousands"):
+        if scale[:-1] in lowered:
+            return scale, currency
     if currency:
-        unit = " ".join(tokens[1:]) or currency
+        unit_tokens = [token for token in tokens if token.upper() != currency and token != "$"]
+        unit = " ".join(unit_tokens) or currency
     else:
         unit = raw_unit.strip()
     return unit or None, currency

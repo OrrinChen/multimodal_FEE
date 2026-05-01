@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-Phase 2 is complete for the local extraction slice.
+Phase 3 is complete for the local financial normalization slice.
 
 The repository now includes:
 
@@ -41,8 +41,10 @@ The repository now includes:
 - XBRL fact extraction into evidence units
 - transcript speaker/section parsing
 - markdown table numeric extraction
-- Phase 0, Phase 1, and Phase 2 tests under `tests/`
+- entity, ticker, CIK, fiscal period, metric, unit, and currency normalization
+- guardrails that reject accidental company, period, frequency, metric, currency, and unreconciled scale mismatches
+- Phase 0, Phase 1, Phase 2, and Phase 3 tests under `tests/`
 
-The next recommended action is Phase 3: financial normalization. Start with fiscal period resolution, metric aliases, unit/currency normalization, and annual-vs-quarterly guardrails before retrieval or graph work.
+The next recommended action is Phase 4: evidence graph. Start with typed graph nodes and edges that connect companies, documents, fiscal periods, metrics, claims, and evidence units before retrieval or memo generation.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.

@@ -11,39 +11,39 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-Phase 2 extraction commit in this repository history.
+feat: add financial normalization guardrails
 ```
 
 Current phase:
 
 ```text
-Phase 3: financial normalization layer
+Phase 4: evidence graph
 ```
 
 Main blocker:
 
 ```text
-Financial normalization and guardrails have not been implemented yet.
+Evidence graph nodes, edges, and graph builder have not been implemented yet.
 ```
 
 Next recommended action:
 
 ```text
-Implement fiscal period resolution, metric aliases, unit/currency normalization, and annual-vs-quarterly guardrails.
+Implement typed evidence graph nodes and edges, then build a graph from document metadata and evidence units.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 2 local extraction layer.
+Completed Phase 3 financial normalization layer.
 
 Added:
-- EvidenceUnit and SourceSpan models
-- SEC filing 10-K section splitter
-- XBRL company facts extractor
-- transcript section/speaker parser
-- markdown table numeric extractor
-- Phase 2 smoke script
+- EntityResolver for ticker, CIK, and company-name linking
+- FiscalPeriodResolver for FY/CY and quarterly/annual period normalization
+- MetricAliasMapper for revenue, net sales, operating income, EBIT, net income, and earnings aliases
+- CurrencyNormalizer and UnitNormalizer for USD/$ and thousands/millions/billions scale conversion
+- FinancialObservation and ensure_comparable guardrails
+- Phase 3 smoke script and test coverage
 ```
 
 Latest validation:
@@ -53,11 +53,12 @@ Passed:
 - required workflow files exist
 - git diff --check
 - markdown trailing-whitespace scan
-- python3 -m compileall src
+- python3 -m compileall src scripts
 - python3 -m pytest
 - config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
 - phase1 registry smoke check: companies=3 documents=6 aligned_periods=3
 - phase2 extraction smoke check: sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check: company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
 
 Skipped:
 - none
@@ -183,6 +184,106 @@ Chart extraction and investor deck parsing remain deferred.
 No financial normalization guardrails, retrieval, graph construction, validators, or memo generation are implemented yet.
 ```
 
+### Local FMP Snapshot: 2026-04-30
+
+Commit:
+
+```text
+Not committed. Raw paid FMP payloads are stored locally under ignored data/cache/fmp/.
+```
+
+What changed:
+
+```text
+Captured a broad FMP local cache for AAPL, MSFT, NVDA, AMZN, GOOGL, META, JPM, WMT, TSLA, and NFLX.
+
+Snapshot includes:
+- transcripts and transcript dates for 2022-2025
+- annual and quarterly financial statements
+- annual and quarterly as-reported statements
+- key metrics, ratios, enterprise values, growth metrics, financial scores, and owner earnings
+- DCF and levered DCF payloads
+- ratings snapshot/history, grades history, and grades consensus
+- dividends, splits, market capitalization history, shares float, peers, executives, and employee counts
+- analyst estimates, price targets, earnings calendar, stock news, and segment revenue
+- historical daily prices from 2022-01-01 to 2026-04-30
+```
+
+Validation:
+
+```text
+Passed:
+- manifest_records=700
+- payload_json_files=700
+- metadata_files=700
+- 10 symbols with 70 payload groups each
+- remaining_failures=0
+- no apikey or FMP_API_KEY strings found in data/cache/fmp
+- data/cache/fmp is ignored by git
+```
+
+Known limitations:
+
+```text
+FMP remains a secondary source, not the filing authority.
+SEC/XBRL should remain the validator authority when numbers conflict.
+Real-time quotes were intentionally not downloaded.
+The cache is broad enough for offline MVP development, but future tasks outside the 10-symbol universe or after 2026-04-30 may require additional data.
+```
+
+### Phase 3: Financial Normalization Layer
+
+Commit:
+
+```text
+feat: add financial normalization guardrails
+```
+
+What changed:
+
+```text
+Implemented a focused normalization layer that prevents common financial evidence mistakes before retrieval or graph reasoning.
+
+Added:
+- canonical NormalizedCompany, FiscalPeriod, and NormalizedAmount models
+- ticker / CIK / company-name entity resolver
+- fiscal vs calendar period resolver with annual-vs-quarterly guardrails
+- period end date handling from DocumentMetadata
+- metric alias mapper for revenue, total net sales, operating income, EBIT, net income, earnings, and operating cash flow
+- currency normalization for USD/$ and common currency labels
+- unit scale normalization for ones, thousands, millions, and billions
+- FinancialObservation guardrails for company, metric, period, currency, and unreconciled scale mismatch
+- Phase 3 smoke script and validation command
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_phase3_normalization.py -q initially failed because the Phase 3 modules did not exist.
+- After implementation, the Phase 3 test file passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+```
+
+Known limitations:
+
+```text
+Normalization currently covers the initial MVP metric and unit aliases, not a full XBRL taxonomy.
+Fiscal period parsing supports common FY/CY and Q1-Q4 labels, not every natural-language period phrase.
+Currency conversion rates are intentionally not implemented; the guardrail rejects currency mismatches instead of converting them.
+Graph construction, claim verification, numeric reconciliation, and memo generation remain unimplemented.
+```
+
 ## Current State
 
 Project folder created as:
@@ -208,7 +309,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, and local extraction into evidence units. Financial normalization, retrieval, graph construction, claim verification, and memo generation are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, and financial normalization guardrails. Retrieval, graph construction, claim verification, and memo generation are not implemented yet.
 
 ## Project Identity
 
@@ -364,11 +465,11 @@ deck narrative vs filing evidence
 
 ```text
 [x] Implement SEC client
-[ ] Implement FMP client (deferred pending paid/external API approval)
+[ ] Implement FMP client module (local snapshot captured; reusable code path still deferred)
 [x] Implement document registry
 [x] Implement cache/version hash
 [x] Store filing metadata
-[ ] Store transcript metadata
+[x] Store local FMP transcript payloads and metadata sidecars
 [ ] Store investor deck metadata
 ```
 
@@ -387,13 +488,13 @@ deck narrative vs filing evidence
 ### Step 4: Normalization Layer
 
 ```text
-[ ] Entity linker
-[ ] Ticker/CIK resolver
-[ ] Fiscal period resolver
-[ ] Metric alias mapper
-[ ] Unit normalizer
-[ ] Currency normalizer
-[ ] Annual vs quarterly guardrails
+[x] Entity linker
+[x] Ticker/CIK resolver
+[x] Fiscal period resolver
+[x] Metric alias mapper
+[x] Unit normalizer
+[x] Currency normalizer
+[x] Annual vs quarterly guardrails
 ```
 
 ### Step 5: Evidence Graph

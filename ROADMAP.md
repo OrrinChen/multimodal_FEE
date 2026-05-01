@@ -28,20 +28,43 @@ Completed:
   - transcript speaker/section parsing
   - markdown table numeric extraction
   - `EvidenceUnit` schema with source spans
+- [x] Phase 3 financial normalization implemented:
+  - entity / ticker / CIK resolver
+  - fiscal and calendar period resolver
+  - period end date handling from document metadata
+  - metric alias mapper
+  - currency and unit scale normalizers
+  - comparison guardrails for company, period, metric, currency, and scale
 
 Current phase:
 
-- Phase 3: financial normalization layer
+- Phase 4: evidence graph
+
+Urgent short-term data action:
+
+- [x] Captured a local FMP snapshot before Ultimate access expires.
+- Snapshot location:
+  - `data/cache/fmp/`
+- Snapshot scope:
+  - 10 symbols: AAPL, MSFT, NVDA, AMZN, GOOGL, META, JPM, WMT, TSLA, NFLX
+  - annual and quarterly financial statements
+  - annual and quarterly as-reported statements
+  - key metrics, ratios, enterprise values, growth metrics, and financial scores
+  - transcripts and transcript dates for 2022-2025
+  - analyst estimates and price targets
+  - earnings calendar
+  - historical daily prices and market capitalization from 2022-01-01 to 2026-04-30
+  - dividends, splits, shares float, peers, executives, employee counts, ratings, news, and segment revenue
+- Store raw payloads locally with `source`, `endpoint`, `symbol`, `period`, `retrieved_at`, and `version_hash`.
+- Do not make real-time quote access a core dependency. Historical market context is enough for this due-diligence evidence engine.
 
 Next recommended action:
 
-- Implement financial normalization:
-  - entity and ticker/CIK resolver integration
-  - fiscal year / fiscal quarter resolver
-  - period end date resolver
-  - metric alias mapper
-  - unit and currency normalizers
-  - annual vs quarterly guardrails
+- Implement the evidence graph:
+  - typed graph nodes for Company, Document, FiscalPeriod, Metric, Claim, EvidenceUnit, RiskFactor, Segment, Speaker, and Event
+  - typed graph edges for reported_in, supports, contradicts, mentions, same_metric_as, same_period_as, changed_from, guidance_for, and risk_related_to
+  - graph builder from document metadata and evidence units
+  - initial claim-to-evidence linking surface
 
 Near-term vertical slice:
 
@@ -55,16 +78,34 @@ validated numeric/fiscal/citation outputs before GraphRAG or chart extraction
 
 Deferred:
 
-- paid external APIs until explicitly approved
 - cloud deployment
 - production integration
 - full 5-10 company corpus
-- FMP transcript ingestion until paid API use is explicitly approved
 - investor deck registry until SEC/XBRL extraction is stable
 - PDF binary extraction beyond simple HTML/text fixtures
 - chart extraction
+- real-time market data dependency
 - UI
 - broad GraphRAG experimentation before validators work
+
+External data policy:
+
+```text
+SEC/XBRL = authoritative filing truth
+FMP = secondary structured source + transcripts + estimates + historical market context
+real-time quotes = optional only, not required for MVP
+```
+
+FMP usage rules:
+
+```text
+do not commit FMP_API_KEY
+do not commit raw paid FMP payloads
+cache local FMP snapshots with retrieved_at and version_hash
+label every FMP-derived evidence unit as secondary source
+never mix FMP normalized values with SEC raw facts without source labels
+use SEC/XBRL as numeric validator authority when conflicts appear
+```
 
 ## 1. 项目定位
 
@@ -209,9 +250,11 @@ system can output support / contradict / insufficient
 ```text
 SEC EDGAR company submissions
 SEC XBRL company facts
-FMP financial statements
-FMP analyst estimates
-FMP earnings data
+FMP financial statements as secondary source
+FMP as-reported statements as cross-check source
+FMP analyst estimates and price targets
+FMP earnings calendar
+FMP historical prices around event windows
 ```
 
 用途:
@@ -221,6 +264,69 @@ authoritative filing metadata
 financial metric ground truth
 period and publication date alignment
 validator reference values
+secondary-source cross-checks
+market reaction context around filings and earnings calls
+```
+
+### FMP snapshot corpus
+
+Captured local corpus:
+
+```text
+data/cache/fmp/
+  transcripts/
+  financial_statements/
+  as_reported/
+  key_metrics/
+  ratios/
+  enterprise_values/
+  growth/
+  financial_scores/
+  analyst_estimates/
+  price_targets/
+  earnings_calendar/
+  historical_prices/
+  market_context/
+  corporate_actions/
+  ratings/
+  segment_revenue/
+  news/
+```
+
+Snapshot status:
+
+```text
+retrieved_at window: 2026-04-30T14:11:15Z to 2026-04-30T15:15:35Z
+symbols: AAPL, MSFT, NVDA, AMZN, GOOGL, META, JPM, WMT, TSLA, NFLX
+manifest_records: 700
+payload_json_files: 700
+metadata_files: 700
+remaining_failures: 0
+real-time quotes: not downloaded
+raw paid payloads: ignored by git under data/cache/
+```
+
+Snapshot metadata:
+
+```text
+source: FMP
+endpoint
+symbol
+fiscal_year
+fiscal_quarter
+period
+retrieved_at
+version_hash
+raw_payload_path
+```
+
+Realtime policy:
+
+```text
+not required for MVP
+not used as evidence truth
+only useful for live dashboards or immediate market-reaction analysis
+prefer historical daily/intraday event windows over real-time quotes
 ```
 
 ### Text corpus
@@ -370,7 +476,7 @@ Build:
 company universe
 ticker <-> CIK mapping
 SEC filing metadata ingestion
-FMP transcript metadata ingestion
+FMP snapshot ingestion from local cached payloads
 investor deck metadata registry
 document download and cache
 publication date tracking
@@ -394,6 +500,7 @@ publication_date
 source_url or accession_number
 retrieved_at
 version_hash
+source_authority: authoritative / secondary / market_context
 ```
 
 Acceptance criteria:
@@ -403,6 +510,46 @@ every evidence unit can trace back to source document
 every document has fiscal period and publication date
 same company documents can be aligned across source types
 filing date and fiscal period are not confused
+FMP documents are marked secondary and aligned to SEC/XBRL periods before use
+```
+
+### Phase 1.5: FMP Snapshot Capture
+
+Goal: 在 FMP Ultimate 到期前保存可复现的二级数据源快照。
+
+Build:
+
+```text
+FMP client using FMP_API_KEY env var
+snapshot downloader for selected symbols and years
+raw payload cache under data/cache/fmp/
+metadata sidecars with endpoint, symbol, period, retrieved_at, version_hash
+transcript payload registry
+financial statement payload registry
+as-reported payload registry
+analyst estimate / price target registry
+earnings calendar registry
+historical price event-window registry
+```
+
+Do not build:
+
+```text
+real-time quote dependency
+trading dashboard
+live market monitor
+committed paid raw payloads
+```
+
+Acceptance criteria:
+
+```text
+FMP_API_KEY is read only from environment
+raw FMP payloads are cached locally and ignored by git
+each cached payload has retrieved_at and version_hash
+FMP transcripts can feed the transcript parser
+FMP financial statements can be compared against SEC/XBRL but are labeled secondary
+historical prices are tied to filing/transcript event dates, not live quote state
 ```
 
 ### Phase 2: Text / Table / XBRL / Transcript Extraction
@@ -454,14 +601,14 @@ Goal: 解决金融数据最常见的错位问题。
 Build:
 
 ```text
-entity linking
-ticker <-> CIK resolver
-fiscal year / fiscal quarter resolver
-period end date resolver
-metric alias mapper
-unit normalizer
-currency normalizer
-annual vs quarterly guardrails
+[x] entity linking
+[x] ticker <-> CIK resolver
+[x] fiscal year / fiscal quarter resolver
+[x] period end date resolver
+[x] metric alias mapper
+[x] unit normalizer
+[x] currency normalizer
+[x] annual vs quarterly guardrails
 ```
 
 Must handle:
@@ -478,10 +625,10 @@ quarterly vs annual values
 Acceptance criteria:
 
 ```text
-does not mix FY2023 and CY2023
-does not mix quarterly and annual revenue
-does not mix $ millions and $ thousands
-does not compare different companies by accident
+[x] does not mix FY2023 and CY2023
+[x] does not mix quarterly and annual revenue
+[x] does not mix $ millions and $ thousands
+[x] does not compare different companies by accident
 ```
 
 ### Phase 4: Evidence Graph
