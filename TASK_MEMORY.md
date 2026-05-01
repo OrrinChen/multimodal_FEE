@@ -11,39 +11,39 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add financial normalization guardrails
+feat: add evidence graph builder
 ```
 
 Current phase:
 
 ```text
-Phase 4: evidence graph
+Phase 5: claim decomposition and verification
 ```
 
 Main blocker:
 
 ```text
-Evidence graph nodes, edges, and graph builder have not been implemented yet.
+Claim decomposition, evidence selection, validators, contradiction detection, and verdict generation have not been implemented yet.
 ```
 
 Next recommended action:
 
 ```text
-Implement typed evidence graph nodes and edges, then build a graph from document metadata and evidence units.
+Implement claim and subclaim models, evidence selection over the evidence graph, validator-readable checks, and support / contradict / insufficient verdict generation.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 3 financial normalization layer.
+Completed Phase 4 evidence graph.
 
 Added:
-- EntityResolver for ticker, CIK, and company-name linking
-- FiscalPeriodResolver for FY/CY and quarterly/annual period normalization
-- MetricAliasMapper for revenue, net sales, operating income, EBIT, net income, and earnings aliases
-- CurrencyNormalizer and UnitNormalizer for USD/$ and thousands/millions/billions scale conversion
-- FinancialObservation and ensure_comparable guardrails
-- Phase 3 smoke script and test coverage
+- typed graph nodes for Company, Document, FiscalPeriod, Metric, Claim, EvidenceUnit, RiskFactor, Segment, Person/Speaker, and Event
+- typed graph edges for reported_in, supports, contradicts, mentions, same_metric_as, same_period_as, changed_from, guidance_for, and risk_related_to
+- deterministic in-memory EvidenceGraph container
+- graph builder from DocumentMetadata and EvidenceUnit
+- claim-to-evidence, metric-to-evidence, company-period, and risk-theme query helpers
+- Phase 4 smoke script and test coverage
 ```
 
 Latest validation:
@@ -59,6 +59,7 @@ Passed:
 - phase1 registry smoke check: companies=3 documents=6 aligned_periods=3
 - phase2 extraction smoke check: sections=4 xbrl=1 transcripts=1 tables=1
 - phase3 normalization smoke check: company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check: nodes=8 edges=14 claim_evidence=2 metric_evidence=2
 
 Skipped:
 - none
@@ -284,6 +285,60 @@ Currency conversion rates are intentionally not implemented; the guardrail rejec
 Graph construction, claim verification, numeric reconciliation, and memo generation remain unimplemented.
 ```
 
+### Phase 4: Evidence Graph
+
+Commit:
+
+```text
+feat: add evidence graph builder
+```
+
+What changed:
+
+```text
+Implemented the first local evidence graph layer that connects documents, evidence units, metrics, claims, fiscal periods, companies, and risk themes.
+
+Added:
+- GraphNode and GraphEdge models
+- NodeType and EdgeType constants for the roadmap graph schema
+- EvidenceGraph in-memory container with deterministic insertion and duplicate-edge protection
+- graph builder from DocumentMetadata and EvidenceUnit
+- ClaimLink model for explicit support / contradiction links
+- metric-to-evidence aggregation
+- company-period evidence aggregation
+- risk-theme evidence tracking across fiscal years
+- Phase 4 smoke script and validation command
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_phase4_evidence_graph.py -q initially failed because the Phase 4 graph interfaces did not exist.
+- After implementation, the Phase 4 test file passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+```
+
+Known limitations:
+
+```text
+The graph is an in-memory local structure, not a persistent graph database.
+Claim links are explicit inputs; automatic claim decomposition and evidence selection are not implemented yet.
+Risk-theme tracking is keyword-based for now.
+GraphRAG retrieval, validators, contradiction detection, and memo generation remain unimplemented.
+```
+
 ## Current State
 
 Project folder created as:
@@ -309,7 +364,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, and financial normalization guardrails. Retrieval, graph construction, claim verification, and memo generation are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, and local evidence graph construction. Retrieval, claim verification, numeric reconciliation, validators, contradiction detection, and memo generation are not implemented yet.
 
 ## Project Identity
 
@@ -500,12 +555,12 @@ deck narrative vs filing evidence
 ### Step 5: Evidence Graph
 
 ```text
-[ ] Define graph nodes
-[ ] Define graph edges
-[ ] Build graph from documents and evidence units
-[ ] Link claims to evidence units
-[ ] Link metrics across documents
-[ ] Track risk themes across years
+[x] Define graph nodes
+[x] Define graph edges
+[x] Build graph from documents and evidence units
+[x] Link claims to evidence units
+[x] Link metrics across documents
+[x] Track risk themes across years
 ```
 
 ### Step 6: Claim Verification

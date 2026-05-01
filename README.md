@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-Phase 3 is complete for the local financial normalization slice.
+Phase 4 is complete for the local evidence graph slice.
 
 The repository now includes:
 
@@ -43,8 +43,11 @@ The repository now includes:
 - markdown table numeric extraction
 - entity, ticker, CIK, fiscal period, metric, unit, and currency normalization
 - guardrails that reject accidental company, period, frequency, metric, currency, and unreconciled scale mismatches
-- Phase 0, Phase 1, Phase 2, and Phase 3 tests under `tests/`
+- typed evidence graph nodes and edges for companies, documents, fiscal periods, metrics, claims, evidence units, risk themes, speakers, segments, and events
+- graph builder from `DocumentMetadata` and `EvidenceUnit`
+- claim-to-evidence, metric-to-evidence, company-period, and risk-theme graph query helpers
+- Phase 0, Phase 1, Phase 2, Phase 3, and Phase 4 tests under `tests/`
 
-The next recommended action is Phase 4: evidence graph. Start with typed graph nodes and edges that connect companies, documents, fiscal periods, metrics, claims, and evidence units before retrieval or memo generation.
+The next recommended action is Phase 5: claim decomposition and verification. Start with a small claim model, evidence selector, numeric/fiscal/citation validator interfaces, and support / contradict / insufficient verdict generation.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.

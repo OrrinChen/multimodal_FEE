@@ -35,10 +35,16 @@ Completed:
   - metric alias mapper
   - currency and unit scale normalizers
   - comparison guardrails for company, period, metric, currency, and scale
+- [x] Phase 4 evidence graph implemented:
+  - typed graph nodes and edges
+  - graph builder from document metadata and evidence units
+  - claim-to-evidence links
+  - metric-to-evidence links across source documents
+  - risk-theme links across fiscal years
 
 Current phase:
 
-- Phase 4: evidence graph
+- Phase 5: claim decomposition and verification
 
 Urgent short-term data action:
 
@@ -60,11 +66,11 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement the evidence graph:
-  - typed graph nodes for Company, Document, FiscalPeriod, Metric, Claim, EvidenceUnit, RiskFactor, Segment, Speaker, and Event
-  - typed graph edges for reported_in, supports, contradicts, mentions, same_metric_as, same_period_as, changed_from, guidance_for, and risk_related_to
-  - graph builder from document metadata and evidence units
-  - initial claim-to-evidence linking surface
+- Implement claim decomposition and verification:
+  - claim and subclaim models
+  - evidence selector over the evidence graph
+  - numeric, fiscal-period, citation, and source-consistency validator interfaces
+  - support / contradict / insufficient verdict generation
 
 Near-term vertical slice:
 
@@ -638,39 +644,39 @@ Goal: 从 top-k retrieval 升级到可推理证据图。
 Graph nodes:
 
 ```text
-Company
-Document
-FiscalPeriod
-Metric
-Claim
-EvidenceUnit
-RiskFactor
-Segment
-Person/Speaker
-Event
+[x] Company
+[x] Document
+[x] FiscalPeriod
+[x] Metric
+[x] Claim
+[x] EvidenceUnit
+[x] RiskFactor
+[x] Segment
+[x] Person/Speaker
+[x] Event
 ```
 
 Graph edges:
 
 ```text
-reported_in
-supports
-contradicts
-mentions
-same_metric_as
-same_period_as
-changed_from
-guidance_for
-risk_related_to
+[x] reported_in
+[x] supports
+[x] contradicts
+[x] mentions
+[x] same_metric_as
+[x] same_period_as
+[x] changed_from
+[x] guidance_for
+[x] risk_related_to
 ```
 
 Acceptance criteria:
 
 ```text
-one claim links to multiple evidence units
-one metric links to corresponding evidence across filings/decks/transcripts
-risk theme wording can be tracked across years
-cross-document evidence can be aggregated
+[x] one claim links to multiple evidence units
+[x] one metric links to corresponding evidence across filings/decks/transcripts
+[x] risk theme wording can be tracked across years
+[x] cross-document evidence can be aggregated
 ```
 
 ### Phase 5: Claim Decomposition and Verification

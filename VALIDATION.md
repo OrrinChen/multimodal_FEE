@@ -75,6 +75,14 @@ Run this once normalization modules exist:
 python3 scripts/smoke_phase3_normalization.py
 ```
 
+## Phase 4 Evidence Graph Smoke Check
+
+Run this once evidence graph modules exist:
+
+```bash
+python3 scripts/smoke_phase4_evidence_graph.py
+```
+
 ## Phase-Specific Validation
 
 For each phase, run the phase acceptance checks listed in `ROADMAP.md`.
