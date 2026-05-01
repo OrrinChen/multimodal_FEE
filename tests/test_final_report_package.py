@@ -81,6 +81,7 @@ def test_final_report_package_contains_charts_tables_sample_memo_and_resume_bull
     }
     assert package.sample_memo.memo_id == "memo:aapl_revenue"
     assert "python3 -m pytest" in package.reproducibility_commands
+    assert "python3 scripts/smoke_real_retrieval_evaluation.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_phase8_memo.py" in package.reproducibility_commands
     assert "claim-level validators" in package.resume_bullet_long
     assert package.resume_bullet_short.startswith("Built a multimodal financial evidence engine")

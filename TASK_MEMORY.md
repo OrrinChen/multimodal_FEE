@@ -11,40 +11,41 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: package final report artifacts
+feat: add real retrieval evaluation slice
 ```
 
 Current phase:
 
 ```text
-Portfolio-ready local MVP complete
+Real retrieval baseline hardening complete
 ```
 
 Main blocker:
 
 ```text
-None for the local MVP. Remaining work is optional enhancement or productionization.
+None for the local real-retrieval benchmark. Remaining work is case-study packaging and real investor-deck/chart extraction.
 ```
 
 Next recommended action:
 
 ```text
-If continuing, replace deterministic diagnostic baselines with real retrieval runs, then add investor-deck PDF/chart extraction or a lightweight demo UI.
+Build 3 recruiter-facing retrieval failure case studies, then add one real investor-deck PDF/chart extraction case before any demo UI.
 ```
 
 Latest workflow update:
 
 ```text
-Completed final report and reproducibility package.
+Completed real retrieval baseline hardening.
 
 Added:
-- FinalReportPackage, ChartSpec, and ReportTable models
-- final report Markdown generation with the 12-section outline
-- chart specs for citation correctness, numeric mismatch rate, unsupported-claim rate, and period-confusion errors
-- baseline and ablation result tables from the deterministic evaluation harness
-- sample due-diligence memo artifact embedded in the final report package
-- reproducibility commands and polished long/short resume bullets
-- final report smoke script and test coverage
+- 320-document local retrieval corpus built from Phase 6 evidence specs and known distractors
+- actual BM25 retrieval over corpus documents
+- deterministic token-vector dense retrieval proxy
+- hybrid BM25/vector retrieval with metadata reranking
+- metadata-constrained graph retrieval
+- full-engine real retrieval run with validator-like verdict rules
+- failure-case output for period confusion, entity mismatch, citation mismatch, numeric validation gaps, missed contradictions, unsupported claims, and chart extraction gaps
+- real retrieval smoke script and test coverage
 ```
 
 Latest validation:
@@ -64,8 +65,9 @@ Passed:
 - phase5 claim verification smoke check: verdict=support subclaims=1 evidence=1 checks=5
 - phase6 task set smoke check: tasks=60 families=6 verdicts=3
 - phase7 evaluation smoke check: tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check: tasks=60 corpus_documents=320 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=11 sample_memo_verdict=support markdown_lines=121
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=12 sample_memo_verdict=support markdown_lines=122
 
 Skipped:
 - none
@@ -612,7 +614,7 @@ Final checks:
 - phase6 task set smoke check printed tasks=60 families=6 verdicts=3
 - phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
 - phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check printed tasks=60 charts=4 tables=3 commands=11 sample_memo_verdict=support markdown_lines=121
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=12 sample_memo_verdict=support markdown_lines=122
 ```
 
 Known limitations:
@@ -620,7 +622,66 @@ Known limitations:
 ```text
 The final report package is a deterministic Markdown/data artifact generator, not a designed PDF deck.
 Charts are portable chart specs, not rendered image files.
-Baselines are diagnostic profiles rather than real retrieval executions.
+The final report baseline tables still summarize Phase 7 diagnostic profiles; real retrieval execution is reported through the separate hardening slice.
+```
+
+### Real Retrieval Evaluation Hardening
+
+Commit:
+
+```text
+feat: add real retrieval evaluation slice
+```
+
+What changed:
+
+```text
+Replaced the next-stage baseline gap with a local real-retrieval evaluation path that searches actual corpus documents instead of emitting only profile-level predictions.
+
+Added:
+- RetrievalCorpusDocument, RetrievalCorpus, RetrievalResult, RetrievalFailureCase, and RealRetrievalEvaluationResult models
+- build_retrieval_corpus() with gold evidence documents and known distractors from the 60-task seed set
+- BM25EvidenceRetriever with local BM25 scoring
+- DenseEvidenceRetriever as an offline deterministic token-vector cosine proxy
+- HybridEvidenceRetriever with BM25/vector score blending and metadata reranking
+- GraphEvidenceRetriever with company, period, source-type, and metric constraints
+- run_real_retrieval_evaluation() producing EvaluationRun, EvaluationReport, retrieved evidence, method notes, and failure cases
+- smoke_real_retrieval_evaluation.py and tests for corpus construction, ranking, metrics, serialization, and failure-case surfacing
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_real_retrieval_evaluation.py -q initially failed because real retrieval APIs did not exist.
+- After implementation, the real retrieval test file passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check printed tasks=60 corpus_documents=320 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=12 sample_memo_verdict=support markdown_lines=122
+```
+
+Known limitations:
+
+```text
+The real retrieval corpus is a local benchmark built from task evidence specs and known distractors, not raw SEC filing paragraphs or PDF pages.
+The dense retriever is a deterministic token-vector proxy, not a neural embedding model.
+GraphRAG is represented by metadata-constrained retrieval over the local corpus, not a production graph database.
+The full-engine real run intentionally fails investor-deck chart tasks because chart/PDF extraction is still deferred.
 ```
 
 ## Current State
@@ -648,7 +709,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, auditable memo generation, and final report packaging. Production semantic retrieval, rendered PDF/deck output, and LLM-assisted decomposition are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document corpus, auditable memo generation, and final report packaging. Raw-document semantic retrieval, rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
 
 ## Project Identity
 

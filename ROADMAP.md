@@ -67,10 +67,18 @@ Completed:
   - sample due-diligence memo artifact
   - reproducibility commands
   - polished resume bullets
+- [x] Real retrieval evaluation hardening implemented:
+  - 320-document local retrieval corpus from expected evidence plus known distractors
+  - BM25 retrieval over actual corpus documents
+  - deterministic token-vector dense proxy over actual corpus documents
+  - hybrid BM25/vector retrieval with metadata reranking
+  - metadata-constrained graph retrieval
+  - validator-augmented full-engine run with explicit chart extraction gap
+  - failure-case output for period confusion, entity mismatch, citation mismatch, numeric validation gaps, missed contradictions, unsupported claims, and chart extraction gaps
 
 Current phase:
 
-- Portfolio-ready local MVP complete
+- Real retrieval baseline hardening complete
 
 Urgent short-term data action:
 
@@ -92,10 +100,13 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Optional enhancements:
-  - replace deterministic diagnostic baselines with real BM25 / dense / GraphRAG retrieval runs
-  - add investor-deck PDF and chart extraction
-  - package a lightweight demo UI or notebook only after retrieval runs are real
+- Build the recruiter-facing evidence package:
+  - turn the real-retrieval run into 3 case studies:
+    - period confusion
+    - numeric or unit mismatch
+    - narrative contradiction or unsupported management claim
+  - add one real investor-deck PDF/chart extraction case
+  - package a lightweight demo UI or notebook only after the case studies and chart case are real
 
 Near-term vertical slice:
 
@@ -111,13 +122,14 @@ Deferred:
 
 - cloud deployment
 - production integration
-- full 5-10 company corpus
+- broader raw-document corpus beyond the local 320-document retrieval benchmark
 - investor deck registry until SEC/XBRL extraction is stable
 - PDF binary extraction beyond simple HTML/text fixtures
-- chart extraction
+- broad chart extraction beyond the first investor-deck case
 - real-time market data dependency
 - UI
-- broad GraphRAG experimentation before validators work
+- neural dense retrieval or external vector database
+- broad GraphRAG experimentation before raw-document retrieval quality is proven
 
 External data policy:
 

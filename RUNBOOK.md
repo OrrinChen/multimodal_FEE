@@ -69,11 +69,15 @@ python3 scripts/smoke_phase1_registry.py
 python3 scripts/smoke_phase2_extraction.py
 ```
 
+```bash
+python3 scripts/smoke_real_retrieval_evaluation.py
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.
 - Start with SEC/XBRL and validated numeric claims before adding transcripts, investor decks, charts, or GraphRAG complexity.
-- Prefer 3 initial companies before expanding to the full 5-10 company MVP universe.
+- Prefer real retrieval and failure-case evidence before expanding UI, dashboards, or broad GraphRAG experiments.
 - Treat downloaded data and API responses as reproducible artifacts with source metadata, retrieval time, and version hashes.
 - Never commit credentials, paid API keys, private filings, or local-only data.
 

@@ -107,6 +107,14 @@ Run this once evaluation metrics and baselines exist:
 python3 scripts/smoke_phase7_evaluation.py
 ```
 
+## Real Retrieval Evaluation Smoke Check
+
+Run this once real local retrieval baselines exist:
+
+```bash
+python3 scripts/smoke_real_retrieval_evaluation.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

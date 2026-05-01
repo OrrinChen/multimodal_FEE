@@ -1,6 +1,6 @@
 # Multimodal Financial Due-Diligence Evidence Engine
 
-This repository is a planning scaffold for a claim-level financial evidence verification engine.
+This repository is a claim-level financial evidence verification engine for due diligence.
 
 The project goal is to verify financial due-diligence claims across SEC filings, XBRL facts, earnings transcripts, investor decks, tables, charts, and financial metrics without hallucinating evidence.
 
@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP is complete through final report packaging.
+The local portfolio-ready MVP is complete through final report packaging, and the first real-retrieval hardening slice is implemented.
 
 The repository now includes:
 
@@ -57,11 +57,14 @@ The repository now includes:
 - deterministic evaluation metrics for evidence recall, citation exactness, numeric correctness, fiscal-period correctness, entity correctness, verdict accuracy, contradiction detection, unsupported-claim rate, answer faithfulness, memo usefulness, latency, and cost
 - six diagnostic baseline profiles: BM25 RAG, dense RAG, hybrid retrieval + reranker, GraphRAG only, multimodal extraction only, and full evidence engine
 - six ablation profiles covering graph, numeric validator, fiscal-period validator, chart/table extraction, contradiction detector, and reranker removal
+- a local real-retrieval evaluation slice over a 320-document corpus built from gold evidence specs plus known distractors
+- real BM25, deterministic token-vector dense proxy, hybrid, graph-constrained, and validator-augmented retrieval runs
+- failure-case surfacing for period confusion, entity mismatch, citation mismatch, numeric validation gaps, missed contradictions, unsupported claims, and chart extraction gaps
 - auditable due-diligence memo generation with executive summary, key claims, evidence table, numeric reconciliation, contradictions, risk flags, unresolved issues, limitations, and traceable conclusions
 - markdown serialization that separates evidence from inference
 - final report packaging with chart specs, result tables, sample memo, reproducibility commands, and polished resume bullets
 - Phase 0 through final report package tests under `tests/`
 
-The next recommended action is optional enhancement: replace deterministic diagnostic baselines with real retrieval runs, then add chart/PDF extraction or a lightweight demo UI if needed.
+The next recommended action is to turn the real-retrieval results into three case studies and add one real investor-deck PDF/chart extraction case. The dense retrieval path is currently an offline deterministic token-vector proxy, not a neural embedding model or external vector database.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.
