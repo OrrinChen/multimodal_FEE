@@ -1,9 +1,24 @@
-# Initial evaluation target for the first vertical slice.
-gold_task_target: 10
+# Initial evaluation target for the first due-diligence gold set.
+gold_task_target: 60
+seed_task_set_id: phase6_seed_multimodal_due_diligence
+seed_task_set_version: "2026-05-01"
+task_families:
+  - single_company_trend
+  - cross_company_comparison
+  - management_claim_verification
+  - risk_contradiction
+  - guidance_vs_actuals
+  - chart_table_reconciliation
 verdict_labels:
   - support
   - contradict
   - insufficient
+required_gold_fields:
+  - expected_evidence
+  - numeric_checks
+  - allowed_source_types
+  - expected_verdict
+  - known_distractors
 metrics:
   - evidence_recall_at_k
   - citation_exactness

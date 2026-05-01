@@ -47,10 +47,15 @@ Completed:
   - citation, fiscal-period, source-consistency, numeric, and unsupported-claim validators
   - support / contradict / insufficient verdict generation
   - validator-readable result serialization
+- [x] Phase 6 multimodal due-diligence task set implemented:
+  - 60 seed tasks across 10 large-cap companies
+  - six due-diligence task families
+  - expected evidence units, numeric checks, source-type constraints, verdicts, and known distractors
+  - task-set smoke check and Phase 6 tests
 
 Current phase:
 
-- Phase 6: multimodal due-diligence task set
+- Phase 7: evaluation and ablations
 
 Urgent short-term data action:
 
@@ -72,17 +77,17 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Build the multimodal due-diligence task set:
-  - seed 10-20 high-quality claim verification tasks
-  - include expected evidence units, numeric checks, allowed source types, verdicts, and distractors
-  - cover trend, cross-company comparison, management claim verification, risk contradiction, guidance vs actuals, and table/chart reconciliation families
+- Build Phase 7 evaluation metrics and baselines:
+  - implement deterministic metric calculators over the Phase 6 gold task specs
+  - start with evidence recall, citation exactness, numeric correctness, fiscal-period correctness, and verdict accuracy
+  - add a simple baseline before GraphRAG or dense retrieval
 
 Near-term vertical slice:
 
 ```text
-3 companies
-1 fiscal year
-10 claim-verification tasks
+10 companies
+3 fiscal years
+60 claim-verification task specs
 SEC filings + XBRL facts first
 validated numeric/fiscal/citation outputs before GraphRAG or chart extraction
 ```
@@ -730,31 +735,31 @@ Goal: 构建自己的高质量 benchmark。
 Task families:
 
 ```text
-single-company trend
-cross-company comparison
-management claim verification
-risk contradiction
-guidance vs actuals
-chart/table reconciliation
+[x] single-company trend
+[x] cross-company comparison
+[x] management claim verification
+[x] risk contradiction
+[x] guidance vs actuals
+[x] chart/table reconciliation
 ```
 
 Gold labels:
 
 ```text
-expected evidence units
-expected numeric checks
-allowed source types
-expected verdict
-known distractors
+[x] expected evidence units
+[x] expected numeric checks
+[x] allowed source types
+[x] expected verdict
+[x] known distractors
 ```
 
 Acceptance criteria:
 
 ```text
-50-100 tasks
-each task is multi-hop or multi-document
-each answer requires citation
-each numeric claim can be validator checked
+[x] 50-100 tasks
+[x] each task is multi-hop or multi-document
+[x] each answer requires citation
+[x] each numeric claim can be validator checked
 ```
 
 ### Phase 7: Evaluation and Ablations

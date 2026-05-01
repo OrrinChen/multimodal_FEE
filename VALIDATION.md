@@ -91,6 +91,14 @@ Run this once claim verification modules exist:
 python3 scripts/smoke_phase5_claim_verification.py
 ```
 
+## Phase 6 Due-Diligence Task Set Smoke Check
+
+Run this once the evaluation task set exists:
+
+```bash
+python3 scripts/smoke_phase6_task_set.py
+```
+
 ## Phase-Specific Validation
 
 For each phase, run the phase acceptance checks listed in `ROADMAP.md`.

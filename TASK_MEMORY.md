@@ -11,40 +11,38 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add claim verification engine
+feat: add due diligence task set
 ```
 
 Current phase:
 
 ```text
-Phase 6: multimodal due-diligence task set
+Phase 7: evaluation and ablations
 ```
 
 Main blocker:
 
 ```text
-The high-quality multimodal due-diligence task set has not been built yet.
+Evaluation metrics, baselines, and ablation runners have not been implemented yet.
 ```
 
 Next recommended action:
 
 ```text
-Build 10-20 seed claim-verification tasks with expected evidence units, numeric checks, allowed source types, expected verdicts, and known distractors.
+Implement deterministic metric calculators over the Phase 6 task specs, then add the first simple baseline.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 5 claim decomposition and verification.
+Completed Phase 6 multimodal due-diligence task set.
 
 Added:
-- Claim and Subclaim models
-- deterministic MVP ClaimDecomposer for simple financial numeric claims
-- EvidenceSelector over the evidence graph
-- citation, fiscal-period, source-consistency, numeric, and unsupported-claim validators
-- ClaimVerifier that produces support / contradict / insufficient verdicts
-- validator-readable result serialization
-- Phase 5 smoke script and test coverage
+- typed due-diligence task-set models
+- 60 seed tasks across AAPL, MSFT, NVDA, AMZN, GOOGL, META, JPM, WMT, TSLA, and NFLX
+- six task families: single-company trend, cross-company comparison, management claim verification, risk contradiction, guidance vs actuals, and chart/table reconciliation
+- expected evidence units, numeric checks, allowed source types, expected verdicts, and known distractors for every task
+- Phase 6 smoke script and test coverage
 ```
 
 Latest validation:
@@ -62,6 +60,7 @@ Passed:
 - phase3 normalization smoke check: company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
 - phase4 evidence graph smoke check: nodes=8 edges=14 claim_evidence=2 metric_evidence=2
 - phase5 claim verification smoke check: verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check: tasks=60 families=6 verdicts=3
 
 Skipped:
 - none
@@ -400,6 +399,59 @@ Contradiction detection currently relies on failed validator checks, especially 
 Due-diligence task set, evaluation baselines, memo generation, and LLM-assisted decomposition remain unimplemented.
 ```
 
+### Phase 6: Multimodal Due-Diligence Task Set
+
+Commit:
+
+```text
+feat: add due diligence task set
+```
+
+What changed:
+
+```text
+Implemented the first evaluation gold-task layer for due-diligence verification.
+
+Added:
+- EvidenceRequirement, NumericCheckSpec, KnownDistractor, DueDiligenceTask, and DueDiligenceTaskSet models
+- build_seed_task_set() with 60 tasks across 10 companies and 6 task families
+- multi-hop / multi-document task checks
+- validator-readable numeric-check labels for every task
+- expected evidence, allowed source types, verdict labels, and known distractors for every task
+- evaluation.yaml metadata for the seed task set
+- Phase 6 smoke script and validation command
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_phase6_task_set.py -q initially failed because build_seed_task_set did not exist.
+- After implementation, the Phase 6 test file passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+```
+
+Known limitations:
+
+```text
+The Phase 6 task set is a gold specification layer, not a fully populated extracted-evidence corpus.
+Investor-deck chart tasks specify required chart evidence, but chart extraction remains deferred.
+Expected numeric checks identify validator intent, but Phase 7 metrics and baselines still need implementation.
+```
+
 ## Current State
 
 Project folder created as:
@@ -425,7 +477,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, and deterministic claim verification. Semantic retrieval, the due-diligence task set, evaluation baselines, memo generation, and LLM-assisted decomposition are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, and a 60-task due-diligence gold specification. Semantic retrieval, evaluation baselines, memo generation, and LLM-assisted decomposition are not implemented yet.
 
 ## Project Identity
 
@@ -639,7 +691,7 @@ deck narrative vs filing evidence
 ### Step 7: Evaluation
 
 ```text
-[ ] Build 50-100 task gold set
+[x] Build 50-100 task gold set
 [ ] Implement metrics
 [ ] Implement BM25 baseline
 [ ] Implement dense/hybrid baseline

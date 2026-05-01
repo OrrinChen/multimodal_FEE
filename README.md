@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-Phase 5 is complete for the local claim verification slice.
+Phase 6 is complete for the local multimodal due-diligence task-set slice.
 
 The repository now includes:
 
@@ -51,8 +51,11 @@ The repository now includes:
 - graph-based evidence selection
 - citation, fiscal-period, source-consistency, numeric, and unsupported-claim validators
 - support / contradict / insufficient verdict generation
-- Phase 0 through Phase 5 tests under `tests/`
+- typed due-diligence task models for evaluation gold labels
+- a 60-task seed set across 10 companies and 6 due-diligence task families
+- expected evidence units, numeric checks, allowed source types, verdicts, and known distractors for each task
+- Phase 0 through Phase 6 tests under `tests/`
 
-The next recommended action is Phase 6: multimodal due-diligence task set. Start with 10-20 high-quality seed tasks before scaling to the full 50-100 task gold set.
+The next recommended action is Phase 7: evaluation and ablations. Start with deterministic metrics over the Phase 6 task specs before adding retrieval baselines.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.
