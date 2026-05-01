@@ -41,10 +41,16 @@ Completed:
   - claim-to-evidence links
   - metric-to-evidence links across source documents
   - risk-theme links across fiscal years
+- [x] Phase 5 claim verification implemented:
+  - claim and subclaim models
+  - graph-based evidence selector
+  - citation, fiscal-period, source-consistency, numeric, and unsupported-claim validators
+  - support / contradict / insufficient verdict generation
+  - validator-readable result serialization
 
 Current phase:
 
-- Phase 5: claim decomposition and verification
+- Phase 6: multimodal due-diligence task set
 
 Urgent short-term data action:
 
@@ -66,11 +72,10 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement claim decomposition and verification:
-  - claim and subclaim models
-  - evidence selector over the evidence graph
-  - numeric, fiscal-period, citation, and source-consistency validator interfaces
-  - support / contradict / insufficient verdict generation
+- Build the multimodal due-diligence task set:
+  - seed 10-20 high-quality claim verification tasks
+  - include expected evidence units, numeric checks, allowed source types, verdicts, and distractors
+  - cover trend, cross-company comparison, management claim verification, risk contradiction, guidance vs actuals, and table/chart reconciliation families
 
 Near-term vertical slice:
 
@@ -701,21 +706,21 @@ subclaim_4: no major one-time cost cut explains the change
 Each subclaim needs:
 
 ```text
-required evidence type
-retrieved evidence
-numeric check
-citation
-support / contradict / insufficient
-confidence
+[x] required evidence type
+[x] retrieved evidence
+[x] numeric check
+[x] citation
+[x] support / contradict / insufficient
+[x] confidence
 ```
 
 Acceptance criteria:
 
 ```text
-system can say insufficient evidence
-system can mark contradiction
-system does not invent evidence
-system produces validator-readable outputs
+[x] system can say insufficient evidence
+[x] system can mark contradiction
+[x] system does not invent evidence
+[x] system produces validator-readable outputs
 ```
 
 ### Phase 6: Multimodal Due-Diligence Task Set

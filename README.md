@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-Phase 4 is complete for the local evidence graph slice.
+Phase 5 is complete for the local claim verification slice.
 
 The repository now includes:
 
@@ -46,8 +46,13 @@ The repository now includes:
 - typed evidence graph nodes and edges for companies, documents, fiscal periods, metrics, claims, evidence units, risk themes, speakers, segments, and events
 - graph builder from `DocumentMetadata` and `EvidenceUnit`
 - claim-to-evidence, metric-to-evidence, company-period, and risk-theme graph query helpers
-- Phase 0, Phase 1, Phase 2, Phase 3, and Phase 4 tests under `tests/`
+- claim and subclaim models
+- deterministic claim decomposition for simple financial numeric claims
+- graph-based evidence selection
+- citation, fiscal-period, source-consistency, numeric, and unsupported-claim validators
+- support / contradict / insufficient verdict generation
+- Phase 0 through Phase 5 tests under `tests/`
 
-The next recommended action is Phase 5: claim decomposition and verification. Start with a small claim model, evidence selector, numeric/fiscal/citation validator interfaces, and support / contradict / insufficient verdict generation.
+The next recommended action is Phase 6: multimodal due-diligence task set. Start with 10-20 high-quality seed tasks before scaling to the full 50-100 task gold set.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.

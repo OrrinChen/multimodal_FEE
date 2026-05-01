@@ -83,6 +83,14 @@ Run this once evidence graph modules exist:
 python3 scripts/smoke_phase4_evidence_graph.py
 ```
 
+## Phase 5 Claim Verification Smoke Check
+
+Run this once claim verification modules exist:
+
+```bash
+python3 scripts/smoke_phase5_claim_verification.py
+```
+
 ## Phase-Specific Validation
 
 For each phase, run the phase acceptance checks listed in `ROADMAP.md`.

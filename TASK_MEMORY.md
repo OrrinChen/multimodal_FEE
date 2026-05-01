@@ -11,39 +11,40 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add evidence graph builder
+feat: add claim verification engine
 ```
 
 Current phase:
 
 ```text
-Phase 5: claim decomposition and verification
+Phase 6: multimodal due-diligence task set
 ```
 
 Main blocker:
 
 ```text
-Claim decomposition, evidence selection, validators, contradiction detection, and verdict generation have not been implemented yet.
+The high-quality multimodal due-diligence task set has not been built yet.
 ```
 
 Next recommended action:
 
 ```text
-Implement claim and subclaim models, evidence selection over the evidence graph, validator-readable checks, and support / contradict / insufficient verdict generation.
+Build 10-20 seed claim-verification tasks with expected evidence units, numeric checks, allowed source types, expected verdicts, and known distractors.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 4 evidence graph.
+Completed Phase 5 claim decomposition and verification.
 
 Added:
-- typed graph nodes for Company, Document, FiscalPeriod, Metric, Claim, EvidenceUnit, RiskFactor, Segment, Person/Speaker, and Event
-- typed graph edges for reported_in, supports, contradicts, mentions, same_metric_as, same_period_as, changed_from, guidance_for, and risk_related_to
-- deterministic in-memory EvidenceGraph container
-- graph builder from DocumentMetadata and EvidenceUnit
-- claim-to-evidence, metric-to-evidence, company-period, and risk-theme query helpers
-- Phase 4 smoke script and test coverage
+- Claim and Subclaim models
+- deterministic MVP ClaimDecomposer for simple financial numeric claims
+- EvidenceSelector over the evidence graph
+- citation, fiscal-period, source-consistency, numeric, and unsupported-claim validators
+- ClaimVerifier that produces support / contradict / insufficient verdicts
+- validator-readable result serialization
+- Phase 5 smoke script and test coverage
 ```
 
 Latest validation:
@@ -60,6 +61,7 @@ Passed:
 - phase2 extraction smoke check: sections=4 xbrl=1 transcripts=1 tables=1
 - phase3 normalization smoke check: company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
 - phase4 evidence graph smoke check: nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check: verdict=support subclaims=1 evidence=1 checks=5
 
 Skipped:
 - none
@@ -339,6 +341,65 @@ Risk-theme tracking is keyword-based for now.
 GraphRAG retrieval, validators, contradiction detection, and memo generation remain unimplemented.
 ```
 
+### Phase 5: Claim Decomposition and Verification
+
+Commit:
+
+```text
+feat: add claim verification engine
+```
+
+What changed:
+
+```text
+Implemented the first deterministic claim verification layer.
+
+Added:
+- Claim, Subclaim, EvidenceReference, ValidatorCheck, SubclaimVerification, and ClaimVerificationResult models
+- Verdict labels: support, contradict, insufficient
+- ClaimDecomposer for simple MVP numeric financial claims
+- EvidenceSelector that selects graph evidence by company, fiscal period, metric, and required terms
+- CitationValidator
+- FiscalPeriodValidator
+- SourceConsistencyValidator
+- NumericValidator
+- UnsupportedClaimDetector
+- ClaimVerifier orchestration
+- ContradictionDetector helper
+- Phase 5 smoke script and validation command
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_phase5_claim_verification.py -q initially failed because the Phase 5 reasoning and validator interfaces did not exist.
+- After implementation, the Phase 5 test file passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+```
+
+Known limitations:
+
+```text
+Claim decomposition is deterministic and handles simple MVP numeric financial claims only.
+Evidence selection is graph/metadata based, not semantic retrieval.
+Numeric reconciliation uses exact value comparison unless tolerance is set on the subclaim.
+Contradiction detection currently relies on failed validator checks, especially numeric mismatch.
+Due-diligence task set, evaluation baselines, memo generation, and LLM-assisted decomposition remain unimplemented.
+```
+
 ## Current State
 
 Project folder created as:
@@ -364,7 +425,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, and local evidence graph construction. Retrieval, claim verification, numeric reconciliation, validators, contradiction detection, and memo generation are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, and deterministic claim verification. Semantic retrieval, the due-diligence task set, evaluation baselines, memo generation, and LLM-assisted decomposition are not implemented yet.
 
 ## Project Identity
 
@@ -566,13 +627,13 @@ deck narrative vs filing evidence
 ### Step 6: Claim Verification
 
 ```text
-[ ] Claim decomposer
-[ ] Evidence selector
-[ ] Numeric reconciler
-[ ] Citation validator
-[ ] Fiscal-period validator
-[ ] Contradiction detector
-[ ] Verdict generator
+[x] Claim decomposer
+[x] Evidence selector
+[x] Numeric reconciler
+[x] Citation validator
+[x] Fiscal-period validator
+[x] Contradiction detector
+[x] Verdict generator
 ```
 
 ### Step 7: Evaluation
