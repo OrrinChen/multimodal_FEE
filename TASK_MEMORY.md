@@ -11,38 +11,39 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add evaluation and ablation harness
+feat: add auditable due diligence memo
 ```
 
 Current phase:
 
 ```text
-Phase 8: auditable due-diligence memo
+Final report and reproducibility package
 ```
 
 Main blocker:
 
 ```text
-Auditable due-diligence memo generation has not been implemented yet.
+Final report packaging, charts/tables, reproducibility guide, and polished resume bullet are not complete yet.
 ```
 
 Next recommended action:
 
 ```text
-Build a memo generator that turns verified claims and evaluation outputs into traceable due-diligence sections.
+Package the final report with evaluation charts/tables, a sample due-diligence memo artifact, reproducibility instructions, and the final resume bullet.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 7 evaluation and ablation harness.
+Completed Phase 8 auditable due-diligence memo.
 
 Added:
-- deterministic evaluation metrics over the Phase 6 task specs
-- six diagnostic baseline profiles: BM25 RAG, dense RAG, hybrid retrieval + reranker, GraphRAG only, multimodal extraction only, and full evidence engine
-- six ablation profiles: without graph, numeric validator, fiscal-period validator, chart/table extraction, contradiction detector, and reranker
-- acceptance findings showing validators matter, graph retrieval matters, naive RAG fails, and full-system gains are not just prompt changes
-- Phase 7 smoke script and test coverage
+- DueDiligenceMemo, MemoClaim, MemoConclusion, EvidenceTableRow, NumericReconciliationRow, and MemoIssue models
+- memo builder from ClaimVerificationResult outputs
+- required memo sections: executive summary, key claims, evidence table, numeric reconciliation, contradictions, risk flags, unresolved claims, and limitations
+- conclusion traces with citation, source document, page/section, metric, period, and validator results
+- markdown serialization that separates evidence summaries from inference
+- Phase 8 smoke script and test coverage
 ```
 
 Latest validation:
@@ -62,6 +63,7 @@ Passed:
 - phase5 claim verification smoke check: verdict=support subclaims=1 evidence=1 checks=5
 - phase6 task set smoke check: tasks=60 families=6 verdicts=3
 - phase7 evaluation smoke check: tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
 
 Skipped:
 - none
@@ -507,6 +509,60 @@ Latency and cost metrics are profile-level placeholders for local evaluation, no
 Memo generation, final report packaging, and LLM-assisted decomposition remain unimplemented.
 ```
 
+### Phase 8: Auditable Due-Diligence Memo
+
+Commit:
+
+```text
+feat: add auditable due diligence memo
+```
+
+What changed:
+
+```text
+Implemented the auditable memo layer that turns verified claims into a structured due-diligence artifact.
+
+Added:
+- DueDiligenceMemo, MemoClaim, MemoConclusion, EvidenceTableRow, NumericReconciliationRow, and MemoIssue models
+- build_due_diligence_memo() for ClaimVerificationResult inputs
+- executive summary, key claims, evidence table, numeric reconciliation, contradiction, risk flag, unsupported-claim, and limitation sections
+- conclusion-level citation, source document, page/section, metric, period, validator result, evidence summary, and inference fields
+- markdown rendering that keeps evidence and inference separate
+- Phase 8 smoke script and validation command
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_phase8_memo.py -q initially failed because build_due_diligence_memo did not exist.
+- After implementation, the Phase 8 test file passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+```
+
+Known limitations:
+
+```text
+The memo generator currently consumes deterministic claim verification outputs; it does not write a polished PDF or notebook report.
+The sample smoke memo uses local fixture evidence, not the full 60-task corpus.
+Charts, final report narrative, reproducibility guide, and resume bullet packaging remain incomplete.
+```
+
 ## Current State
 
 Project folder created as:
@@ -532,7 +588,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, and a deterministic evaluation/ablation harness. Production semantic retrieval, memo generation, and LLM-assisted decomposition are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, and auditable memo generation. Production semantic retrieval, final report packaging, and LLM-assisted decomposition are not implemented yet.
 
 ## Project Identity
 
@@ -758,7 +814,7 @@ deck narrative vs filing evidence
 ### Step 8: Final Report
 
 ```text
-[ ] Generate due-diligence memo example
+[x] Generate due-diligence memo example
 [ ] Create charts
 [ ] Write final report
 [ ] Add reproducibility instructions

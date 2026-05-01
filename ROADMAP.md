@@ -57,10 +57,15 @@ Completed:
   - six diagnostic baseline profiles
   - six ablation profiles
   - acceptance findings for validators, graph retrieval, naive RAG failure, and full-system gains
+- [x] Phase 8 auditable due-diligence memo implemented:
+  - executive summary and key claims
+  - evidence table and numeric reconciliation
+  - contradiction, risk flag, unsupported-claim, and limitations sections
+  - traceable conclusions with citations, source documents, periods, metrics, and validator results
 
 Current phase:
 
-- Phase 8: auditable due-diligence memo
+- Final report and reproducibility package
 
 Urgent short-term data action:
 
@@ -82,10 +87,10 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Build Phase 8 auditable due-diligence memo:
-  - convert verified claims and evaluation outputs into a memo structure
-  - include evidence table, numeric reconciliation, contradictions, risk flags, limitations, and validator results
-  - keep every conclusion traceable to source evidence
+- Package the final report:
+  - add charts/tables from the deterministic evaluation harness
+  - include a sample due-diligence memo artifact
+  - write reproducibility instructions and final resume bullet
 
 Near-term vertical slice:
 
@@ -823,34 +828,34 @@ Goal: 最终交付不是聊天答案，而是一份可审计 memo。
 Memo sections:
 
 ```text
-Executive summary
-Key claims
-Evidence table
-Numeric reconciliation
-Cross-document contradictions
-Risk flags
-Unsupported or weakly supported claims
-Confidence and limitations
+[x] Executive summary
+[x] Key claims
+[x] Evidence table
+[x] Numeric reconciliation
+[x] Cross-document contradictions
+[x] Risk flags
+[x] Unsupported or weakly supported claims
+[x] Confidence and limitations
 ```
 
 Each conclusion must include:
 
 ```text
-citation
-source document
-page/section
-metric
-period
-validator result
+[x] citation
+[x] source document
+[x] page/section
+[x] metric
+[x] period
+[x] validator result
 ```
 
 Acceptance criteria:
 
 ```text
-user can trace every conclusion to source evidence
-numbers can be recomputed
-unresolved issues are explicit
-memo separates evidence from inference
+[x] user can trace every conclusion to source evidence
+[x] numbers can be recomputed
+[x] unresolved issues are explicit
+[x] memo separates evidence from inference
 ```
 
 ## 8. Killer Experiment

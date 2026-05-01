@@ -107,6 +107,14 @@ Run this once evaluation metrics and baselines exist:
 python3 scripts/smoke_phase7_evaluation.py
 ```
 
+## Phase 8 Due-Diligence Memo Smoke Check
+
+Run this once auditable memo generation exists:
+
+```bash
+python3 scripts/smoke_phase8_memo.py
+```
+
 ## Phase-Specific Validation
 
 For each phase, run the phase acceptance checks listed in `ROADMAP.md`.

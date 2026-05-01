@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-Phase 7 is complete for the local deterministic evaluation and ablation slice.
+Phase 8 is complete for the local auditable due-diligence memo slice.
 
 The repository now includes:
 
@@ -57,8 +57,10 @@ The repository now includes:
 - deterministic evaluation metrics for evidence recall, citation exactness, numeric correctness, fiscal-period correctness, entity correctness, verdict accuracy, contradiction detection, unsupported-claim rate, answer faithfulness, memo usefulness, latency, and cost
 - six diagnostic baseline profiles: BM25 RAG, dense RAG, hybrid retrieval + reranker, GraphRAG only, multimodal extraction only, and full evidence engine
 - six ablation profiles covering graph, numeric validator, fiscal-period validator, chart/table extraction, contradiction detector, and reranker removal
-- Phase 0 through Phase 7 tests under `tests/`
+- auditable due-diligence memo generation with executive summary, key claims, evidence table, numeric reconciliation, contradictions, risk flags, unresolved issues, limitations, and traceable conclusions
+- markdown serialization that separates evidence from inference
+- Phase 0 through Phase 8 tests under `tests/`
 
-The next recommended action is Phase 8: auditable due-diligence memo. Build the memo generator against the verified claim and evaluation outputs before adding UI or cloud deployment.
+The next recommended action is final report packaging: add reproducibility notes, charts/tables from the evaluation harness, and a polished sample memo/report artifact.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.
