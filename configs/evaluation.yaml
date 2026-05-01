@@ -24,4 +24,25 @@ metrics:
   - citation_exactness
   - numeric_correctness
   - fiscal_period_correctness
+  - entity_correctness
   - unsupported_claim_rate
+  - contradiction_detection_accuracy
+  - verdict_accuracy
+  - answer_faithfulness
+  - memo_usefulness
+  - latency_ms
+  - cost_usd
+baselines:
+  - bm25_rag
+  - dense_rag
+  - hybrid_retrieval_reranker
+  - graphrag_only
+  - multimodal_extraction_only
+  - full_evidence_engine
+ablations:
+  - without_graph
+  - without_numeric_validator
+  - without_fiscal_period_validator
+  - without_chart_table_extraction
+  - without_contradiction_detector
+  - without_reranker

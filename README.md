@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-Phase 6 is complete for the local multimodal due-diligence task-set slice.
+Phase 7 is complete for the local deterministic evaluation and ablation slice.
 
 The repository now includes:
 
@@ -54,8 +54,11 @@ The repository now includes:
 - typed due-diligence task models for evaluation gold labels
 - a 60-task seed set across 10 companies and 6 due-diligence task families
 - expected evidence units, numeric checks, allowed source types, verdicts, and known distractors for each task
-- Phase 0 through Phase 6 tests under `tests/`
+- deterministic evaluation metrics for evidence recall, citation exactness, numeric correctness, fiscal-period correctness, entity correctness, verdict accuracy, contradiction detection, unsupported-claim rate, answer faithfulness, memo usefulness, latency, and cost
+- six diagnostic baseline profiles: BM25 RAG, dense RAG, hybrid retrieval + reranker, GraphRAG only, multimodal extraction only, and full evidence engine
+- six ablation profiles covering graph, numeric validator, fiscal-period validator, chart/table extraction, contradiction detector, and reranker removal
+- Phase 0 through Phase 7 tests under `tests/`
 
-The next recommended action is Phase 7: evaluation and ablations. Start with deterministic metrics over the Phase 6 task specs before adding retrieval baselines.
+The next recommended action is Phase 8: auditable due-diligence memo. Build the memo generator against the verified claim and evaluation outputs before adding UI or cloud deployment.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.

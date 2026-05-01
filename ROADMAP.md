@@ -52,10 +52,15 @@ Completed:
   - six due-diligence task families
   - expected evidence units, numeric checks, source-type constraints, verdicts, and known distractors
   - task-set smoke check and Phase 6 tests
+- [x] Phase 7 evaluation and ablations implemented:
+  - deterministic metrics over Phase 6 task specs
+  - six diagnostic baseline profiles
+  - six ablation profiles
+  - acceptance findings for validators, graph retrieval, naive RAG failure, and full-system gains
 
 Current phase:
 
-- Phase 7: evaluation and ablations
+- Phase 8: auditable due-diligence memo
 
 Urgent short-term data action:
 
@@ -77,10 +82,10 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Build Phase 7 evaluation metrics and baselines:
-  - implement deterministic metric calculators over the Phase 6 gold task specs
-  - start with evidence recall, citation exactness, numeric correctness, fiscal-period correctness, and verdict accuracy
-  - add a simple baseline before GraphRAG or dense retrieval
+- Build Phase 8 auditable due-diligence memo:
+  - convert verified claims and evaluation outputs into a memo structure
+  - include evidence table, numeric reconciliation, contradictions, risk flags, limitations, and validator results
+  - keep every conclusion traceable to source evidence
 
 Near-term vertical slice:
 
@@ -767,48 +772,48 @@ Acceptance criteria:
 Baselines:
 
 ```text
-BM25 RAG
-dense RAG
-hybrid retrieval + reranker
-GraphRAG only
-multimodal extraction only
-full evidence engine
+[x] BM25 RAG
+[x] dense RAG
+[x] hybrid retrieval + reranker
+[x] GraphRAG only
+[x] multimodal extraction only
+[x] full evidence engine
 ```
 
 Metrics:
 
 ```text
-evidence recall@k
-citation exactness
-numeric correctness
-fiscal-period correctness
-entity correctness
-unsupported-claim rate
-contradiction detection accuracy
-answer faithfulness
-memo usefulness
-latency
-cost
+[x] evidence recall@k
+[x] citation exactness
+[x] numeric correctness
+[x] fiscal-period correctness
+[x] entity correctness
+[x] unsupported-claim rate
+[x] contradiction detection accuracy
+[x] answer faithfulness
+[x] memo usefulness
+[x] latency
+[x] cost
 ```
 
 Ablations:
 
 ```text
-without graph
-without numeric validator
-without fiscal-period validator
-without chart/table extraction
-without contradiction detector
-without reranker
+[x] without graph
+[x] without numeric validator
+[x] without fiscal-period validator
+[x] without chart/table extraction
+[x] without contradiction detector
+[x] without reranker
 ```
 
 Acceptance criteria:
 
 ```text
-results show why validators matter
-results show why graph retrieval matters
-results show where naive RAG fails
-full system improvement is not just prompt engineering
+[x] results show why validators matter
+[x] results show why graph retrieval matters
+[x] results show where naive RAG fails
+[x] full system improvement is not just prompt engineering
 ```
 
 ### Phase 8: Auditable Due-Diligence Memo

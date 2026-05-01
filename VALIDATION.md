@@ -99,6 +99,14 @@ Run this once the evaluation task set exists:
 python3 scripts/smoke_phase6_task_set.py
 ```
 
+## Phase 7 Evaluation and Ablation Smoke Check
+
+Run this once evaluation metrics and baselines exist:
+
+```bash
+python3 scripts/smoke_phase7_evaluation.py
+```
+
 ## Phase-Specific Validation
 
 For each phase, run the phase acceptance checks listed in `ROADMAP.md`.
