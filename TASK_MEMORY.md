@@ -11,39 +11,40 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add auditable due diligence memo
+feat: package final report artifacts
 ```
 
 Current phase:
 
 ```text
-Final report and reproducibility package
+Portfolio-ready local MVP complete
 ```
 
 Main blocker:
 
 ```text
-Final report packaging, charts/tables, reproducibility guide, and polished resume bullet are not complete yet.
+None for the local MVP. Remaining work is optional enhancement or productionization.
 ```
 
 Next recommended action:
 
 ```text
-Package the final report with evaluation charts/tables, a sample due-diligence memo artifact, reproducibility instructions, and the final resume bullet.
+If continuing, replace deterministic diagnostic baselines with real retrieval runs, then add investor-deck PDF/chart extraction or a lightweight demo UI.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 8 auditable due-diligence memo.
+Completed final report and reproducibility package.
 
 Added:
-- DueDiligenceMemo, MemoClaim, MemoConclusion, EvidenceTableRow, NumericReconciliationRow, and MemoIssue models
-- memo builder from ClaimVerificationResult outputs
-- required memo sections: executive summary, key claims, evidence table, numeric reconciliation, contradictions, risk flags, unresolved claims, and limitations
-- conclusion traces with citation, source document, page/section, metric, period, and validator results
-- markdown serialization that separates evidence summaries from inference
-- Phase 8 smoke script and test coverage
+- FinalReportPackage, ChartSpec, and ReportTable models
+- final report Markdown generation with the 12-section outline
+- chart specs for citation correctness, numeric mismatch rate, unsupported-claim rate, and period-confusion errors
+- baseline and ablation result tables from the deterministic evaluation harness
+- sample due-diligence memo artifact embedded in the final report package
+- reproducibility commands and polished long/short resume bullets
+- final report smoke script and test coverage
 ```
 
 Latest validation:
@@ -64,6 +65,7 @@ Passed:
 - phase6 task set smoke check: tasks=60 families=6 verdicts=3
 - phase7 evaluation smoke check: tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=11 sample_memo_verdict=support markdown_lines=121
 
 Skipped:
 - none
@@ -563,6 +565,64 @@ The sample smoke memo uses local fixture evidence, not the full 60-task corpus.
 Charts, final report narrative, reproducibility guide, and resume bullet packaging remain incomplete.
 ```
 
+### Final Report and Reproducibility Package
+
+Commit:
+
+```text
+feat: package final report artifacts
+```
+
+What changed:
+
+```text
+Packaged the local MVP into a final report artifact generator.
+
+Added:
+- FinalReportPackage, ChartSpec, and ReportTable models
+- build_final_report_package() for Phase7EvaluationReport and DueDiligenceMemo inputs
+- final report Markdown rendering with the 12-section report outline
+- chart specs for citation correctness, numeric mismatch rate, unsupported-claim rate, and period-confusion errors
+- baseline and ablation result tables
+- reproducibility command table
+- embedded sample due-diligence memo
+- long and short resume bullets
+- final report smoke script and validation command
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_final_report_package.py -q initially failed because build_final_report_package did not exist.
+- After implementation, the final report package test file passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=11 sample_memo_verdict=support markdown_lines=121
+```
+
+Known limitations:
+
+```text
+The final report package is a deterministic Markdown/data artifact generator, not a designed PDF deck.
+Charts are portable chart specs, not rendered image files.
+Baselines are diagnostic profiles rather than real retrieval executions.
+```
+
 ## Current State
 
 Project folder created as:
@@ -588,7 +648,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, and auditable memo generation. Production semantic retrieval, final report packaging, and LLM-assisted decomposition are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, auditable memo generation, and final report packaging. Production semantic retrieval, rendered PDF/deck output, and LLM-assisted decomposition are not implemented yet.
 
 ## Project Identity
 
@@ -815,10 +875,10 @@ deck narrative vs filing evidence
 
 ```text
 [x] Generate due-diligence memo example
-[ ] Create charts
-[ ] Write final report
-[ ] Add reproducibility instructions
-[ ] Polish resume bullet
+[x] Create charts
+[x] Write final report
+[x] Add reproducibility instructions
+[x] Polish resume bullet
 ```
 
 ## Acceptance Criteria

@@ -115,6 +115,14 @@ Run this once auditable memo generation exists:
 python3 scripts/smoke_phase8_memo.py
 ```
 
+## Final Report Package Smoke Check
+
+Run this once final report packaging exists:
+
+```bash
+python3 scripts/smoke_final_report_package.py
+```
+
 ## Phase-Specific Validation
 
 For each phase, run the phase acceptance checks listed in `ROADMAP.md`.

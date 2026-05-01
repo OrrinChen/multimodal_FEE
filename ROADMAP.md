@@ -62,10 +62,15 @@ Completed:
   - evidence table and numeric reconciliation
   - contradiction, risk flag, unsupported-claim, and limitations sections
   - traceable conclusions with citations, source documents, periods, metrics, and validator results
+- [x] Final report and reproducibility package implemented:
+  - chart specs and result tables from the evaluation harness
+  - sample due-diligence memo artifact
+  - reproducibility commands
+  - polished resume bullets
 
 Current phase:
 
-- Final report and reproducibility package
+- Portfolio-ready local MVP complete
 
 Urgent short-term data action:
 
@@ -87,10 +92,10 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Package the final report:
-  - add charts/tables from the deterministic evaluation harness
-  - include a sample due-diligence memo artifact
-  - write reproducibility instructions and final resume bullet
+- Optional enhancements:
+  - replace deterministic diagnostic baselines with real BM25 / dense / GraphRAG retrieval runs
+  - add investor-deck PDF and chart extraction
+  - package a lightweight demo UI or notebook only after retrieval runs are real
 
 Near-term vertical slice:
 

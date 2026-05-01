@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-Phase 8 is complete for the local auditable due-diligence memo slice.
+The local portfolio-ready MVP is complete through final report packaging.
 
 The repository now includes:
 
@@ -59,8 +59,9 @@ The repository now includes:
 - six ablation profiles covering graph, numeric validator, fiscal-period validator, chart/table extraction, contradiction detector, and reranker removal
 - auditable due-diligence memo generation with executive summary, key claims, evidence table, numeric reconciliation, contradictions, risk flags, unresolved issues, limitations, and traceable conclusions
 - markdown serialization that separates evidence from inference
-- Phase 0 through Phase 8 tests under `tests/`
+- final report packaging with chart specs, result tables, sample memo, reproducibility commands, and polished resume bullets
+- Phase 0 through final report package tests under `tests/`
 
-The next recommended action is final report packaging: add reproducibility notes, charts/tables from the evaluation harness, and a polished sample memo/report artifact.
+The next recommended action is optional enhancement: replace deterministic diagnostic baselines with real retrieval runs, then add chart/PDF extraction or a lightweight demo UI if needed.
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.
