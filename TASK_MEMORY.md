@@ -11,13 +11,13 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add real retrieval evaluation slice
+docs: add big-tech proof-chain roadmap
 ```
 
 Current phase:
 
 ```text
-Real retrieval baseline hardening complete
+Phase 9 ready to start: Portfolio Case Study Layer
 ```
 
 Main blocker:
@@ -29,23 +29,19 @@ None for the local real-retrieval benchmark. Remaining work is case-study packag
 Next recommended action:
 
 ```text
-Build 3 recruiter-facing retrieval failure case studies, then add one real investor-deck PDF/chart extraction case before any demo UI.
+Implement Phase 9 case studies first, then Phase 10 investor-deck PDF/chart extraction. Do not build UI before evidence quality and report artifacts are credible.
 ```
 
 Latest workflow update:
 
 ```text
-Completed real retrieval baseline hardening.
+Updated ROADMAP.md with the big-tech portfolio proof-chain roadmap from Phase 9 through Phase 20.
 
 Added:
-- 320-document local retrieval corpus built from Phase 6 evidence specs and known distractors
-- actual BM25 retrieval over corpus documents
-- deterministic token-vector dense retrieval proxy
-- hybrid BM25/vector retrieval with metadata reranking
-- metadata-constrained graph retrieval
-- full-engine real retrieval run with validator-like verdict rules
-- failure-case output for period confusion, entity mismatch, citation mismatch, numeric validation gaps, missed contradictions, unsupported claims, and chart extraction gaps
-- real retrieval smoke script and test coverage
+- strategic proof chain: real retrieval credibility -> multimodal fulfillment -> raw document realism -> LLM/AI system capability -> engineering/demo polish -> resume/interview packaging
+- strict phase order from Phase 9 to Phase 20
+- detailed acceptance criteria, build targets, and commit suggestions for each remaining phase
+- explicit do-not-build list to prevent generic agent framework, premature UI, cloud SaaS, or 100% accuracy chasing
 ```
 
 Latest validation:

@@ -107,6 +107,19 @@ Next recommended action:
     - narrative contradiction or unsupported management claim
   - add one real investor-deck PDF/chart extraction case
   - package a lightweight demo UI or notebook only after the case studies and chart case are real
+- Continue strictly in this order:
+  - Phase 9: portfolio case studies
+  - Phase 10: investor deck PDF/chart extraction
+  - Phase 11: raw paragraph/page corpus
+  - Phase 12: real embedding/reranking backend
+  - Phase 13: validator-gated LLM decomposition
+  - Phase 14: narrative/causal claim verification
+  - Phase 15: adversarial/red-team evaluation
+  - Phase 16: trace/reproducibility hardening
+  - Phase 17: polished technical report
+  - Phase 18: lightweight demo UI
+  - Phase 19: local productionization
+  - Phase 20: final resume/interview packaging
 
 Near-term vertical slice:
 
@@ -875,7 +888,723 @@ Acceptance criteria:
 [x] memo separates evidence from inference
 ```
 
-## 8. Killer Experiment
+## 8. Master Roadmap: Big-Tech Portfolio Proof Chain
+
+The remaining work should not be treated as generic feature expansion. It should build a proof chain for a big-tech AI/finance portfolio project:
+
+```text
+real retrieval credibility
+-> multimodal name fulfilled
+-> raw document realism
+-> LLM/AI system capability
+-> engineering and demo polish
+-> resume/interview packaging
+```
+
+Core positioning:
+
+```text
+This is not a finance RAG chatbot.
+This project proves why ordinary RAG is unsafe for financial due diligence
+and builds a claim-level, validator-gated, auditable evidence system to
+locate and reduce those failures.
+```
+
+Strict phase order:
+
+```text
+Phase 9   case studies
+Phase 10  investor deck PDF/chart extraction
+Phase 11  raw paragraph/page corpus
+Phase 12  real embedding/reranking backend
+Phase 13  LLM-assisted decomposition with validator gate
+Phase 14  narrative/causal claim verification
+Phase 15  adversarial/red-team evaluation
+Phase 16  trace/reproducibility hardening
+Phase 17  polished PDF/report artifact
+Phase 18  lightweight demo UI
+Phase 19  productionization slice
+Phase 20  resume/interview packaging
+```
+
+Do not build these before the evidence-quality phases are done:
+
+```text
+generic agent framework
+complex dashboard
+login system
+cloud SaaS
+live trading
+large company coverage expansion
+100% accuracy chasing
+LLM-as-truth path
+GraphRAG-only marketing
+```
+
+### Phase 9: Portfolio Case Study Layer
+
+Goal:
+
+```text
+Turn the real retrieval benchmark into three case studies that a recruiter or interviewer can understand quickly.
+```
+
+Build:
+
+```text
+experiments/case_studies/
+reports/case_studies/
+src/financial_evidence_engine/case_studies/
+scripts/smoke_case_studies.py
+tests/test_case_studies.py
+```
+
+Case studies:
+
+```text
+1. fiscal-period confusion
+2. numeric/unit mismatch
+3. unsupported or contradiction narrative claim
+```
+
+Each case study must include:
+
+```text
+claim
+expected verdict
+gold evidence
+retrieved evidence by method:
+  - BM25
+  - dense proxy
+  - hybrid
+  - graph
+  - full engine
+failure reason by method
+validator checks triggered
+final full-engine verdict
+memo snippet
+```
+
+Acceptance criteria:
+
+```text
+3 case studies are generated from the real retrieval run
+each case has a JSON artifact
+each case has Markdown rendering
+README can embed a case study summary
+smoke output includes case_studies=3 methods=5
+pytest passes
+```
+
+Suggested commit:
+
+```text
+feat: add portfolio case studies for retrieval failures
+```
+
+### Phase 10: Investor Deck PDF / Chart Extraction Slice
+
+Goal:
+
+```text
+Fulfill the multimodal claim with one real or fixture investor-deck PDF/chart verification loop.
+```
+
+Build models:
+
+```text
+DeckDocumentMetadata
+DeckPage
+ChartEvidenceUnit
+ChartExtractionResult
+ChartReconciliationRow
+ChartVerificationIssue
+```
+
+Pipeline:
+
+```text
+investor deck PDF
+-> page extraction
+-> chart/table-like evidence extraction
+-> evidence unit creation
+-> company / period / metric linking
+-> compare against SEC/XBRL/filing evidence
+-> verdict
+```
+
+Minimum case:
+
+```text
+NVDA / MSFT / AAPL investor deck
+claim: deck says segment, revenue, or margin improved
+system checks whether chart evidence and filing/XBRL evidence support it
+```
+
+Principles:
+
+```text
+do not build a universal chart parser
+preserve source page, extracted value/text, metric, period, and link
+return insufficient when extraction or reconciliation is not supported
+never hallucinate chart support
+```
+
+Acceptance criteria:
+
+```text
+at least 1 investor-deck PDF fixture
+at least 1 chart/table-like evidence item extracted
+evidence unit keeps page number, source span, extracted text or value
+extracted evidence links to company, fiscal period, and metric
+reconciles against XBRL or filing evidence where possible
+adds 1 chart-gap task
+full engine explains why text-only retrieval fails
+smoke output includes deck_pages>=1 chart_evidence>=1 chart_tasks>=1
+```
+
+Suggested commit:
+
+```text
+feat: add investor deck chart evidence extraction
+```
+
+### Phase 11: Raw Filing Paragraph / Page Corpus
+
+Goal:
+
+```text
+Move beyond the curated 320-document benchmark corpus into messy raw document retrieval.
+```
+
+Build:
+
+```text
+RawCorpusBuilder
+DocumentChunk
+ChunkProvenance
+ChunkIndexManifest
+CorpusVersionManifest
+```
+
+Corpus sources:
+
+```text
+SEC filing sections
+SEC filing paragraphs
+XBRL facts
+transcript turns
+deck pages
+deck chart/table units
+```
+
+Each chunk must include:
+
+```text
+company
+source type
+document id
+fiscal period if known
+section/page
+text span
+hash
+```
+
+Retrieval support:
+
+```text
+BM25 over raw chunks
+dense proxy over raw chunks
+hybrid over raw chunks
+graph retrieval over evidence-linked chunks
+full engine rerank + validators
+```
+
+Acceptance criteria:
+
+```text
+corpus is not only gold/distractor specs
+at least 3 companies have raw SEC filing paragraphs indexed
+transcript segments are indexed
+deck pages are indexed if Phase 10 is complete
+retrieval evaluation can select --corpus benchmark or --corpus raw
+smoke output includes raw_chunks > curated_documents
+benchmark corpus remains as deterministic test fixture
+```
+
+Suggested commit:
+
+```text
+feat: add raw financial document corpus indexing
+```
+
+### Phase 12: Real Embedding / Reranking Backend
+
+Goal:
+
+```text
+Upgrade dense retrieval from proxy-only to a pluggable retrieval system without making tests depend on network or API keys.
+```
+
+Build:
+
+```text
+EmbeddingProvider
+DeterministicTokenEmbeddingProvider
+LocalSentenceTransformerProvider optional
+OpenAIEmbeddingProvider optional but not required
+EmbeddingIndex
+Reranker
+```
+
+Implementation order:
+
+```text
+keep deterministic proxy as default
+add local embedding adapter with graceful skip
+add cached embedding index
+add reranker interface
+separate proxy and real embedding metrics in reports
+```
+
+Acceptance criteria:
+
+```text
+tests require no network
+no API key required
+embeddings cached locally with manifest
+report can show bm25, dense_proxy, dense_real if available, hybrid_proxy, hybrid_real if available, graph, full_engine
+missing real embedding backend gracefully skips
+```
+
+Suggested commit:
+
+```text
+feat: add pluggable embedding and reranking backend
+```
+
+### Phase 13: LLM-Assisted Claim Decomposition with Validator Gate
+
+Goal:
+
+```text
+Show AI-system capability without letting LLM output become authority.
+```
+
+Build:
+
+```text
+ClaimDecompositionProvider
+RuleBasedClaimDecomposer
+RecordedLLMClaimDecomposer
+OptionalLiveLLMClaimDecomposer
+DecompositionTrace
+ValidatorGate
+```
+
+Example complex claim:
+
+```text
+Microsoft's FY2024 cloud growth was strong enough to offset weakness in other segments.
+```
+
+Expected decomposition:
+
+```text
+subclaim 1: MSFT FY2024 cloud revenue/growth
+subclaim 2: other segment weakness
+subclaim 3: offset relationship
+subclaim 4: causal/narrative conclusion
+```
+
+Acceptance criteria:
+
+```text
+recorded LLM output fixtures exist
+tests do not need a live LLM
+LLM decomposition output passes schema validation
+validator rejects hallucinated metric, entity, or period
+report compares rule-based vs LLM-assisted decomposition
+at least 5 complex claims
+```
+
+Suggested commit:
+
+```text
+feat: add validator-gated LLM claim decomposition
+```
+
+### Phase 14: Narrative / Causal Claim Verification
+
+Goal:
+
+```text
+Verify financial narratives, drivers, and causal claims rather than only numeric facts.
+```
+
+Claim types:
+
+```text
+numeric trend claim
+segment contribution claim
+causal attribution claim
+management guidance claim
+risk-factor change claim
+deck narrative claim
+```
+
+Verdict refinements:
+
+```text
+support_numeric_only
+support_narrative
+contradict_numeric
+contradict_narrative
+insufficient_causal_support
+```
+
+Example:
+
+```text
+Claim:
+NVIDIA's revenue growth was mainly driven by data center demand.
+
+System:
+- revenue growth: support
+- data center growth: support
+- mainly driven by: check segment contribution
+- causal wording: support only if segment contribution evidence exists
+```
+
+Acceptance criteria:
+
+```text
+at least 10 narrative/causal tasks
+system can partially support claims
+memo separates evidence-supported numeric trend, inference, and unsupported causal attribution
+report shows why ordinary RAG tends to overclaim
+```
+
+Suggested commit:
+
+```text
+feat: add narrative and causal claim verification
+```
+
+### Phase 15: Adversarial / Red-Team Evaluation
+
+Goal:
+
+```text
+Turn the project into a reliability-oriented evaluation system, not only a demo.
+```
+
+Adversarial task families:
+
+```text
+wrong fiscal year
+wrong quarter
+wrong company alias
+wrong segment
+wrong currency
+wrong unit scale
+stale filing
+citation from irrelevant section
+claim with no evidence
+claim contradicted by structured fact
+deck-only claim
+transcript-only claim
+```
+
+Build:
+
+```text
+AdversarialTaskGenerator
+FailureModeTaxonomy
+ValidatorCoverageReport
+```
+
+Acceptance criteria:
+
+```text
+at least 100 adversarial tasks
+each task has expected failure mode
+report outputs validator coverage matrix
+full engine does not need perfect accuracy
+every failure reason is explainable
+README includes red-team summary
+```
+
+Suggested commit:
+
+```text
+feat: add adversarial financial evidence evaluation
+```
+
+### Phase 16: Evidence Trace and Reproducibility Hardening
+
+Goal:
+
+```text
+Make benchmark, case study, memo, and report artifacts reproducible from trace data.
+```
+
+Build:
+
+```text
+RunManifest
+RetrievalTrace
+VerificationTrace
+EvidenceTrace
+MemoTrace
+ArtifactManifest
+```
+
+Each run saves:
+
+```text
+config hash
+corpus version
+method
+task id
+retrieved chunks
+validator results
+final verdict
+runtime
+artifact paths
+```
+
+Storage recommendation:
+
+```text
+SQLite or DuckDB
+do not introduce Neo4j for this phase
+```
+
+Acceptance criteria:
+
+```text
+each benchmark run is reproducible
+artifacts have manifest records
+case studies can regenerate from trace
+README has one-command reproduction
+smoke checks trace integrity
+```
+
+Suggested commit:
+
+```text
+feat: add reproducible evidence trace manifests
+```
+
+### Phase 17: Polished Report PDF / Portfolio Artifact
+
+Goal:
+
+```text
+Produce a 6-10 page technical report that can be sent to recruiters or hiring managers.
+```
+
+Report structure:
+
+```text
+1. Problem: why ordinary RAG is unsafe for financial due diligence
+2. System overview
+3. Evidence graph + validators
+4. Real retrieval benchmark
+5. Three failure case studies
+6. Investor deck / chart extraction case
+7. Ablation results
+8. Limitations
+9. Reproducibility
+10. Resume bullet
+```
+
+Build:
+
+```text
+reports/final_report.pdf
+reports/figures/
+reports/tables/
+scripts/build_portfolio_report.py
+```
+
+Figures:
+
+```text
+method comparison
+failure mode breakdown
+validator coverage
+case study flow diagram
+chart evidence reconciliation
+```
+
+Acceptance criteria:
+
+```text
+one command generates the report
+PDF is no more than 10 pages
+report includes real case studies
+report includes limitations
+resume bullet is generated
+```
+
+Suggested commit:
+
+```text
+feat: build portfolio-ready technical report
+```
+
+### Phase 18: Lightweight Demo UI
+
+Goal:
+
+```text
+Give an interviewer a 2-minute local demo after evidence quality and report artifacts are credible.
+```
+
+Recommended UI:
+
+```text
+left: claim input and company/year selector
+middle: retrieved evidence by method, evidence graph path, validator checks
+right: verdict, numeric reconciliation, memo, failure explanation
+```
+
+Pages:
+
+```text
+claim verification demo
+case study browser
+retrieval method comparison
+memo view
+```
+
+Do not build:
+
+```text
+login
+cloud deployment
+multi-user auth
+database admin panel
+chatbot-style UI
+```
+
+Acceptance criteria:
+
+```text
+streamlit run app.py starts locally
+demo uses local artifacts
+no API key required
+3 case studies are replayable
+one new local claim can run through the local pipeline
+```
+
+Suggested commit:
+
+```text
+feat: add lightweight due diligence demo UI
+```
+
+### Phase 19: Productionization Slice
+
+Goal:
+
+```text
+Show practical engineering boundaries without turning the project into SaaS.
+```
+
+Build:
+
+```text
+FastAPI service optional
+batch evaluation CLI
+config profiles
+structured logging
+error taxonomy
+artifact versioning
+cache invalidation
+data provenance checks
+```
+
+Recommended CLI:
+
+```text
+financial-evidence verify-claim
+financial-evidence build-corpus
+financial-evidence run-eval
+financial-evidence build-case-studies
+financial-evidence build-report
+financial-evidence serve-demo
+```
+
+Acceptance criteria:
+
+```text
+CLI help is complete
+bad input has clear errors
+missing corpus, model, or PDF fails gracefully
+no hidden network dependency
+CLI smoke tests pass
+```
+
+Suggested commit:
+
+```text
+feat: harden local production workflow
+```
+
+### Phase 20: Final Resume / Interview Packaging
+
+Goal:
+
+```text
+Turn the project into application material.
+```
+
+Build:
+
+```text
+docs/interview_story.md
+docs/resume_bullets.md
+docs/system_design_notes.md
+docs/failure_modes.md
+docs/demo_script.md
+```
+
+Interview story:
+
+```text
+1. ordinary RAG gives plausible but unsafe financial answers
+2. claim-level evidence engine with decomposition, retrieval, graph linking, validators, and memo
+3. benchmark against BM25, dense, hybrid, graph, and full engine
+4. concrete failures: period confusion, numeric mismatch, unsupported narrative, chart gaps
+5. domain validators: fiscal period, unit scale, metric aliases, citation support, contradictions
+6. every verdict links to evidence and validator traces
+```
+
+Final resume bullet:
+
+```text
+Built a multimodal financial due-diligence evidence engine over SEC filings, XBRL facts, earnings transcripts, and investor-deck evidence, benchmarking BM25, dense, hybrid, graph, and validator-augmented retrieval on 60+ due-diligence tasks; generated auditable memos with claim decomposition, numeric reconciliation, citation validation, fiscal-period checks, contradiction detection, and failure-mode analysis.
+```
+
+Acceptance criteria:
+
+```text
+README can be understood in 2 minutes
+report is believable in 10 minutes
+repo is reproducible in 30 minutes
+interview story explains every major design choice
+```
+
+Suggested commit:
+
+```text
+docs: package final interview and resume story
+```
+
+## 9. Killer Experiment
 
 **Experiment: Ordinary RAG vs Evidence Engine on financial due-diligence tasks.**
 
@@ -916,7 +1645,7 @@ Ordinary RAG generates fluent answers but often confuses fiscal periods, numbers
 The evidence engine reduces unsupported claims and numeric mismatches through graph retrieval, financial normalization, and validators.
 ```
 
-## 9. Final Report Outline
+## 10. Final Report Outline
 
 ```text
 1. Problem framing: financial AI needs auditable evidence
@@ -947,7 +1676,7 @@ contradiction detection examples
 sample memo
 ```
 
-## 10. Resume Bullet
+## 11. Resume Bullet
 
 Long version:
 
