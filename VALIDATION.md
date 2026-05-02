@@ -123,6 +123,14 @@ Run this once case-study artifacts exist:
 python3 scripts/smoke_case_studies.py
 ```
 
+## Phase 10 Investor Deck Chart Extraction Smoke Check
+
+Run this once deck PDF/chart extraction exists:
+
+```bash
+python3 scripts/smoke_deck_chart_extraction.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

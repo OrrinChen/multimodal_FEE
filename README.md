@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, and Phase 9 portfolio case studies are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, and the Phase 10 investor-deck chart extraction slice are complete.
 
 The repository now includes:
 
@@ -64,9 +64,12 @@ The repository now includes:
 - markdown serialization that separates evidence from inference
 - final report packaging with chart specs, result tables, sample memo, reproducibility commands, and polished resume bullets
 - portfolio case studies that turn the real retrieval failures into recruiter-facing JSON and Markdown artifacts
-- Phase 0 through Phase 9 tests under `tests/`
+- a minimal investor-deck PDF/chart extraction loop for one NVDA FY2024 chart fixture
+- chart evidence conversion into traceable evidence units
+- chart-to-XBRL reconciliation with insufficient verdicts when chart evidence is missing
+- Phase 0 through Phase 10 tests under `tests/`
 
-The next recommended action is Phase 10: add one real or fixture investor-deck PDF/chart extraction loop. The dense retrieval path is currently an offline deterministic token-vector proxy, not a neural embedding model or external vector database.
+The next recommended action is Phase 11: build a raw SEC filing paragraph, transcript-turn, XBRL-fact, and deck-page corpus. The dense retrieval path is currently an offline deterministic token-vector proxy, not a neural embedding model or external vector database.
 
 ## Portfolio Case Studies
 

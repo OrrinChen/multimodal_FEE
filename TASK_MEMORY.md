@@ -11,43 +11,43 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add portfolio case studies for retrieval failures
+feat: add investor deck chart evidence extraction
 ```
 
 Current phase:
 
 ```text
-Phase 9 complete: Portfolio Case Study Layer
+Phase 10 complete: Investor Deck PDF / Chart Extraction Slice
 ```
 
 Main blocker:
 
 ```text
-None for Phase 9. Remaining work starts with Phase 10 investor-deck PDF/chart extraction.
+None for Phase 10. Remaining work starts with Phase 11 raw filing paragraph / page corpus.
 ```
 
 Next recommended action:
 
 ```text
-Implement Phase 10 investor-deck PDF/chart extraction. Do not build UI before the chart/PDF evidence loop is real.
+Implement Phase 11 raw financial document corpus indexing. Keep the benchmark corpus as deterministic fixture, but add raw SEC paragraphs, transcript turns, XBRL facts, and deck pages.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 9 portfolio case studies.
+Completed Phase 10 investor-deck PDF/chart extraction slice.
 
 Added:
-- case-study models for gold evidence, retrieved evidence, validator checks, method results, and Markdown rendering
-- 3 case studies generated from the real retrieval run:
-  - fiscal-period confusion
-  - numeric/unit mismatch
-  - unsupported narrative claim
-- JSON artifacts under experiments/case_studies/
-- Markdown artifacts under reports/case_studies/
-- README case-study summary
-- scripts/smoke_case_studies.py
-- test coverage for selection, serialization, rendering, artifact writing, and README summary rendering
+- DeckDocumentMetadata, DeckPage, ChartEvidenceUnit, ChartExtractionResult, ChartReconciliationRow, ChartVerificationIssue, and DeckChartVerificationResult models
+- minimal text-extractable NVDA FY2024 investor-deck PDF fixture
+- deck page extraction from local PDF fixture
+- chart/table-like value extraction with page number, source span, extracted text, company, period, metric, value, unit, and currency
+- chart evidence conversion into EvidenceUnit
+- chart-to-XBRL reconciliation
+- Phase 10 chart-gap task
+- insufficient verdict with explicit text-only failure reason when chart evidence is missing
+- scripts/smoke_deck_chart_extraction.py
+- tests/test_deck_chart_extraction.py
 ```
 
 Latest validation:
@@ -69,8 +69,9 @@ Passed:
 - phase7 evaluation smoke check: tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
 - real retrieval evaluation smoke check: tasks=60 corpus_documents=320 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
 - phase9 case studies smoke check: case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
+- phase10 deck chart extraction smoke check: deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=13 sample_memo_verdict=support markdown_lines=123
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=14 sample_memo_verdict=support markdown_lines=124
 
 Skipped:
 - none
@@ -736,7 +737,7 @@ Final checks:
 - real retrieval evaluation smoke check printed tasks=60 corpus_documents=320 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
 - phase9 case studies smoke check printed case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
 - phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check printed tasks=60 charts=4 tables=3 commands=13 sample_memo_verdict=support markdown_lines=123
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=14 sample_memo_verdict=support markdown_lines=124
 ```
 
 Known limitations:
@@ -744,7 +745,69 @@ Known limitations:
 ```text
 Case studies are generated from the current 320-document local retrieval benchmark, not raw filing paragraphs or PDF pages.
 The numeric/unit mismatch case currently reflects numeric validator failure in the local benchmark rather than a raw extracted unit-scale error.
-Investor-deck PDF/chart extraction is still deferred to Phase 10.
+Investor-deck PDF/chart extraction is covered by the Phase 10 minimal fixture slice; broad chart extraction remains deferred.
+```
+
+### Phase 10: Investor Deck PDF / Chart Extraction Slice
+
+Commit:
+
+```text
+feat: add investor deck chart evidence extraction
+```
+
+What changed:
+
+```text
+Added a minimal but traceable investor-deck chart verification loop.
+
+Added:
+- DeckDocumentMetadata, DeckPage, ChartEvidenceUnit, ChartExtractionResult, ChartReconciliationRow, ChartVerificationIssue, and DeckChartVerificationResult models
+- tests/fixtures/investor_decks/nvda_fy2024_data_center_chart.pdf
+- extract_deck_chart_evidence() for text-extractable local PDF fixtures
+- ChartEvidenceUnit.to_evidence_unit()
+- reconcile_chart_evidence() against XBRL or filing evidence units
+- verify_deck_chart_claim() with support / contradict / insufficient verdicts
+- build_deck_chart_gap_task() without changing the 60-task seed set
+- scripts/smoke_deck_chart_extraction.py
+- tests/test_deck_chart_extraction.py
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_deck_chart_extraction.py -q initially failed because deck/chart extraction APIs did not exist.
+- After implementation, tests/test_deck_chart_extraction.py passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check printed tasks=60 corpus_documents=320 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase9 case studies smoke check printed case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
+- phase10 deck chart extraction smoke check printed deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=14 sample_memo_verdict=support markdown_lines=124
+```
+
+Known limitations:
+
+```text
+The PDF fixture is text-extractable and deterministic; this is not a universal PDF parser.
+The chart extractor reads explicit key/value chart lines rather than visual geometry.
+Only one NVDA FY2024 investor-deck chart case is covered.
+Raw deck pages are not yet indexed into a raw corpus; that is Phase 11.
 ```
 
 ## Current State
@@ -772,7 +835,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document corpus, portfolio case studies, auditable memo generation, and final report packaging. Raw-document semantic retrieval, rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document corpus, portfolio case studies, minimal investor-deck chart extraction, auditable memo generation, and final report packaging. Raw-document semantic retrieval, rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
 
 ## Project Identity
 

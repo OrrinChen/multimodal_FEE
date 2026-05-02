@@ -84,10 +84,18 @@ Completed:
   - Markdown artifacts under `reports/case_studies/`
   - README case-study summary
   - case-study smoke check and tests
+- [x] Phase 10 investor deck PDF / chart extraction slice implemented:
+  - text-extractable NVDA FY2024 investor-deck PDF fixture
+  - deck page extraction
+  - chart/table-like evidence extraction
+  - chart evidence unit creation with page, source span, value, company, period, and metric
+  - chart-to-XBRL reconciliation
+  - chart-gap task for text-only retrieval failure
+  - insufficient verdict when chart evidence is missing
 
 Current phase:
 
-- Phase 9 portfolio case studies complete; Phase 10 investor deck PDF/chart extraction ready
+- Phase 10 investor deck PDF/chart extraction complete; Phase 11 raw paragraph/page corpus ready
 
 Urgent short-term data action:
 
@@ -109,12 +117,12 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 10 investor-deck PDF/chart extraction:
-  - add one real or fixture investor-deck PDF/chart verification loop
-  - extract at least one chart/table-like financial evidence item
-  - preserve page/source span/value/metric/period/company
-  - reconcile against XBRL or filing evidence where possible
-  - return insufficient rather than hallucinated support when reconciliation is not possible
+- Implement Phase 11 raw filing paragraph / page corpus:
+  - index SEC filing sections and paragraphs
+  - index transcript turns
+  - index XBRL facts
+  - index deck pages and chart evidence from Phase 10
+  - support evaluation over both benchmark and raw corpus modes
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -1061,14 +1069,14 @@ never hallucinate chart support
 Acceptance criteria:
 
 ```text
-at least 1 investor-deck PDF fixture
-at least 1 chart/table-like evidence item extracted
-evidence unit keeps page number, source span, extracted text or value
-extracted evidence links to company, fiscal period, and metric
-reconciles against XBRL or filing evidence where possible
-adds 1 chart-gap task
-full engine explains why text-only retrieval fails
-smoke output includes deck_pages>=1 chart_evidence>=1 chart_tasks>=1
+[x] at least 1 investor-deck PDF fixture
+[x] at least 1 chart/table-like evidence item extracted
+[x] evidence unit keeps page number, source span, extracted text or value
+[x] extracted evidence links to company, fiscal period, and metric
+[x] reconciles against XBRL or filing evidence where possible
+[x] adds 1 chart-gap task
+[x] full engine explains why text-only retrieval fails
+[x] smoke output includes deck_pages>=1 chart_evidence>=1 chart_tasks>=1
 ```
 
 Suggested commit:

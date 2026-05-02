@@ -77,6 +77,10 @@ python3 scripts/smoke_real_retrieval_evaluation.py
 python3 scripts/smoke_case_studies.py
 ```
 
+```bash
+python3 scripts/smoke_deck_chart_extraction.py
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.
