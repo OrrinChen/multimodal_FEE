@@ -126,10 +126,17 @@ Completed:
   - full-engine diagnostic detection accuracy of 0.75 without requiring perfect accuracy
   - explainable failure reasons for every adversarial result
   - README red-team summary plus JSON/Markdown artifacts
+- [x] Phase 16 evidence trace and reproducibility hardening implemented:
+  - `RunManifest`, `RetrievalTrace`, `VerificationTrace`, `EvidenceTrace`, `MemoTrace`, and `ArtifactManifest`
+  - local SQLite trace store under `experiments/traces/`
+  - artifact manifest under `reports/traces/`
+  - config hash, corpus version, method, task id, retrieved chunks, validator results, final verdict, runtime, and artifact paths recorded per run
+  - case-study regeneration from trace records
+  - README one-command trace reproduction
 
 Current phase:
 
-- Phase 15 adversarial/red-team evaluation complete; Phase 16 evidence trace and reproducibility hardening ready
+- Phase 16 evidence trace and reproducibility hardening complete; Phase 17 polished technical report ready
 
 Urgent short-term data action:
 
@@ -151,11 +158,10 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 16 evidence trace and reproducibility hardening:
-  - add run, retrieval, verification, evidence, memo, and artifact manifests
-  - persist reproducibility traces in a local SQLite or DuckDB file
-  - record config hash, corpus version, method, task id, retrieved chunks, validator outputs, final verdict, runtime, and artifact paths
-  - make case studies and reports regenerable from trace data
+- Implement Phase 17 polished technical report artifact:
+  - add one-command report generation
+  - produce a 6-10 page portfolio report artifact
+  - include real case studies, investor-deck/chart case, limitations, and reproducibility
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -164,7 +170,6 @@ Next recommended action:
   - Phase 13: validator-gated LLM decomposition
   - Phase 14: narrative/causal claim verification
   - Phase 15: adversarial/red-team evaluation
-  - Phase 16: trace/reproducibility hardening
   - Phase 17: polished technical report
   - Phase 18: lightweight demo UI
   - Phase 19: local productionization
@@ -1451,11 +1456,11 @@ do not introduce Neo4j for this phase
 Acceptance criteria:
 
 ```text
-each benchmark run is reproducible
-artifacts have manifest records
-case studies can regenerate from trace
-README has one-command reproduction
-smoke checks trace integrity
+[x] each benchmark run is reproducible
+[x] artifacts have manifest records
+[x] case studies can regenerate from trace
+[x] README has one-command reproduction
+[x] smoke checks trace integrity
 ```
 
 Suggested commit:

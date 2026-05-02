@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, and Phase 15 adversarial/red-team evaluation slice are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, and Phase 16 trace/reproducibility hardening slice are complete.
 
 The repository now includes:
 
@@ -86,9 +86,12 @@ The repository now includes:
 - adversarial/red-team task generation with 120 tasks across 12 failure modes
 - failure-mode taxonomy and validator coverage matrix
 - explainable failure reasons without requiring perfect full-engine accuracy
-- Phase 0 through Phase 15 tests under `tests/`
+- SQLite-backed trace store with run, retrieval, verification, evidence, memo, and artifact manifests
+- reproducibility trace artifacts for the three portfolio case studies
+- case-study regeneration from trace records
+- Phase 0 through Phase 16 tests under `tests/`
 
-The next recommended action is Phase 16: add evidence trace and reproducibility hardening with run manifests, retrieval traces, verification traces, evidence traces, memo traces, and artifact manifests. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
+The next recommended action is Phase 17: build the polished portfolio-ready technical report artifact. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
 
 ## Portfolio Case Studies
 
@@ -120,3 +123,16 @@ Phase 15 adds adversarial evaluation instead of chasing perfect accuracy. The re
 
 - JSON artifact: `experiments/adversarial/phase15_adversarial_report.json`
 - Markdown artifact: [phase15_adversarial_report.md](reports/adversarial/phase15_adversarial_report.md)
+
+## Reproducibility Trace
+
+Phase 16 records the case-study runs in a local SQLite trace store. Each run keeps a config hash, corpus version, method, task id, retrieved chunks, validator results, final verdict, runtime, and artifact paths.
+
+One-command trace reproduction:
+
+```bash
+python3 scripts/smoke_trace_reproducibility.py
+```
+
+- SQLite trace DB: `experiments/traces/phase16_trace.sqlite`
+- Artifact manifest: `reports/traces/phase16_artifact_manifest.json`

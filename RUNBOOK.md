@@ -105,6 +105,10 @@ python3 scripts/smoke_narrative_causal.py
 python3 scripts/smoke_adversarial_evaluation.py
 ```
 
+```bash
+python3 scripts/smoke_trace_reproducibility.py
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.

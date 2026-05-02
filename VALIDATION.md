@@ -175,6 +175,14 @@ Run this once adversarial financial evidence evaluation exists:
 python3 scripts/smoke_adversarial_evaluation.py
 ```
 
+## Phase 16 Trace / Reproducibility Smoke Check
+
+Run this once reproducible evidence trace manifests exist:
+
+```bash
+python3 scripts/smoke_trace_reproducibility.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

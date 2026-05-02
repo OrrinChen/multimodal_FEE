@@ -47,6 +47,7 @@ REPRODUCIBILITY_COMMANDS: Tuple[str, ...] = (
     "python3 scripts/smoke_llm_decomposition.py",
     "python3 scripts/smoke_narrative_causal.py",
     "python3 scripts/smoke_phase8_memo.py",
+    "python3 scripts/smoke_trace_reproducibility.py",
     "python3 scripts/smoke_final_report_package.py",
 )
 
@@ -324,7 +325,10 @@ def _section_lines(section: str, package: FinalReportPackage) -> list:
     if section == "Example due-diligence memo":
         return package.sample_memo.to_markdown().rstrip().splitlines()
     if section == "Reproducibility guide":
-        return [f"- `{command}`" for command in package.reproducibility_commands]
+        return [
+            "One-command trace reproduction: `python3 scripts/smoke_trace_reproducibility.py`",
+            "",
+        ] + [f"- `{command}`" for command in package.reproducibility_commands]
     return []
 
 

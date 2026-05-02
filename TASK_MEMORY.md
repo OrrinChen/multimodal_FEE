@@ -11,40 +11,41 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add adversarial financial evidence evaluation
+feat: add reproducible evidence trace manifests
 ```
 
 Current phase:
 
 ```text
-Phase 15 complete: Adversarial / Red-Team Evaluation
+Phase 16 complete: Evidence Trace and Reproducibility Hardening
 ```
 
 Main blocker:
 
 ```text
-None for Phase 15. Remaining work starts with Phase 16 evidence trace and reproducibility hardening.
+None for Phase 16. Remaining work starts with Phase 17 polished portfolio report artifact.
 ```
 
 Next recommended action:
 
 ```text
-Implement Phase 16 evidence trace and reproducibility hardening with run manifests, retrieval traces, verification traces, evidence traces, memo traces, artifact manifests, and a local SQLite or DuckDB trace store.
+Implement Phase 17 polished technical report artifact with one-command report generation, real case studies, the investor-deck/chart case, limitations, and reproducibility notes.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 15 adversarial/red-team evaluation.
+Completed Phase 16 evidence trace and reproducibility hardening.
 
 Added:
-- ADVERSARIAL_FAILURE_MODES covering 12 red-team failure families
-- AdversarialTaskGenerator producing 120 deterministic adversarial tasks
-- FailureModeTaxonomy mapping every failure mode to a validator owner
-- ValidatorCoverageReport with coverage matrix, explainable failure rate, and non-perfect full-engine detection accuracy
-- JSON and Markdown artifacts for Phase 15 report output
-- scripts/smoke_adversarial_evaluation.py
-- tests/test_adversarial_evaluation.py
+- RunManifest, RetrievalTrace, VerificationTrace, EvidenceTrace, MemoTrace, and ArtifactManifest
+- EvidenceTraceBundle and TraceStore using local SQLite
+- deterministic trace bundle generation for the three portfolio case studies
+- case-study regeneration from trace data
+- experiments/traces/phase16_trace.sqlite
+- reports/traces/phase16_artifact_manifest.json
+- scripts/smoke_trace_reproducibility.py
+- tests/test_trace_reproducibility.py
 ```
 
 Latest validation:
@@ -55,7 +56,7 @@ Passed:
 - git diff --check
 - markdown trailing-whitespace scan
 - python3 -m compileall src scripts
-- python3 -m pytest
+- python3 -m pytest: 82 passed
 - config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
 - phase1 registry smoke check: companies=3 documents=6 aligned_periods=3
 - phase2 extraction smoke check: sections=4 xbrl=1 transcripts=1 tables=1
@@ -73,8 +74,9 @@ Passed:
 - phase13 LLM decomposition smoke check: complex_claims=5 providers=rule_based,recorded_llm rule_based_subclaims=7 llm_subclaims=19 rejected=0 json_artifact=experiments/llm_decomposition/phase13_decomposition_comparison.json markdown_artifact=reports/llm_decomposition/phase13_decomposition_comparison.md live_available=False
 - phase14 narrative/causal smoke check: narrative_tasks=10 claim_types=6 partial_verdicts=5 overclaim_cases=8 overclaim_rate=0.8 unsupported_causal=5 json_artifact=experiments/narrative_causal/phase14_narrative_causal_report.json markdown_artifact=reports/narrative_causal/phase14_narrative_causal_report.md
 - phase15 adversarial smoke check: adversarial_tasks=120 failure_modes=12 taxonomy_entries=12 validators=11 full_engine_accuracy=0.75 explainable_failure_rate=1 perfect_accuracy_required=False json_artifact=experiments/adversarial/phase15_adversarial_report.json markdown_artifact=reports/adversarial/phase15_adversarial_report.md
+- phase16 trace smoke check: runs=3 retrieval_traces=3 verification_traces=3 evidence_traces=3 memo_traces=3 artifact_records=3 trace_integrity=True case_studies_regenerated=3 db=experiments/traces/phase16_trace.sqlite manifest=reports/traces/phase16_artifact_manifest.json
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=19 sample_memo_verdict=support markdown_lines=134
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=20 sample_memo_verdict=support markdown_lines=137
 
 Skipped:
 - none
@@ -1152,7 +1154,75 @@ Known limitations:
 Phase 15 tasks are deterministic local red-team fixtures, not generated from live retrieval failures.
 The full-engine accuracy is diagnostic and intentionally not perfect; hard cases remain for wrong-segment, deck-only, and transcript-only claims.
 Validator ownership is modeled in the taxonomy; concrete production validators for every owner are deferred to later hardening phases.
-Trace persistence is not implemented yet and belongs to Phase 16.
+```
+
+### Phase 16: Evidence Trace and Reproducibility Hardening
+
+Commit:
+
+```text
+feat: add reproducible evidence trace manifests
+```
+
+What changed:
+
+```text
+Added a local reproducibility trace layer for the portfolio case studies.
+
+Added:
+- RunManifest, RetrievalTrace, VerificationTrace, EvidenceTrace, MemoTrace, and ArtifactManifest
+- EvidenceTraceBundle for grouping trace records
+- TraceStore backed by SQLite
+- deterministic config hashes and corpus version records
+- retrieved chunk, validator result, final verdict, runtime, and artifact-path records for each case-study run
+- case-study regeneration from trace records
+- experiments/traces/phase16_trace.sqlite
+- reports/traces/phase16_artifact_manifest.json
+- scripts/smoke_trace_reproducibility.py
+- tests/test_trace_reproducibility.py
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_trace_reproducibility.py -q initially failed because financial_evidence_engine.traceability did not exist.
+- After implementation, tests/test_trace_reproducibility.py passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest: 82 passed
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check printed tasks=60 corpus_mode=benchmark corpus_documents=320 raw_chunks=0 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase9 case studies smoke check printed case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
+- phase10 deck chart extraction smoke check printed deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
+- phase11 raw corpus smoke check printed raw_chunks=482 curated_documents=320 companies=10 sec_paragraph_companies=10 transcript_chunks=30 deck_pages=1 corpus_modes=benchmark,raw
+- raw corpus retrieval smoke check printed tasks=60 corpus_mode=raw corpus_documents=482 raw_chunks=482 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=617
+- phase12 embedding backend smoke check printed methods=bm25,dense_proxy,hybrid_proxy,graph,full_engine skipped=dense_real,hybrid_real provider=deterministic-token-v1 cached_vectors=320 manifest=embedding_manifest.json optional_available=False
+- phase13 LLM decomposition smoke check printed complex_claims=5 providers=rule_based,recorded_llm rule_based_subclaims=7 llm_subclaims=19 rejected=0 json_artifact=experiments/llm_decomposition/phase13_decomposition_comparison.json markdown_artifact=reports/llm_decomposition/phase13_decomposition_comparison.md live_available=False
+- phase14 narrative/causal smoke check printed narrative_tasks=10 claim_types=6 partial_verdicts=5 overclaim_cases=8 overclaim_rate=0.8 unsupported_causal=5 json_artifact=experiments/narrative_causal/phase14_narrative_causal_report.json markdown_artifact=reports/narrative_causal/phase14_narrative_causal_report.md
+- phase15 adversarial smoke check printed adversarial_tasks=120 failure_modes=12 taxonomy_entries=12 validators=11 full_engine_accuracy=0.75 explainable_failure_rate=1 perfect_accuracy_required=False json_artifact=experiments/adversarial/phase15_adversarial_report.json markdown_artifact=reports/adversarial/phase15_adversarial_report.md
+- phase16 trace smoke check printed runs=3 retrieval_traces=3 verification_traces=3 evidence_traces=3 memo_traces=3 artifact_records=3 trace_integrity=True case_studies_regenerated=3 db=experiments/traces/phase16_trace.sqlite manifest=reports/traces/phase16_artifact_manifest.json
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=20 sample_memo_verdict=support markdown_lines=137
+```
+
+Known limitations:
+
+```text
+Phase 16 traces the three portfolio case studies, not every one of the 60 benchmark tasks.
+The trace store is a local SQLite artifact, not a production observability backend.
+Trace records point to current artifact paths; broader report regeneration belongs to Phase 17.
 ```
 
 ## Current State

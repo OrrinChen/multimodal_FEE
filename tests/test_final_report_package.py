@@ -90,6 +90,7 @@ def test_final_report_package_contains_charts_tables_sample_memo_and_resume_bull
     assert "python3 scripts/smoke_llm_decomposition.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_narrative_causal.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_phase8_memo.py" in package.reproducibility_commands
+    assert "python3 scripts/smoke_trace_reproducibility.py" in package.reproducibility_commands
     assert "claim-level validators" in package.resume_bullet_long
     assert package.resume_bullet_short.startswith("Built a multimodal financial evidence engine")
 
@@ -131,6 +132,8 @@ def test_final_report_markdown_includes_required_outline_and_sample_memo():
     assert "recorded LLM-assisted decomposition" in markdown
     assert "causal narratives" in markdown
     assert "adversarial red-team tasks" in markdown
+    assert "One-command trace reproduction" in markdown
+    assert "python3 scripts/smoke_trace_reproducibility.py" in markdown
     assert "python3 scripts/smoke_final_report_package.py" in markdown
 
 
