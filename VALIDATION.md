@@ -151,6 +151,14 @@ Run this once pluggable embedding and reranking backend exists:
 python3 scripts/smoke_embedding_backend.py
 ```
 
+## Phase 13 LLM Decomposition Smoke Check
+
+Run this once validator-gated LLM claim decomposition exists:
+
+```bash
+python3 scripts/smoke_llm_decomposition.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

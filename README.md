@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, and Phase 12 embedding/reranking backend slice are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, and Phase 13 validator-gated LLM decomposition slice are complete.
 
 The repository now includes:
 
@@ -73,9 +73,15 @@ The repository now includes:
 - pluggable embedding providers with deterministic offline default and optional local/live backends
 - cached embedding index manifests
 - metadata reranker interface and Phase 12 method report separating `dense_proxy` from optional `dense_real`
-- Phase 0 through Phase 12 tests under `tests/`
+- validator-gated LLM claim decomposition interfaces
+- recorded offline LLM decomposition fixtures for 5 complex financial claims
+- schema validation for recorded LLM decomposition output
+- entity, fiscal-period, and metric validator gates that reject hallucinated LLM subclaims
+- rule-based versus recorded-LLM decomposition comparison artifacts
+- an optional live LLM decomposer placeholder that is disabled by default and never required by tests
+- Phase 0 through Phase 13 tests under `tests/`
 
-The next recommended action is Phase 13: add validator-gated LLM claim decomposition with recorded offline fixtures. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding providers are optional and skipped gracefully when unavailable.
+The next recommended action is Phase 14: add narrative and causal claim verification so the engine can separate evidence-supported numeric trends from unsupported causal attribution. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
 
 ## Portfolio Case Studies
 
@@ -86,3 +92,10 @@ The next recommended action is Phase 13: add validator-gated LLM claim decomposi
 | `unsupported_narrative_claim` | `unsupported_claim` | Apple's FY2024 margin expansion was driven by durable operating leverage. | `insufficient` | [Markdown](reports/case_studies/unsupported_narrative_claim.md) |
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.
+
+## LLM Decomposition Slice
+
+Phase 13 keeps rule-based decomposition as the default, adds recorded LLM outputs as deterministic offline fixtures, and gates all LLM-generated subclaims through schema, entity, fiscal-period, and metric validation.
+
+- JSON artifact: `experiments/llm_decomposition/phase13_decomposition_comparison.json`
+- Markdown artifact: [phase13_decomposition_comparison.md](reports/llm_decomposition/phase13_decomposition_comparison.md)

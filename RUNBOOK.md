@@ -93,6 +93,10 @@ python3 scripts/smoke_real_retrieval_evaluation.py --corpus raw
 python3 scripts/smoke_embedding_backend.py
 ```
 
+```bash
+python3 scripts/smoke_llm_decomposition.py
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.

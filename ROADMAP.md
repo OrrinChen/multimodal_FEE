@@ -106,10 +106,17 @@ Completed:
   - cached embedding index with manifest
   - metadata reranker interface
   - Phase 12 report separating `dense_proxy` / `hybrid_proxy` from optional `dense_real` / `hybrid_real`
+- [x] Phase 13 validator-gated LLM decomposition implemented:
+  - `ClaimDecompositionProvider`, `RuleBasedClaimDecomposer`, `RecordedLLMClaimDecomposer`, and disabled-by-default `OptionalLiveLLMClaimDecomposer`
+  - `DecompositionTrace`, `DecompositionCandidate`, and `ValidatorGate`
+  - 5 recorded offline LLM decomposition fixtures for complex financial claims
+  - schema validation for recorded LLM outputs
+  - validator rejection of hallucinated entity, period, and metric
+  - rule-based versus recorded-LLM JSON/Markdown comparison artifacts
 
 Current phase:
 
-- Phase 12 embedding/reranking backend complete; Phase 13 validator-gated LLM decomposition ready
+- Phase 13 validator-gated LLM decomposition complete; Phase 14 narrative/causal claim verification ready
 
 Urgent short-term data action:
 
@@ -131,12 +138,12 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 13 validator-gated LLM claim decomposition:
-  - keep rule-based decomposition as default
-  - add recorded LLM outputs as offline fixtures
-  - validate LLM output schema
-  - reject hallucinated entity, metric, and period through validator gate
-  - compare rule-based versus LLM-assisted decomposition on complex claims
+- Implement Phase 14 narrative and causal claim verification:
+  - add narrative and causal claim types
+  - support partial verdicts such as `support_numeric_only` and `insufficient_causal_support`
+  - separate evidence-supported facts from inference in memo output
+  - add at least 10 narrative/causal due-diligence tasks
+  - show why ordinary RAG tends to overclaim causal narratives
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -1215,6 +1222,12 @@ feat: add pluggable embedding and reranking backend
 
 ### Phase 13: LLM-Assisted Claim Decomposition with Validator Gate
 
+Status:
+
+```text
+complete
+```
+
 Goal:
 
 ```text
@@ -1250,12 +1263,12 @@ subclaim 4: causal/narrative conclusion
 Acceptance criteria:
 
 ```text
-recorded LLM output fixtures exist
-tests do not need a live LLM
-LLM decomposition output passes schema validation
-validator rejects hallucinated metric, entity, or period
-report compares rule-based vs LLM-assisted decomposition
-at least 5 complex claims
+[x] recorded LLM output fixtures exist
+[x] tests do not need a live LLM
+[x] LLM decomposition output passes schema validation
+[x] validator rejects hallucinated metric, entity, or period
+[x] report compares rule-based vs LLM-assisted decomposition
+[x] at least 5 complex claims
 ```
 
 Suggested commit:

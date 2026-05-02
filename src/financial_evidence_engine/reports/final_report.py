@@ -43,6 +43,7 @@ REPRODUCIBILITY_COMMANDS: Tuple[str, ...] = (
     "python3 scripts/smoke_deck_chart_extraction.py",
     "python3 scripts/smoke_raw_corpus.py",
     "python3 scripts/smoke_embedding_backend.py",
+    "python3 scripts/smoke_llm_decomposition.py",
     "python3 scripts/smoke_phase8_memo.py",
     "python3 scripts/smoke_final_report_package.py",
 )
@@ -298,6 +299,7 @@ def _section_lines(section: str, package: FinalReportPackage) -> list:
     if section == "Claim decomposition and verification":
         return [
             "Claims are decomposed into validator-readable subclaims with citation, period, source, and numeric checks.",
+            "Phase 13 adds recorded LLM-assisted decomposition fixtures behind schema validation and entity, period, and metric validator gates.",
         ]
     if section == "Due-diligence task set":
         return [f"The seed task set contains {package.task_count} multimodal due-diligence task specs."]

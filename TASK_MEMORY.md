@@ -11,42 +11,43 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add pluggable embedding and reranking backend
+feat: add validator-gated LLM claim decomposition
 ```
 
 Current phase:
 
 ```text
-Phase 12 complete: Pluggable Embedding / Reranking Backend
+Phase 13 complete: Validator-Gated LLM Claim Decomposition
 ```
 
 Main blocker:
 
 ```text
-None for Phase 12. Remaining work starts with Phase 13 validator-gated LLM claim decomposition.
+None for Phase 13. Remaining work starts with Phase 14 narrative and causal claim verification.
 ```
 
 Next recommended action:
 
 ```text
-Implement Phase 13 validator-gated LLM claim decomposition with recorded offline LLM fixtures. Keep rule-based decomposition as default and require schema validation plus validator rejection of hallucinated entity, metric, and period.
+Implement Phase 14 narrative and causal claim verification. Add narrative/causal task types, partial verdicts, memo separation of supported facts versus inference, and at least 10 narrative/causal due-diligence tasks.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 12 pluggable embedding and reranking backend.
+Completed Phase 13 validator-gated LLM claim decomposition.
 
 Added:
-- EmbeddingProvider protocol
-- DeterministicTokenEmbeddingProvider as offline proxy default
-- LocalSentenceTransformerProvider and OpenAIEmbeddingProvider as optional disabled-by-default adapters
-- EmbeddingIndex and EmbeddingIndexManifest with local JSON cache manifest
-- EmbeddingEvidenceRetriever and EmbeddingHybridEvidenceRetriever
-- Reranker protocol and MetadataBoostReranker
-- run_embedding_retrieval_evaluation() with bm25, dense_proxy, hybrid_proxy, graph, full_engine, and optional dense_real/hybrid_real
-- scripts/smoke_embedding_backend.py
-- tests/test_embedding_backend.py
+- ClaimDecompositionProvider protocol
+- RuleBasedClaimDecomposer wrapper around the existing deterministic decomposer
+- RecordedLLMClaimDecomposer backed by local offline JSON fixtures
+- OptionalLiveLLMClaimDecomposer disabled by default
+- DecompositionCandidate, DecompositionTrace, and DecompositionComparisonReport
+- ValidatorGate rejecting hallucinated entity, fiscal period, and metric
+- 5 recorded complex-claim decomposition fixtures
+- JSON and Markdown comparison artifacts for rule-based versus recorded-LLM decomposition
+- scripts/smoke_llm_decomposition.py
+- tests/test_llm_decomposition.py
 ```
 
 Latest validation:
@@ -72,8 +73,9 @@ Passed:
 - phase11 raw corpus smoke check: raw_chunks=482 curated_documents=320 companies=10 sec_paragraph_companies=10 transcript_chunks=30 deck_pages=1 corpus_modes=benchmark,raw
 - raw corpus retrieval smoke check: tasks=60 corpus_mode=raw corpus_documents=482 raw_chunks=482 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=617
 - phase12 embedding backend smoke check: methods=bm25,dense_proxy,hybrid_proxy,graph,full_engine skipped=dense_real,hybrid_real provider=deterministic-token-v1 cached_vectors=320 manifest=embedding_manifest.json optional_available=False
+- phase13 LLM decomposition smoke check: complex_claims=5 providers=rule_based,recorded_llm rule_based_subclaims=7 llm_subclaims=19 rejected=0 json_artifact=experiments/llm_decomposition/phase13_decomposition_comparison.json markdown_artifact=reports/llm_decomposition/phase13_decomposition_comparison.md live_available=False
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=16 sample_memo_verdict=support markdown_lines=128
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=17 sample_memo_verdict=support markdown_lines=130
 
 Skipped:
 - none
@@ -947,6 +949,75 @@ No external vector database is used; EmbeddingIndex is a local JSON cache.
 Optional real embedding metrics are only present when a real provider is explicitly enabled.
 ```
 
+### Phase 13: Validator-Gated LLM Claim Decomposition
+
+Commit:
+
+```text
+feat: add validator-gated LLM claim decomposition
+```
+
+What changed:
+
+```text
+Added an offline, validator-gated LLM decomposition slice without making live LLMs authoritative or required.
+
+Added:
+- ClaimDecompositionProvider protocol
+- RuleBasedClaimDecomposer for the existing deterministic decomposer
+- RecordedLLMClaimDecomposer using local fixture outputs
+- OptionalLiveLLMClaimDecomposer disabled by default
+- DecompositionCandidate and DecompositionTrace
+- ValidatorGate for entity, fiscal-period, and metric validation
+- DecompositionComparisonReport and artifact writer
+- 5 complex recorded LLM decomposition fixtures
+- experiments/llm_decomposition/phase13_decomposition_comparison.json
+- reports/llm_decomposition/phase13_decomposition_comparison.md
+- scripts/smoke_llm_decomposition.py
+- tests/test_llm_decomposition.py
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_llm_decomposition.py -q initially failed because the LLM decomposition provider, schema error, validator gate, comparison report, and live decomposer APIs did not exist.
+- After implementation, tests/test_llm_decomposition.py passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check printed tasks=60 corpus_mode=benchmark corpus_documents=320 raw_chunks=0 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase9 case studies smoke check printed case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
+- phase10 deck chart extraction smoke check printed deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
+- phase11 raw corpus smoke check printed raw_chunks=482 curated_documents=320 companies=10 sec_paragraph_companies=10 transcript_chunks=30 deck_pages=1 corpus_modes=benchmark,raw
+- raw corpus retrieval smoke check printed tasks=60 corpus_mode=raw corpus_documents=482 raw_chunks=482 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=617
+- phase12 embedding backend smoke check printed methods=bm25,dense_proxy,hybrid_proxy,graph,full_engine skipped=dense_real,hybrid_real provider=deterministic-token-v1 cached_vectors=320 manifest=embedding_manifest.json optional_available=False
+- phase13 LLM decomposition smoke check printed complex_claims=5 providers=rule_based,recorded_llm rule_based_subclaims=7 llm_subclaims=19 rejected=0 json_artifact=experiments/llm_decomposition/phase13_decomposition_comparison.json markdown_artifact=reports/llm_decomposition/phase13_decomposition_comparison.md live_available=False
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=17 sample_memo_verdict=support markdown_lines=130
+```
+
+Known limitations:
+
+```text
+Recorded LLM decompositions are deterministic fixtures, not live model calls.
+The live LLM decomposer is intentionally disabled by default and has no configured backend.
+ValidatorGate currently checks allowed ticker, period, and metric vocabularies; deeper semantic validation belongs in Phase 14 narrative/causal verification.
+The comparison report measures decomposition coverage, not final narrative truth.
+```
+
 ## Current State
 
 Project folder created as:
@@ -972,7 +1043,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document benchmark corpus, portfolio case studies, minimal investor-deck chart extraction, raw financial document corpus indexing, pluggable embedding/reranking interfaces, auditable memo generation, and final report packaging. Rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document benchmark corpus, portfolio case studies, minimal investor-deck chart extraction, raw financial document corpus indexing, pluggable embedding/reranking interfaces, validator-gated recorded LLM decomposition, auditable memo generation, and final report packaging. Rendered PDF/deck output, broad chart extraction, live LLM decomposition, and narrative/causal verification are not implemented yet.
 
 ## Project Identity
 
