@@ -92,10 +92,17 @@ Completed:
   - chart-to-XBRL reconciliation
   - chart-gap task for text-only retrieval failure
   - insufficient verdict when chart evidence is missing
+- [x] Phase 11 raw filing paragraph / page corpus implemented:
+  - `RawCorpusBuilder`, `DocumentChunk`, `ChunkProvenance`, `ChunkIndexManifest`, and `CorpusVersionManifest`
+  - 482 raw chunks versus 320 curated benchmark documents
+  - SEC filing sections and paragraphs for 10 companies
+  - XBRL fact chunks, transcript-turn chunks, and filing table chunks
+  - Phase 10 deck page and deck chart chunks
+  - retrieval evaluation `corpus_mode` selection for `benchmark` and `raw`
 
 Current phase:
 
-- Phase 10 investor deck PDF/chart extraction complete; Phase 11 raw paragraph/page corpus ready
+- Phase 11 raw paragraph/page corpus complete; Phase 12 embedding/reranking backend ready
 
 Urgent short-term data action:
 
@@ -117,12 +124,12 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 11 raw filing paragraph / page corpus:
-  - index SEC filing sections and paragraphs
-  - index transcript turns
-  - index XBRL facts
-  - index deck pages and chart evidence from Phase 10
-  - support evaluation over both benchmark and raw corpus modes
+- Implement Phase 12 pluggable embedding / reranking backend:
+  - keep deterministic token-vector proxy as test default
+  - add an `EmbeddingProvider` interface
+  - add optional local embedding provider and cached embedding index
+  - add a reranker interface
+  - report proxy versus real embedding methods separately when available
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -151,7 +158,7 @@ Deferred:
 
 - cloud deployment
 - production integration
-- broader raw-document corpus beyond the local 320-document retrieval benchmark
+- broader raw-document corpus beyond the local Phase 11 deterministic fixture
 - investor deck registry until SEC/XBRL extraction is stable
 - PDF binary extraction beyond simple HTML/text fixtures
 - broad chart extraction beyond the first investor-deck case
@@ -1139,13 +1146,13 @@ full engine rerank + validators
 Acceptance criteria:
 
 ```text
-corpus is not only gold/distractor specs
-at least 3 companies have raw SEC filing paragraphs indexed
-transcript segments are indexed
-deck pages are indexed if Phase 10 is complete
-retrieval evaluation can select --corpus benchmark or --corpus raw
-smoke output includes raw_chunks > curated_documents
-benchmark corpus remains as deterministic test fixture
+[x] corpus is not only gold/distractor specs
+[x] at least 3 companies have raw SEC filing paragraphs indexed
+[x] transcript segments are indexed
+[x] deck pages are indexed if Phase 10 is complete
+[x] retrieval evaluation can select --corpus benchmark or --corpus raw
+[x] smoke output includes raw_chunks > curated_documents
+[x] benchmark corpus remains as deterministic test fixture
 ```
 
 Suggested commit:

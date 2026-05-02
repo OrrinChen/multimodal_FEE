@@ -81,6 +81,14 @@ python3 scripts/smoke_case_studies.py
 python3 scripts/smoke_deck_chart_extraction.py
 ```
 
+```bash
+python3 scripts/smoke_raw_corpus.py
+```
+
+```bash
+python3 scripts/smoke_real_retrieval_evaluation.py --corpus raw
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.

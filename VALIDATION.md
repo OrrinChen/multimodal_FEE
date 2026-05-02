@@ -131,6 +131,18 @@ Run this once deck PDF/chart extraction exists:
 python3 scripts/smoke_deck_chart_extraction.py
 ```
 
+## Phase 11 Raw Corpus Smoke Check
+
+Run this once raw financial document corpus indexing exists:
+
+```bash
+python3 scripts/smoke_raw_corpus.py
+```
+
+```bash
+python3 scripts/smoke_real_retrieval_evaluation.py --corpus raw
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

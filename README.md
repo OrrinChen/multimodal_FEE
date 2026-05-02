@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, and the Phase 10 investor-deck chart extraction slice are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, and Phase 11 raw corpus indexing slice are complete.
 
 The repository now includes:
 
@@ -67,9 +67,12 @@ The repository now includes:
 - a minimal investor-deck PDF/chart extraction loop for one NVDA FY2024 chart fixture
 - chart evidence conversion into traceable evidence units
 - chart-to-XBRL reconciliation with insufficient verdicts when chart evidence is missing
-- Phase 0 through Phase 10 tests under `tests/`
+- a 482-chunk raw corpus fixture with SEC filing sections/paragraphs, XBRL facts, transcript turns, deck pages, and deck chart units
+- raw chunk provenance with company, source type, document id, fiscal period, section/page, text span, and stable hash
+- retrieval evaluation corpus selection for `benchmark` versus `raw` corpus modes
+- Phase 0 through Phase 11 tests under `tests/`
 
-The next recommended action is Phase 11: build a raw SEC filing paragraph, transcript-turn, XBRL-fact, and deck-page corpus. The dense retrieval path is currently an offline deterministic token-vector proxy, not a neural embedding model or external vector database.
+The next recommended action is Phase 12: add pluggable embedding and reranking backends while keeping deterministic offline defaults. The dense retrieval path is currently an offline deterministic token-vector proxy, not a neural embedding model or external vector database.
 
 ## Portfolio Case Studies
 

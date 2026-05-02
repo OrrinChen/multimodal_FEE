@@ -41,6 +41,7 @@ REPRODUCIBILITY_COMMANDS: Tuple[str, ...] = (
     "python3 scripts/smoke_real_retrieval_evaluation.py",
     "python3 scripts/smoke_case_studies.py",
     "python3 scripts/smoke_deck_chart_extraction.py",
+    "python3 scripts/smoke_raw_corpus.py",
     "python3 scripts/smoke_phase8_memo.py",
     "python3 scripts/smoke_final_report_package.py",
 )
@@ -282,8 +283,8 @@ def _section_lines(section: str, package: FinalReportPackage) -> list:
         ]
     if section == "Multimodal extraction pipeline":
         return [
-            "The local slice normalizes filing text, XBRL facts, transcripts, and markdown tables into evidence units.",
-            "Investor deck and binary chart extraction remain deferred but are represented in task specs.",
+            "The local slice normalizes filing text, XBRL facts, transcripts, markdown tables, and one investor-deck chart fixture into evidence units.",
+            "Phase 11 adds raw SEC paragraphs, transcript turns, XBRL facts, deck pages, and deck chart chunks for raw-corpus retrieval.",
         ]
     if section == "Financial normalization layer":
         return [

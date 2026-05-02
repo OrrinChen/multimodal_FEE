@@ -40,6 +40,7 @@ def test_real_retrieval_evaluation_runs_methods_and_surfaces_failures():
 
     result = run_real_retrieval_evaluation(build_seed_task_set())
 
+    assert result.corpus_mode == "benchmark"
     assert set(result.reports) == {
         "bm25_real",
         "dense_real",
@@ -74,6 +75,8 @@ def test_real_retrieval_report_serializes_retrieved_evidence_and_failure_cases()
     payload = run_real_retrieval_evaluation(build_seed_task_set()).to_dict()
 
     assert payload["task_count"] == 60
+    assert payload["corpus_mode"] == "benchmark"
+    assert payload["raw_chunk_count"] == 0
     assert payload["corpus_document_count"] > 60
     assert payload["reports"]["bm25_real"]["method"] == "bm25_real"
     assert payload["runs"]["bm25_real"]["predictions"][0]["retrieved_evidence"]

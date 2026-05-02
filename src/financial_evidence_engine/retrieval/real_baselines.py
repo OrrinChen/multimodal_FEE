@@ -150,11 +150,15 @@ class RealRetrievalEvaluationResult:
     runs: Mapping[str, EvaluationRun]
     failure_cases: Tuple[RetrievalFailureCase, ...]
     method_notes: Mapping[str, str]
+    corpus_mode: str = "benchmark"
+    raw_chunk_count: int = 0
 
     def to_dict(self) -> Mapping[str, object]:
         return {
             "task_count": self.task_count,
+            "corpus_mode": self.corpus_mode,
             "corpus_document_count": self.corpus_document_count,
+            "raw_chunk_count": self.raw_chunk_count,
             "reports": {method: report.to_dict() for method, report in self.reports.items()},
             "runs": {method: run.to_dict() for method, run in self.runs.items()},
             "failure_cases": [failure.to_dict() for failure in self.failure_cases],
@@ -280,10 +284,12 @@ def build_retrieval_corpus(task_set: DueDiligenceTaskSet) -> RetrievalCorpus:
 def run_real_retrieval_evaluation(
     task_set: DueDiligenceTaskSet,
     top_k: int = 5,
+    corpus_mode: str = "benchmark",
+    raw_corpus: object = None,
 ) -> RealRetrievalEvaluationResult:
     """Run actual local retrieval baselines and evaluate their predictions."""
 
-    corpus = build_retrieval_corpus(task_set)
+    corpus, raw_chunk_count = _select_corpus(task_set, corpus_mode, raw_corpus)
     runs = {
         "bm25_real": _build_run(task_set.tasks, "bm25_real", BM25EvidenceRetriever(corpus), top_k),
         "dense_real": _build_run(task_set.tasks, "dense_real", DenseEvidenceRetriever(corpus), top_k),
@@ -303,7 +309,25 @@ def run_real_retrieval_evaluation(
         runs=runs,
         failure_cases=failure_cases,
         method_notes=METHOD_NOTES,
+        corpus_mode=corpus_mode,
+        raw_chunk_count=raw_chunk_count,
     )
+
+
+def _select_corpus(
+    task_set: DueDiligenceTaskSet,
+    corpus_mode: str,
+    raw_corpus: object,
+) -> Tuple[RetrievalCorpus, int]:
+    if corpus_mode == "benchmark":
+        return build_retrieval_corpus(task_set), 0
+    if corpus_mode == "raw":
+        if raw_corpus is None:
+            from financial_evidence_engine.retrieval.raw_corpus import build_raw_financial_corpus
+
+            raw_corpus = build_raw_financial_corpus(task_set)
+        return raw_corpus.to_retrieval_corpus(), len(raw_corpus.chunks)
+    raise ValueError("corpus_mode must be 'benchmark' or 'raw'")
 
 
 def _build_run(

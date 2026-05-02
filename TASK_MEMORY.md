@@ -11,43 +11,41 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add investor deck chart evidence extraction
+feat: add raw financial document corpus indexing
 ```
 
 Current phase:
 
 ```text
-Phase 10 complete: Investor Deck PDF / Chart Extraction Slice
+Phase 11 complete: Raw Filing Paragraph / Page Corpus
 ```
 
 Main blocker:
 
 ```text
-None for Phase 10. Remaining work starts with Phase 11 raw filing paragraph / page corpus.
+None for Phase 11. Remaining work starts with Phase 12 pluggable embedding / reranking backend.
 ```
 
 Next recommended action:
 
 ```text
-Implement Phase 11 raw financial document corpus indexing. Keep the benchmark corpus as deterministic fixture, but add raw SEC paragraphs, transcript turns, XBRL facts, and deck pages.
+Implement Phase 12 embedding and reranking interfaces. Keep deterministic token-vector retrieval as the offline default and make any real embedding backend optional.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 10 investor-deck PDF/chart extraction slice.
+Completed Phase 11 raw financial document corpus indexing.
 
 Added:
-- DeckDocumentMetadata, DeckPage, ChartEvidenceUnit, ChartExtractionResult, ChartReconciliationRow, ChartVerificationIssue, and DeckChartVerificationResult models
-- minimal text-extractable NVDA FY2024 investor-deck PDF fixture
-- deck page extraction from local PDF fixture
-- chart/table-like value extraction with page number, source span, extracted text, company, period, metric, value, unit, and currency
-- chart evidence conversion into EvidenceUnit
-- chart-to-XBRL reconciliation
-- Phase 10 chart-gap task
-- insufficient verdict with explicit text-only failure reason when chart evidence is missing
-- scripts/smoke_deck_chart_extraction.py
-- tests/test_deck_chart_extraction.py
+- ChunkProvenance, DocumentChunk, ChunkIndexManifest, CorpusVersionManifest, RawFinancialCorpus, and RawCorpusBuilder
+- deterministic 482-chunk raw corpus fixture from source-like SEC filing sections/paragraphs, XBRL facts, transcript turns, filing tables, and Phase 10 deck evidence
+- raw chunk provenance with company, source type, document id, fiscal period, section/page, source span, source hash, and chunk hash
+- adapter from raw chunks to the existing RetrievalCorpusDocument interface
+- `run_real_retrieval_evaluation(..., corpus_mode="benchmark"|"raw")`
+- `scripts/smoke_raw_corpus.py`
+- `scripts/smoke_real_retrieval_evaluation.py --corpus raw`
+- tests/test_raw_corpus.py
 ```
 
 Latest validation:
@@ -67,11 +65,13 @@ Passed:
 - phase5 claim verification smoke check: verdict=support subclaims=1 evidence=1 checks=5
 - phase6 task set smoke check: tasks=60 families=6 verdicts=3
 - phase7 evaluation smoke check: tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
-- real retrieval evaluation smoke check: tasks=60 corpus_documents=320 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- real retrieval evaluation smoke check: tasks=60 corpus_mode=benchmark corpus_documents=320 raw_chunks=0 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
 - phase9 case studies smoke check: case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
 - phase10 deck chart extraction smoke check: deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
+- phase11 raw corpus smoke check: raw_chunks=482 curated_documents=320 companies=10 sec_paragraph_companies=10 transcript_chunks=30 deck_pages=1 corpus_modes=benchmark,raw
+- raw corpus retrieval smoke check: tasks=60 corpus_mode=raw corpus_documents=482 raw_chunks=482 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=617
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=14 sample_memo_verdict=support markdown_lines=124
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=15 sample_memo_verdict=support markdown_lines=125
 
 Skipped:
 - none
@@ -807,7 +807,73 @@ Known limitations:
 The PDF fixture is text-extractable and deterministic; this is not a universal PDF parser.
 The chart extractor reads explicit key/value chart lines rather than visual geometry.
 Only one NVDA FY2024 investor-deck chart case is covered.
-Raw deck pages are not yet indexed into a raw corpus; that is Phase 11.
+At Phase 10 completion, raw deck pages were not indexed into a raw corpus; Phase 11 now indexes the fixture deck page and chart chunks.
+```
+
+### Phase 11: Raw Filing Paragraph / Page Corpus
+
+Commit:
+
+```text
+feat: add raw financial document corpus indexing
+```
+
+What changed:
+
+```text
+Added a deterministic raw-corpus indexing layer next to the existing 320-document benchmark corpus.
+
+Added:
+- ChunkProvenance, DocumentChunk, ChunkIndexManifest, CorpusVersionManifest, RawFinancialCorpus, and RawCorpusBuilder
+- 482 raw chunks versus 320 curated benchmark documents
+- SEC filing section chunks and paragraph chunks for 10 companies
+- XBRL fact chunks, transcript-turn chunks, and filing-table chunks
+- Phase 10 investor-deck page and chart chunks
+- raw chunk hashes and source hashes for reproducibility
+- raw chunk adapter into the existing RetrievalCorpusDocument interface
+- `run_real_retrieval_evaluation(..., corpus_mode="benchmark"|"raw")`
+- `scripts/smoke_raw_corpus.py`
+- `scripts/smoke_real_retrieval_evaluation.py --corpus raw`
+- tests/test_raw_corpus.py
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_raw_corpus.py -q initially failed because build_raw_financial_corpus and raw corpus mode did not exist.
+- After implementation, tests/test_raw_corpus.py passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check printed tasks=60 corpus_mode=benchmark corpus_documents=320 raw_chunks=0 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase9 case studies smoke check printed case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
+- phase10 deck chart extraction smoke check printed deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
+- phase11 raw corpus smoke check printed raw_chunks=482 curated_documents=320 companies=10 sec_paragraph_companies=10 transcript_chunks=30 deck_pages=1 corpus_modes=benchmark,raw
+- raw corpus retrieval smoke check printed tasks=60 corpus_mode=raw corpus_documents=482 raw_chunks=482 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=617
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=15 sample_memo_verdict=support markdown_lines=125
+```
+
+Known limitations:
+
+```text
+The raw corpus is a deterministic local fixture, not a downloaded full SEC archive.
+SEC filing paragraphs are source-like generated fixtures used to test chunking and provenance boundaries.
+Only the NVDA Phase 10 deck fixture contributes real deck page/chart chunks.
+Raw corpus retrieval uses the existing deterministic BM25/token-vector/graph retrievers; real embeddings are Phase 12.
 ```
 
 ## Current State
@@ -835,7 +901,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document corpus, portfolio case studies, minimal investor-deck chart extraction, auditable memo generation, and final report packaging. Raw-document semantic retrieval, rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document benchmark corpus, portfolio case studies, minimal investor-deck chart extraction, raw financial document corpus indexing, auditable memo generation, and final report packaging. Real embedding/reranking, rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
 
 ## Project Identity
 
