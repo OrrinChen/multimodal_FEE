@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, and Phase 14 narrative/causal verification slice are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, and Phase 15 adversarial/red-team evaluation slice are complete.
 
 The repository now includes:
 
@@ -83,9 +83,12 @@ The repository now includes:
 - 10 narrative/causal due-diligence tasks covering numeric trends, segment contribution, causal attribution, management guidance, risk-factor changes, and deck narratives
 - memo sections that separate evidence-supported numeric trends, inference, and unsupported causal attribution
 - ordinary RAG overclaim reporting for causal/narrative failure cases
-- Phase 0 through Phase 14 tests under `tests/`
+- adversarial/red-team task generation with 120 tasks across 12 failure modes
+- failure-mode taxonomy and validator coverage matrix
+- explainable failure reasons without requiring perfect full-engine accuracy
+- Phase 0 through Phase 15 tests under `tests/`
 
-The next recommended action is Phase 15: add adversarial/red-team evaluation for wrong periods, companies, segments, currencies, units, stale filings, unsupported claims, and source-specific failure modes. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
+The next recommended action is Phase 16: add evidence trace and reproducibility hardening with run manifests, retrieval traces, verification traces, evidence traces, memo traces, and artifact manifests. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
 
 ## Portfolio Case Studies
 
@@ -110,3 +113,10 @@ Phase 14 prevents numeric or management-language support from being over-read as
 
 - JSON artifact: `experiments/narrative_causal/phase14_narrative_causal_report.json`
 - Markdown artifact: [phase14_narrative_causal_report.md](reports/narrative_causal/phase14_narrative_causal_report.md)
+
+## Red-Team Summary
+
+Phase 15 adds adversarial evaluation instead of chasing perfect accuracy. The report contains 120 tasks across 12 failure modes, maps each mode to a validator owner, and keeps missed hard cases explainable.
+
+- JSON artifact: `experiments/adversarial/phase15_adversarial_report.json`
+- Markdown artifact: [phase15_adversarial_report.md](reports/adversarial/phase15_adversarial_report.md)

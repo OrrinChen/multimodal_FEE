@@ -85,6 +85,7 @@ def test_final_report_package_contains_charts_tables_sample_memo_and_resume_bull
     assert "python3 scripts/smoke_case_studies.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_deck_chart_extraction.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_raw_corpus.py" in package.reproducibility_commands
+    assert "python3 scripts/smoke_adversarial_evaluation.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_embedding_backend.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_llm_decomposition.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_narrative_causal.py" in package.reproducibility_commands
@@ -129,6 +130,7 @@ def test_final_report_markdown_includes_required_outline_and_sample_memo():
     assert "Resume bullet" in markdown
     assert "recorded LLM-assisted decomposition" in markdown
     assert "causal narratives" in markdown
+    assert "adversarial red-team tasks" in markdown
     assert "python3 scripts/smoke_final_report_package.py" in markdown
 
 

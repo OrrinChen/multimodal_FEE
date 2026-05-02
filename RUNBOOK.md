@@ -101,6 +101,10 @@ python3 scripts/smoke_llm_decomposition.py
 python3 scripts/smoke_narrative_causal.py
 ```
 
+```bash
+python3 scripts/smoke_adversarial_evaluation.py
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.

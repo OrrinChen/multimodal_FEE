@@ -11,41 +11,40 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add narrative and causal claim verification
+feat: add adversarial financial evidence evaluation
 ```
 
 Current phase:
 
 ```text
-Phase 14 complete: Narrative / Causal Claim Verification
+Phase 15 complete: Adversarial / Red-Team Evaluation
 ```
 
 Main blocker:
 
 ```text
-None for Phase 14. Remaining work starts with Phase 15 adversarial/red-team evaluation.
+None for Phase 15. Remaining work starts with Phase 16 evidence trace and reproducibility hardening.
 ```
 
 Next recommended action:
 
 ```text
-Implement Phase 15 adversarial/red-team evaluation with at least 100 adversarial tasks, a failure-mode taxonomy, validator coverage report, and explainable failure reasons.
+Implement Phase 16 evidence trace and reproducibility hardening with run manifests, retrieval traces, verification traces, evidence traces, memo traces, artifact manifests, and a local SQLite or DuckDB trace store.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 14 narrative and causal claim verification.
+Completed Phase 15 adversarial/red-team evaluation.
 
 Added:
-- ClaimType and PartialVerdict labels for narrative/causal verification
-- NarrativeCausalTaskSet with 10 deterministic due-diligence tasks
-- NarrativeCausalVerifier with validator-readable partial verdicts
-- NarrativeCausalMemo separating supported facts, inference, and unsupported causal attribution
-- NarrativeCausalReport showing ordinary RAG overclaim cases
-- JSON and Markdown artifacts for Phase 14 report output
-- scripts/smoke_narrative_causal.py
-- tests/test_narrative_causal_verification.py
+- ADVERSARIAL_FAILURE_MODES covering 12 red-team failure families
+- AdversarialTaskGenerator producing 120 deterministic adversarial tasks
+- FailureModeTaxonomy mapping every failure mode to a validator owner
+- ValidatorCoverageReport with coverage matrix, explainable failure rate, and non-perfect full-engine detection accuracy
+- JSON and Markdown artifacts for Phase 15 report output
+- scripts/smoke_adversarial_evaluation.py
+- tests/test_adversarial_evaluation.py
 ```
 
 Latest validation:
@@ -73,8 +72,9 @@ Passed:
 - phase12 embedding backend smoke check: methods=bm25,dense_proxy,hybrid_proxy,graph,full_engine skipped=dense_real,hybrid_real provider=deterministic-token-v1 cached_vectors=320 manifest=embedding_manifest.json optional_available=False
 - phase13 LLM decomposition smoke check: complex_claims=5 providers=rule_based,recorded_llm rule_based_subclaims=7 llm_subclaims=19 rejected=0 json_artifact=experiments/llm_decomposition/phase13_decomposition_comparison.json markdown_artifact=reports/llm_decomposition/phase13_decomposition_comparison.md live_available=False
 - phase14 narrative/causal smoke check: narrative_tasks=10 claim_types=6 partial_verdicts=5 overclaim_cases=8 overclaim_rate=0.8 unsupported_causal=5 json_artifact=experiments/narrative_causal/phase14_narrative_causal_report.json markdown_artifact=reports/narrative_causal/phase14_narrative_causal_report.md
+- phase15 adversarial smoke check: adversarial_tasks=120 failure_modes=12 taxonomy_entries=12 validators=11 full_engine_accuracy=0.75 explainable_failure_rate=1 perfect_accuracy_required=False json_artifact=experiments/adversarial/phase15_adversarial_report.json markdown_artifact=reports/adversarial/phase15_adversarial_report.md
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=18 sample_memo_verdict=support markdown_lines=132
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=19 sample_memo_verdict=support markdown_lines=134
 
 Skipped:
 - none
@@ -1081,8 +1081,78 @@ Known limitations:
 ```text
 Phase 14 uses deterministic local task specs rather than live document retrieval for narrative causality.
 The ordinary RAG verdicts are diagnostic labels for overclaim analysis, not model-generated live outputs.
-The verifier checks explicit finding categories and statuses; broader adversarial coverage is deferred to Phase 15.
+The verifier checks explicit finding categories and statuses; broader adversarial coverage is handled by the separate Phase 15 red-team layer.
 No live LLM or external service is required.
+```
+
+### Phase 15: Adversarial / Red-Team Evaluation
+
+Commit:
+
+```text
+feat: add adversarial financial evidence evaluation
+```
+
+What changed:
+
+```text
+Added a deterministic adversarial/red-team evaluation layer for reliability-oriented testing.
+
+Added:
+- ADVERSARIAL_FAILURE_MODES with 12 financial evidence failure families
+- FailureModeTaxonomy and FailureModeTaxonomyEntry
+- AdversarialTask, AdversarialTaskSet, and AdversarialTaskGenerator
+- AdversarialTaskResult and ValidatorCoverageReport
+- 120 generated tasks across 10 companies and 12 failure modes
+- validator coverage matrix across 11 validator owners
+- non-perfect full-engine diagnostic accuracy to surface hard cases honestly
+- experiments/adversarial/phase15_adversarial_report.json
+- reports/adversarial/phase15_adversarial_report.md
+- scripts/smoke_adversarial_evaluation.py
+- tests/test_adversarial_evaluation.py
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_adversarial_evaluation.py -q initially failed because the adversarial task generator, failure-mode taxonomy, coverage report, and artifact writer APIs did not exist.
+- After implementation, tests/test_adversarial_evaluation.py passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check printed tasks=60 corpus_mode=benchmark corpus_documents=320 raw_chunks=0 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase9 case studies smoke check printed case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
+- phase10 deck chart extraction smoke check printed deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
+- phase11 raw corpus smoke check printed raw_chunks=482 curated_documents=320 companies=10 sec_paragraph_companies=10 transcript_chunks=30 deck_pages=1 corpus_modes=benchmark,raw
+- raw corpus retrieval smoke check printed tasks=60 corpus_mode=raw corpus_documents=482 raw_chunks=482 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=617
+- phase15 adversarial smoke check printed adversarial_tasks=120 failure_modes=12 taxonomy_entries=12 validators=11 full_engine_accuracy=0.75 explainable_failure_rate=1 perfect_accuracy_required=False json_artifact=experiments/adversarial/phase15_adversarial_report.json markdown_artifact=reports/adversarial/phase15_adversarial_report.md
+- phase12 embedding backend smoke check printed methods=bm25,dense_proxy,hybrid_proxy,graph,full_engine skipped=dense_real,hybrid_real provider=deterministic-token-v1 cached_vectors=320 manifest=embedding_manifest.json optional_available=False
+- phase13 LLM decomposition smoke check printed complex_claims=5 providers=rule_based,recorded_llm rule_based_subclaims=7 llm_subclaims=19 rejected=0 json_artifact=experiments/llm_decomposition/phase13_decomposition_comparison.json markdown_artifact=reports/llm_decomposition/phase13_decomposition_comparison.md live_available=False
+- phase14 narrative/causal smoke check printed narrative_tasks=10 claim_types=6 partial_verdicts=5 overclaim_cases=8 overclaim_rate=0.8 unsupported_causal=5 json_artifact=experiments/narrative_causal/phase14_narrative_causal_report.json markdown_artifact=reports/narrative_causal/phase14_narrative_causal_report.md
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=19 sample_memo_verdict=support markdown_lines=134
+```
+
+Known limitations:
+
+```text
+Phase 15 tasks are deterministic local red-team fixtures, not generated from live retrieval failures.
+The full-engine accuracy is diagnostic and intentionally not perfect; hard cases remain for wrong-segment, deck-only, and transcript-only claims.
+Validator ownership is modeled in the taxonomy; concrete production validators for every owner are deferred to later hardening phases.
+Trace persistence is not implemented yet and belongs to Phase 16.
 ```
 
 ## Current State
@@ -1110,7 +1180,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document benchmark corpus, portfolio case studies, minimal investor-deck chart extraction, raw financial document corpus indexing, pluggable embedding/reranking interfaces, validator-gated recorded LLM decomposition, narrative/causal partial-verdict verification, auditable memo generation, and final report packaging. Rendered PDF/deck output, broad chart extraction, live LLM decomposition, and adversarial/red-team evaluation are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document benchmark corpus, portfolio case studies, minimal investor-deck chart extraction, raw financial document corpus indexing, pluggable embedding/reranking interfaces, validator-gated recorded LLM decomposition, narrative/causal partial-verdict verification, adversarial/red-team evaluation, auditable memo generation, and final report packaging. Rendered PDF/deck output, broad chart extraction, live LLM decomposition, and evidence trace persistence are not implemented yet.
 
 ## Project Identity
 

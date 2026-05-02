@@ -167,6 +167,14 @@ Run this once narrative and causal claim verification exists:
 python3 scripts/smoke_narrative_causal.py
 ```
 
+## Phase 15 Adversarial / Red-Team Evaluation Smoke Check
+
+Run this once adversarial financial evidence evaluation exists:
+
+```bash
+python3 scripts/smoke_adversarial_evaluation.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

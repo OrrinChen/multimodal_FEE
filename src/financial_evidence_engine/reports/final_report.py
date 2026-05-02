@@ -42,6 +42,7 @@ REPRODUCIBILITY_COMMANDS: Tuple[str, ...] = (
     "python3 scripts/smoke_case_studies.py",
     "python3 scripts/smoke_deck_chart_extraction.py",
     "python3 scripts/smoke_raw_corpus.py",
+    "python3 scripts/smoke_adversarial_evaluation.py",
     "python3 scripts/smoke_embedding_backend.py",
     "python3 scripts/smoke_llm_decomposition.py",
     "python3 scripts/smoke_narrative_causal.py",
@@ -318,6 +319,7 @@ def _section_lines(section: str, package: FinalReportPackage) -> list:
     if section == "Failure taxonomy":
         return [
             "Observed failure classes: wrong citation, numeric mismatch, fiscal-period confusion, entity mismatch, unsupported claim, missed contradiction, and ordinary RAG overclaiming causal narratives.",
+            "Phase 15 adds adversarial red-team tasks for wrong periods, company aliases, segments, currencies, unit scales, stale filings, irrelevant citations, unsupported claims, structured-fact contradictions, deck-only claims, and transcript-only claims.",
         ]
     if section == "Example due-diligence memo":
         return package.sample_memo.to_markdown().rstrip().splitlines()

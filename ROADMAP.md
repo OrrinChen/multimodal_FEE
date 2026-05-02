@@ -119,10 +119,17 @@ Completed:
   - partial verdicts: `support_numeric_only`, `support_narrative`, `contradict_numeric`, `contradict_narrative`, and `insufficient_causal_support`
   - memo separation for evidence-supported numeric trend, inference, and unsupported causal attribution
   - ordinary RAG overclaim report with JSON/Markdown artifacts
+- [x] Phase 15 adversarial / red-team evaluation implemented:
+  - 120 adversarial tasks across 12 failure modes
+  - `AdversarialTaskGenerator`, `FailureModeTaxonomy`, and `ValidatorCoverageReport`
+  - validator coverage matrix across 11 validator owners
+  - full-engine diagnostic detection accuracy of 0.75 without requiring perfect accuracy
+  - explainable failure reasons for every adversarial result
+  - README red-team summary plus JSON/Markdown artifacts
 
 Current phase:
 
-- Phase 14 narrative/causal claim verification complete; Phase 15 adversarial/red-team evaluation ready
+- Phase 15 adversarial/red-team evaluation complete; Phase 16 evidence trace and reproducibility hardening ready
 
 Urgent short-term data action:
 
@@ -144,11 +151,11 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 15 adversarial/red-team evaluation:
-  - add tasks for wrong fiscal year, quarter, company, segment, currency, unit scale, stale filing, irrelevant citation, unsupported claim, structured-fact contradiction, deck-only claim, and transcript-only claim
-  - add failure-mode taxonomy and validator coverage report
-  - include at least 100 adversarial tasks
-  - report validator coverage and explainable failure reasons
+- Implement Phase 16 evidence trace and reproducibility hardening:
+  - add run, retrieval, verification, evidence, memo, and artifact manifests
+  - persist reproducibility traces in a local SQLite or DuckDB file
+  - record config hash, corpus version, method, task id, retrieved chunks, validator outputs, final verdict, runtime, and artifact paths
+  - make case studies and reports regenerable from trace data
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -1347,6 +1354,12 @@ feat: add narrative and causal claim verification
 
 ### Phase 15: Adversarial / Red-Team Evaluation
 
+Status:
+
+```text
+complete
+```
+
 Goal:
 
 ```text
@@ -1381,12 +1394,12 @@ ValidatorCoverageReport
 Acceptance criteria:
 
 ```text
-at least 100 adversarial tasks
-each task has expected failure mode
-report outputs validator coverage matrix
-full engine does not need perfect accuracy
-every failure reason is explainable
-README includes red-team summary
+[x] at least 100 adversarial tasks
+[x] each task has expected failure mode
+[x] report outputs validator coverage matrix
+[x] full engine does not need perfect accuracy
+[x] every failure reason is explainable
+[x] README includes red-team summary
 ```
 
 Suggested commit:
