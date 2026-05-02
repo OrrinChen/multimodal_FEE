@@ -143,6 +143,14 @@ python3 scripts/smoke_raw_corpus.py
 python3 scripts/smoke_real_retrieval_evaluation.py --corpus raw
 ```
 
+## Phase 12 Embedding Backend Smoke Check
+
+Run this once pluggable embedding and reranking backend exists:
+
+```bash
+python3 scripts/smoke_embedding_backend.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

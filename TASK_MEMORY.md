@@ -11,41 +11,42 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add raw financial document corpus indexing
+feat: add pluggable embedding and reranking backend
 ```
 
 Current phase:
 
 ```text
-Phase 11 complete: Raw Filing Paragraph / Page Corpus
+Phase 12 complete: Pluggable Embedding / Reranking Backend
 ```
 
 Main blocker:
 
 ```text
-None for Phase 11. Remaining work starts with Phase 12 pluggable embedding / reranking backend.
+None for Phase 12. Remaining work starts with Phase 13 validator-gated LLM claim decomposition.
 ```
 
 Next recommended action:
 
 ```text
-Implement Phase 12 embedding and reranking interfaces. Keep deterministic token-vector retrieval as the offline default and make any real embedding backend optional.
+Implement Phase 13 validator-gated LLM claim decomposition with recorded offline LLM fixtures. Keep rule-based decomposition as default and require schema validation plus validator rejection of hallucinated entity, metric, and period.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 11 raw financial document corpus indexing.
+Completed Phase 12 pluggable embedding and reranking backend.
 
 Added:
-- ChunkProvenance, DocumentChunk, ChunkIndexManifest, CorpusVersionManifest, RawFinancialCorpus, and RawCorpusBuilder
-- deterministic 482-chunk raw corpus fixture from source-like SEC filing sections/paragraphs, XBRL facts, transcript turns, filing tables, and Phase 10 deck evidence
-- raw chunk provenance with company, source type, document id, fiscal period, section/page, source span, source hash, and chunk hash
-- adapter from raw chunks to the existing RetrievalCorpusDocument interface
-- `run_real_retrieval_evaluation(..., corpus_mode="benchmark"|"raw")`
-- `scripts/smoke_raw_corpus.py`
-- `scripts/smoke_real_retrieval_evaluation.py --corpus raw`
-- tests/test_raw_corpus.py
+- EmbeddingProvider protocol
+- DeterministicTokenEmbeddingProvider as offline proxy default
+- LocalSentenceTransformerProvider and OpenAIEmbeddingProvider as optional disabled-by-default adapters
+- EmbeddingIndex and EmbeddingIndexManifest with local JSON cache manifest
+- EmbeddingEvidenceRetriever and EmbeddingHybridEvidenceRetriever
+- Reranker protocol and MetadataBoostReranker
+- run_embedding_retrieval_evaluation() with bm25, dense_proxy, hybrid_proxy, graph, full_engine, and optional dense_real/hybrid_real
+- scripts/smoke_embedding_backend.py
+- tests/test_embedding_backend.py
 ```
 
 Latest validation:
@@ -70,8 +71,9 @@ Passed:
 - phase10 deck chart extraction smoke check: deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
 - phase11 raw corpus smoke check: raw_chunks=482 curated_documents=320 companies=10 sec_paragraph_companies=10 transcript_chunks=30 deck_pages=1 corpus_modes=benchmark,raw
 - raw corpus retrieval smoke check: tasks=60 corpus_mode=raw corpus_documents=482 raw_chunks=482 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=617
+- phase12 embedding backend smoke check: methods=bm25,dense_proxy,hybrid_proxy,graph,full_engine skipped=dense_real,hybrid_real provider=deterministic-token-v1 cached_vectors=320 manifest=embedding_manifest.json optional_available=False
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=15 sample_memo_verdict=support markdown_lines=125
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=16 sample_memo_verdict=support markdown_lines=128
 
 Skipped:
 - none
@@ -873,7 +875,76 @@ Known limitations:
 The raw corpus is a deterministic local fixture, not a downloaded full SEC archive.
 SEC filing paragraphs are source-like generated fixtures used to test chunking and provenance boundaries.
 Only the NVDA Phase 10 deck fixture contributes real deck page/chart chunks.
-Raw corpus retrieval uses the existing deterministic BM25/token-vector/graph retrievers; real embeddings are Phase 12.
+At Phase 11 completion, raw corpus retrieval used deterministic BM25/token-vector/graph retrievers; Phase 12 now adds a pluggable embedding and reranking interface while keeping deterministic defaults.
+```
+
+### Phase 12: Pluggable Embedding / Reranking Backend
+
+Commit:
+
+```text
+feat: add pluggable embedding and reranking backend
+```
+
+What changed:
+
+```text
+Added an offline-safe embedding and reranking backend layer.
+
+Added:
+- EmbeddingProvider protocol
+- DeterministicTokenEmbeddingProvider for default offline proxy embeddings
+- LocalSentenceTransformerProvider disabled by default with graceful skip
+- OpenAIEmbeddingProvider disabled by default with graceful skip
+- EmbeddingIndex and EmbeddingIndexManifest with JSON cache files
+- EmbeddingEvidenceRetriever
+- EmbeddingHybridEvidenceRetriever
+- Reranker protocol
+- MetadataBoostReranker
+- EmbeddingRetrievalEvaluationResult
+- run_embedding_retrieval_evaluation()
+- scripts/smoke_embedding_backend.py
+- tests/test_embedding_backend.py
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_embedding_backend.py -q initially failed because embedding provider, cache index, reranker, and embedding retrieval report APIs did not exist.
+- After implementation, tests/test_embedding_backend.py passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check printed tasks=60 corpus_mode=benchmark corpus_documents=320 raw_chunks=0 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase9 case studies smoke check printed case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
+- phase10 deck chart extraction smoke check printed deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
+- phase11 raw corpus smoke check printed raw_chunks=482 curated_documents=320 companies=10 sec_paragraph_companies=10 transcript_chunks=30 deck_pages=1 corpus_modes=benchmark,raw
+- raw corpus retrieval smoke check printed tasks=60 corpus_mode=raw corpus_documents=482 raw_chunks=482 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=617
+- phase12 embedding backend smoke check printed methods=bm25,dense_proxy,hybrid_proxy,graph,full_engine skipped=dense_real,hybrid_real provider=deterministic-token-v1 cached_vectors=320 manifest=embedding_manifest.json optional_available=False
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=16 sample_memo_verdict=support markdown_lines=128
+```
+
+Known limitations:
+
+```text
+The default embedding path remains deterministic token hashing, not a neural embedding model.
+Local sentence-transformers and OpenAI providers are adapters only; they are disabled by default and skipped when dependencies or keys are missing.
+No external vector database is used; EmbeddingIndex is a local JSON cache.
+Optional real embedding metrics are only present when a real provider is explicitly enabled.
 ```
 
 ## Current State
@@ -901,7 +972,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document benchmark corpus, portfolio case studies, minimal investor-deck chart extraction, raw financial document corpus indexing, auditable memo generation, and final report packaging. Real embedding/reranking, rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document benchmark corpus, portfolio case studies, minimal investor-deck chart extraction, raw financial document corpus indexing, pluggable embedding/reranking interfaces, auditable memo generation, and final report packaging. Rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
 
 ## Project Identity
 

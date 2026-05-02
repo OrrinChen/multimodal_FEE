@@ -42,6 +42,7 @@ REPRODUCIBILITY_COMMANDS: Tuple[str, ...] = (
     "python3 scripts/smoke_case_studies.py",
     "python3 scripts/smoke_deck_chart_extraction.py",
     "python3 scripts/smoke_raw_corpus.py",
+    "python3 scripts/smoke_embedding_backend.py",
     "python3 scripts/smoke_phase8_memo.py",
     "python3 scripts/smoke_final_report_package.py",
 )
@@ -301,7 +302,10 @@ def _section_lines(section: str, package: FinalReportPackage) -> list:
     if section == "Due-diligence task set":
         return [f"The seed task set contains {package.task_count} multimodal due-diligence task specs."]
     if section == "Baselines and ablations":
-        return _table_markdown(package.tables[0]) + [""] + _table_markdown(package.tables[1])
+        return _table_markdown(package.tables[0]) + [""] + _table_markdown(package.tables[1]) + [
+            "",
+            "Phase 12 separates deterministic dense_proxy retrieval from optional dense_real and hybrid_real backends.",
+        ]
     if section == "Main results":
         lines = []
         for chart in package.charts:

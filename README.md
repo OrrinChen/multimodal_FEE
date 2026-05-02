@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, and Phase 11 raw corpus indexing slice are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, and Phase 12 embedding/reranking backend slice are complete.
 
 The repository now includes:
 
@@ -70,9 +70,12 @@ The repository now includes:
 - a 482-chunk raw corpus fixture with SEC filing sections/paragraphs, XBRL facts, transcript turns, deck pages, and deck chart units
 - raw chunk provenance with company, source type, document id, fiscal period, section/page, text span, and stable hash
 - retrieval evaluation corpus selection for `benchmark` versus `raw` corpus modes
-- Phase 0 through Phase 11 tests under `tests/`
+- pluggable embedding providers with deterministic offline default and optional local/live backends
+- cached embedding index manifests
+- metadata reranker interface and Phase 12 method report separating `dense_proxy` from optional `dense_real`
+- Phase 0 through Phase 12 tests under `tests/`
 
-The next recommended action is Phase 12: add pluggable embedding and reranking backends while keeping deterministic offline defaults. The dense retrieval path is currently an offline deterministic token-vector proxy, not a neural embedding model or external vector database.
+The next recommended action is Phase 13: add validator-gated LLM claim decomposition with recorded offline fixtures. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding providers are optional and skipped gracefully when unavailable.
 
 ## Portfolio Case Studies
 

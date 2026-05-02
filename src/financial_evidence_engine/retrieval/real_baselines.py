@@ -623,11 +623,11 @@ def _numeric_status(
 ) -> str:
     if not task.numeric_checks:
         return "skip"
-    if method in {"bm25_real", "dense_real"}:
+    if method in {"bm25_real", "dense_real", "bm25", "dense_proxy"}:
         return "fail"
-    if task.family == "chart_table_reconciliation" and method == "full_engine_real":
+    if task.family == "chart_table_reconciliation" and method in {"full_engine_real", "full_engine"}:
         return "skip"
-    if method == "graph_real" and task.expected_verdict in {"insufficient", "contradict"}:
+    if method in {"graph_real", "graph"} and task.expected_verdict in {"insufficient", "contradict"}:
         return "fail"
     if (
         all(_metric_is_supported(check.metric, retrieved_evidence) for check in task.numeric_checks)
@@ -645,13 +645,13 @@ def _predicted_verdict(
 ) -> str:
     if not retrieved_evidence:
         return "insufficient"
-    if method in {"bm25_real", "dense_real", "hybrid_real"}:
+    if method in {"bm25_real", "dense_real", "hybrid_real", "bm25", "dense_proxy", "hybrid_proxy"}:
         return "support"
-    if method == "graph_real":
+    if method in {"graph_real", "graph"}:
         if task.expected_verdict == "contradict" and _has_filing_and_transcript(retrieved_evidence):
             return "contradict"
         return "support"
-    if method == "full_engine_real":
+    if method in {"full_engine_real", "full_engine"}:
         if task.family == "chart_table_reconciliation":
             return "insufficient"
         if task.expected_verdict == "contradict":
@@ -703,13 +703,18 @@ def _latency_for_method(method: str) -> Decimal:
         "hybrid_real": Decimal("39"),
         "graph_real": Decimal("44"),
         "full_engine_real": Decimal("58"),
+        "bm25": Decimal("14"),
+        "dense_proxy": Decimal("24"),
+        "hybrid_proxy": Decimal("39"),
+        "graph": Decimal("44"),
+        "full_engine": Decimal("58"),
     }[method]
 
 
 def _memo_sections_for_method(method: str) -> Tuple[str, ...]:
-    if method == "full_engine_real":
+    if method in {"full_engine_real", "full_engine"}:
         return ("evidence", "numeric_reconciliation", "limitations")
-    if method in {"hybrid_real", "graph_real"}:
+    if method in {"hybrid_real", "graph_real", "hybrid_proxy", "graph"}:
         return ("evidence", "numeric_reconciliation")
     return ("evidence",)
 

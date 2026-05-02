@@ -99,10 +99,17 @@ Completed:
   - XBRL fact chunks, transcript-turn chunks, and filing table chunks
   - Phase 10 deck page and deck chart chunks
   - retrieval evaluation `corpus_mode` selection for `benchmark` and `raw`
+- [x] Phase 12 pluggable embedding / reranking backend implemented:
+  - `EmbeddingProvider` protocol
+  - deterministic token embedding provider as offline default
+  - optional local sentence-transformer and OpenAI providers with graceful skip
+  - cached embedding index with manifest
+  - metadata reranker interface
+  - Phase 12 report separating `dense_proxy` / `hybrid_proxy` from optional `dense_real` / `hybrid_real`
 
 Current phase:
 
-- Phase 11 raw paragraph/page corpus complete; Phase 12 embedding/reranking backend ready
+- Phase 12 embedding/reranking backend complete; Phase 13 validator-gated LLM decomposition ready
 
 Urgent short-term data action:
 
@@ -124,12 +131,12 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 12 pluggable embedding / reranking backend:
-  - keep deterministic token-vector proxy as test default
-  - add an `EmbeddingProvider` interface
-  - add optional local embedding provider and cached embedding index
-  - add a reranker interface
-  - report proxy versus real embedding methods separately when available
+- Implement Phase 13 validator-gated LLM claim decomposition:
+  - keep rule-based decomposition as default
+  - add recorded LLM outputs as offline fixtures
+  - validate LLM output schema
+  - reject hallucinated entity, metric, and period through validator gate
+  - compare rule-based versus LLM-assisted decomposition on complex claims
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -164,7 +171,7 @@ Deferred:
 - broad chart extraction beyond the first investor-deck case
 - real-time market data dependency
 - UI
-- neural dense retrieval or external vector database
+- required neural dense retrieval or external vector database
 - broad GraphRAG experimentation before raw-document retrieval quality is proven
 
 External data policy:
@@ -1193,11 +1200,11 @@ separate proxy and real embedding metrics in reports
 Acceptance criteria:
 
 ```text
-tests require no network
-no API key required
-embeddings cached locally with manifest
-report can show bm25, dense_proxy, dense_real if available, hybrid_proxy, hybrid_real if available, graph, full_engine
-missing real embedding backend gracefully skips
+[x] tests require no network
+[x] no API key required
+[x] embeddings cached locally with manifest
+[x] report can show bm25, dense_proxy, dense_real if available, hybrid_proxy, hybrid_real if available, graph, full_engine
+[x] missing real embedding backend gracefully skips
 ```
 
 Suggested commit:
