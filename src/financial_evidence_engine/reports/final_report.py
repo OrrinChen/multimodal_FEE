@@ -44,6 +44,7 @@ REPRODUCIBILITY_COMMANDS: Tuple[str, ...] = (
     "python3 scripts/smoke_raw_corpus.py",
     "python3 scripts/smoke_embedding_backend.py",
     "python3 scripts/smoke_llm_decomposition.py",
+    "python3 scripts/smoke_narrative_causal.py",
     "python3 scripts/smoke_phase8_memo.py",
     "python3 scripts/smoke_final_report_package.py",
 )
@@ -300,6 +301,7 @@ def _section_lines(section: str, package: FinalReportPackage) -> list:
         return [
             "Claims are decomposed into validator-readable subclaims with citation, period, source, and numeric checks.",
             "Phase 13 adds recorded LLM-assisted decomposition fixtures behind schema validation and entity, period, and metric validator gates.",
+            "Phase 14 adds partial narrative and causal verdicts so numeric support is not over-read as causal proof.",
         ]
     if section == "Due-diligence task set":
         return [f"The seed task set contains {package.task_count} multimodal due-diligence task specs."]
@@ -315,7 +317,7 @@ def _section_lines(section: str, package: FinalReportPackage) -> list:
         return lines
     if section == "Failure taxonomy":
         return [
-            "Observed failure classes: wrong citation, numeric mismatch, fiscal-period confusion, entity mismatch, unsupported claim, missed contradiction.",
+            "Observed failure classes: wrong citation, numeric mismatch, fiscal-period confusion, entity mismatch, unsupported claim, missed contradiction, and ordinary RAG overclaiming causal narratives.",
         ]
     if section == "Example due-diligence memo":
         return package.sample_memo.to_markdown().rstrip().splitlines()

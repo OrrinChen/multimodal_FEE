@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, and Phase 13 validator-gated LLM decomposition slice are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, and Phase 14 narrative/causal verification slice are complete.
 
 The repository now includes:
 
@@ -79,9 +79,13 @@ The repository now includes:
 - entity, fiscal-period, and metric validator gates that reject hallucinated LLM subclaims
 - rule-based versus recorded-LLM decomposition comparison artifacts
 - an optional live LLM decomposer placeholder that is disabled by default and never required by tests
-- Phase 0 through Phase 13 tests under `tests/`
+- narrative and causal claim verification with partial verdicts
+- 10 narrative/causal due-diligence tasks covering numeric trends, segment contribution, causal attribution, management guidance, risk-factor changes, and deck narratives
+- memo sections that separate evidence-supported numeric trends, inference, and unsupported causal attribution
+- ordinary RAG overclaim reporting for causal/narrative failure cases
+- Phase 0 through Phase 14 tests under `tests/`
 
-The next recommended action is Phase 14: add narrative and causal claim verification so the engine can separate evidence-supported numeric trends from unsupported causal attribution. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
+The next recommended action is Phase 15: add adversarial/red-team evaluation for wrong periods, companies, segments, currencies, units, stale filings, unsupported claims, and source-specific failure modes. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
 
 ## Portfolio Case Studies
 
@@ -99,3 +103,10 @@ Phase 13 keeps rule-based decomposition as the default, adds recorded LLM output
 
 - JSON artifact: `experiments/llm_decomposition/phase13_decomposition_comparison.json`
 - Markdown artifact: [phase13_decomposition_comparison.md](reports/llm_decomposition/phase13_decomposition_comparison.md)
+
+## Narrative / Causal Verification Slice
+
+Phase 14 prevents numeric or management-language support from being over-read as causal proof. It adds partial verdicts such as `support_numeric_only`, `support_narrative`, `contradict_numeric`, `contradict_narrative`, and `insufficient_causal_support`.
+
+- JSON artifact: `experiments/narrative_causal/phase14_narrative_causal_report.json`
+- Markdown artifact: [phase14_narrative_causal_report.md](reports/narrative_causal/phase14_narrative_causal_report.md)

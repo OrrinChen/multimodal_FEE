@@ -113,10 +113,16 @@ Completed:
   - schema validation for recorded LLM outputs
   - validator rejection of hallucinated entity, period, and metric
   - rule-based versus recorded-LLM JSON/Markdown comparison artifacts
+- [x] Phase 14 narrative / causal claim verification implemented:
+  - 10 narrative/causal due-diligence tasks
+  - claim types for numeric trend, segment contribution, causal attribution, management guidance, risk-factor change, and deck narrative
+  - partial verdicts: `support_numeric_only`, `support_narrative`, `contradict_numeric`, `contradict_narrative`, and `insufficient_causal_support`
+  - memo separation for evidence-supported numeric trend, inference, and unsupported causal attribution
+  - ordinary RAG overclaim report with JSON/Markdown artifacts
 
 Current phase:
 
-- Phase 13 validator-gated LLM decomposition complete; Phase 14 narrative/causal claim verification ready
+- Phase 14 narrative/causal claim verification complete; Phase 15 adversarial/red-team evaluation ready
 
 Urgent short-term data action:
 
@@ -138,12 +144,11 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 14 narrative and causal claim verification:
-  - add narrative and causal claim types
-  - support partial verdicts such as `support_numeric_only` and `insufficient_causal_support`
-  - separate evidence-supported facts from inference in memo output
-  - add at least 10 narrative/causal due-diligence tasks
-  - show why ordinary RAG tends to overclaim causal narratives
+- Implement Phase 15 adversarial/red-team evaluation:
+  - add tasks for wrong fiscal year, quarter, company, segment, currency, unit scale, stale filing, irrelevant citation, unsupported claim, structured-fact contradiction, deck-only claim, and transcript-only claim
+  - add failure-mode taxonomy and validator coverage report
+  - include at least 100 adversarial tasks
+  - report validator coverage and explainable failure reasons
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -1279,6 +1284,12 @@ feat: add validator-gated LLM claim decomposition
 
 ### Phase 14: Narrative / Causal Claim Verification
 
+Status:
+
+```text
+complete
+```
+
 Goal:
 
 ```text
@@ -1322,10 +1333,10 @@ System:
 Acceptance criteria:
 
 ```text
-at least 10 narrative/causal tasks
-system can partially support claims
-memo separates evidence-supported numeric trend, inference, and unsupported causal attribution
-report shows why ordinary RAG tends to overclaim
+[x] at least 10 narrative/causal tasks
+[x] system can partially support claims
+[x] memo separates evidence-supported numeric trend, inference, and unsupported causal attribution
+[x] report shows why ordinary RAG tends to overclaim
 ```
 
 Suggested commit:
