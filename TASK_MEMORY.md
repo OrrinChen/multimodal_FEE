@@ -11,42 +11,42 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-feat: add lightweight due diligence demo UI
+feat: harden local production workflow
 ```
 
 Current phase:
 
 ```text
-Phase 18 complete: Lightweight Demo UI
+Phase 19 complete: Productionization Slice
 ```
 
 Main blocker:
 
 ```text
-None for Phase 18. Remaining work starts with Phase 19 local productionization.
+None for Phase 19. Remaining work starts with Phase 20 final resume/interview packaging.
 ```
 
 Next recommended action:
 
 ```text
-Implement Phase 19 local productionization with CLI commands, config profiles, structured logging, error taxonomy, artifact versioning, cache invalidation, and data provenance checks.
+Implement Phase 20 final resume/interview packaging with interview story, resume bullets, system design notes, failure modes, and demo script.
 ```
 
 Latest workflow update:
 
 ```text
-Completed Phase 18 lightweight local demo UI.
+Completed Phase 19 local production workflow hardening.
 
 Added:
-- app.py Streamlit entry point
-- DemoState, CaseStudyReplay, and DemoClaimResult
-- local artifact-backed demo state loading
-- three case-study replay path
-- local claim verification path with memo generation and no API key requirement
-- scripts/smoke_demo_ui.py
-- scripts/smoke_streamlit_start.py
-- tests/test_demo_ui.py
-- optional pyproject demo extra for streamlit
+- financial_evidence_engine.cli module
+- financial_evidence_engine.production helpers
+- financial-evidence entry point in pyproject.toml
+- CLI commands: verify-claim, build-corpus, run-eval, build-case-studies, build-report, serve-demo
+- offline local and CI config profiles
+- ProductionError taxonomy
+- artifact versioning, cache invalidation planning, and provenance checks
+- scripts/smoke_cli_workflow.py
+- tests/test_cli_workflow.py
 ```
 
 Latest validation:
@@ -57,7 +57,7 @@ Passed:
 - git diff --check
 - markdown trailing-whitespace scan
 - python3 -m compileall src scripts
-- python3 -m pytest: 89 passed
+- python3 -m pytest: 94 passed
 - config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
 - phase1 registry smoke check: companies=3 documents=6 aligned_periods=3
 - phase2 extraction smoke check: sections=4 xbrl=1 transcripts=1 tables=1
@@ -79,8 +79,9 @@ Passed:
 - phase17 portfolio report build check: sections=10 pages=10 case_studies=3 figures=5 tables=3 pdf=reports/final_report.pdf markdown=reports/final_report.md manifest=reports/portfolio_report_manifest.json
 - phase18 demo UI smoke check: pages=4 case_studies=3 methods=5 local_claim_verdict=support api_key_required=False app=app.py
 - phase18 Streamlit start smoke check: streamlit_started=True url=http://127.0.0.1:54900 app=app.py
+- phase19 CLI workflow smoke check: commands=6 verify_verdict=support raw_chunks=482 eval_tasks=60 case_studies=3 report_pages=10 serve_demo=True network_enabled=False
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=23 sample_memo_verdict=support markdown_lines=140
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=24 sample_memo_verdict=support markdown_lines=141
 
 Skipped:
 - none
@@ -1376,6 +1377,80 @@ Only the local AAPL revenue claim path is wired for new ad hoc input.
 Case study replay is artifact-backed; it does not rerun every retrieval method live from the UI.
 ```
 
+### Phase 19: Productionization Slice
+
+Commit:
+
+```text
+feat: harden local production workflow
+```
+
+What changed:
+
+```text
+Added a production-oriented local CLI and artifact hygiene helpers.
+
+Added:
+- financial_evidence_engine.cli
+- financial_evidence_engine.production
+- financial-evidence console entry point
+- CLI commands: verify-claim, build-corpus, run-eval, build-case-studies, build-report, serve-demo
+- CONFIG_PROFILES for local and CI, both offline
+- ERROR_TAXONOMY and ProductionError
+- ArtifactVersion, CacheInvalidationPlan, and ProvenanceCheck
+- structured_log()
+- scripts/smoke_cli_workflow.py
+- tests/test_cli_workflow.py
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_cli_workflow.py -q initially failed because financial_evidence_engine.cli, financial_evidence_engine.production, and scripts/smoke_cli_workflow.py did not exist.
+- After implementation, tests/test_cli_workflow.py passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts app.py
+- python3 -m pytest: 94 passed
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check printed tasks=60 corpus_mode=benchmark corpus_documents=320 raw_chunks=0 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase9 case studies smoke check printed case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
+- phase10 deck chart extraction smoke check printed deck_pages=1 chart_evidence=1 chart_tasks=1 reconciliation_rows=1 verdict=support
+- phase11 raw corpus smoke check printed raw_chunks=482 curated_documents=320 companies=10 sec_paragraph_companies=10 transcript_chunks=30 deck_pages=1 corpus_modes=benchmark,raw
+- raw corpus retrieval smoke check printed tasks=60 corpus_mode=raw corpus_documents=482 raw_chunks=482 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=617
+- phase12 embedding backend smoke check printed methods=bm25,dense_proxy,hybrid_proxy,graph,full_engine skipped=dense_real,hybrid_real provider=deterministic-token-v1 cached_vectors=320 manifest=embedding_manifest.json optional_available=False
+- phase13 LLM decomposition smoke check printed complex_claims=5 providers=rule_based,recorded_llm rule_based_subclaims=7 llm_subclaims=19 rejected=0 json_artifact=experiments/llm_decomposition/phase13_decomposition_comparison.json markdown_artifact=reports/llm_decomposition/phase13_decomposition_comparison.md live_available=False
+- phase14 narrative/causal smoke check printed narrative_tasks=10 claim_types=6 partial_verdicts=5 overclaim_cases=8 overclaim_rate=0.8 unsupported_causal=5 json_artifact=experiments/narrative_causal/phase14_narrative_causal_report.json markdown_artifact=reports/narrative_causal/phase14_narrative_causal_report.md
+- phase15 adversarial smoke check printed adversarial_tasks=120 failure_modes=12 taxonomy_entries=12 validators=11 full_engine_accuracy=0.75 explainable_failure_rate=1 perfect_accuracy_required=False json_artifact=experiments/adversarial/phase15_adversarial_report.json markdown_artifact=reports/adversarial/phase15_adversarial_report.md
+- phase16 trace smoke check printed runs=3 retrieval_traces=3 verification_traces=3 evidence_traces=3 memo_traces=3 artifact_records=3 trace_integrity=True case_studies_regenerated=3 db=experiments/traces/phase16_trace.sqlite manifest=reports/traces/phase16_artifact_manifest.json
+- phase17 portfolio report build check printed sections=10 pages=10 case_studies=3 figures=5 tables=3 pdf=reports/final_report.pdf markdown=reports/final_report.md manifest=reports/portfolio_report_manifest.json
+- phase18 demo UI smoke check printed pages=4 case_studies=3 methods=5 local_claim_verdict=support api_key_required=False app=app.py
+- phase18 Streamlit start smoke check printed streamlit_started=True url=http://127.0.0.1:55775 app=app.py
+- phase19 CLI workflow smoke check printed commands=6 verify_verdict=support raw_chunks=482 eval_tasks=60 case_studies=3 report_pages=10 serve_demo=True network_enabled=False
+- missing PDF CLI check returned code 2 and JSON error_code=missing_pdf without traceback
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=24 sample_memo_verdict=support markdown_lines=141
+```
+
+Known limitations:
+
+```text
+The CLI is local-first and does not expose a persistent service API.
+serve-demo supports dry-run checks and can launch Streamlit, but this phase does not add process supervision.
+FastAPI remains intentionally deferred.
+```
+
 ## Current State
 
 Project folder created as:
@@ -1401,7 +1476,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document benchmark corpus, portfolio case studies, minimal investor-deck chart extraction, raw financial document corpus indexing, pluggable embedding/reranking interfaces, validator-gated recorded LLM decomposition, narrative/causal partial-verdict verification, adversarial/red-team evaluation, evidence trace persistence, auditable memo generation, final report packaging, a portfolio-ready PDF/Markdown report artifact, and a lightweight local Streamlit demo UI. Broad chart extraction, live LLM decomposition, and production CLI hardening are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document benchmark corpus, portfolio case studies, minimal investor-deck chart extraction, raw financial document corpus indexing, pluggable embedding/reranking interfaces, validator-gated recorded LLM decomposition, narrative/causal partial-verdict verification, adversarial/red-team evaluation, evidence trace persistence, auditable memo generation, final report packaging, a portfolio-ready PDF/Markdown report artifact, a lightweight local Streamlit demo UI, and a local production CLI workflow. Broad chart extraction, live LLM decomposition, and final interview packaging are not implemented yet.
 
 ## Project Identity
 

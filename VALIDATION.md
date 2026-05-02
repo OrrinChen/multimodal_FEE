@@ -203,6 +203,14 @@ python3 scripts/smoke_demo_ui.py
 python3 scripts/smoke_streamlit_start.py
 ```
 
+## Phase 19 CLI Workflow Smoke Check
+
+Run this once local production CLI commands exist:
+
+```bash
+python3 scripts/smoke_cli_workflow.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

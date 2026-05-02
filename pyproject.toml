@@ -20,6 +20,9 @@ demo = [
     "streamlit>=1.32",
 ]
 
+[project.scripts]
+financial-evidence = "financial_evidence_engine.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

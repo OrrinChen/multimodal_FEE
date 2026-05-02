@@ -147,10 +147,17 @@ Completed:
   - replay for three portfolio case studies
   - local claim verification path with no API key
   - smoke checks for demo state and Streamlit startup
+- [x] Phase 19 local production workflow implemented:
+  - `financial-evidence` CLI entry point
+  - commands for verify-claim, build-corpus, run-eval, build-case-studies, build-report, and serve-demo
+  - offline config profiles
+  - structured error taxonomy
+  - artifact versioning, cache invalidation planning, and provenance checks
+  - CLI smoke check covering all six commands
 
 Current phase:
 
-- Phase 18 lightweight demo UI complete; Phase 19 local productionization ready
+- Phase 19 local productionization complete; Phase 20 final resume/interview packaging ready
 
 Urgent short-term data action:
 
@@ -172,10 +179,10 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 19 local productionization:
-  - add CLI commands for verify-claim, build-corpus, run-eval, build-case-studies, build-report, and serve-demo
-  - add config profiles, structured logging, error taxonomy, artifact versioning, cache invalidation, and provenance checks
-  - keep all commands offline and gracefully handle missing optional dependencies
+- Implement Phase 20 final resume/interview packaging:
+  - add interview story, resume bullets, system design notes, failure modes, and demo script
+  - make README readable in 2 minutes and repo reproducible in 30 minutes
+  - frame the project as claim-level financial evidence verification, not generic RAG
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -184,7 +191,6 @@ Next recommended action:
   - Phase 13: validator-gated LLM decomposition
   - Phase 14: narrative/causal claim verification
   - Phase 15: adversarial/red-team evaluation
-  - Phase 19: local productionization
   - Phase 20: final resume/interview packaging
 
 Near-term vertical slice:
@@ -1625,11 +1631,11 @@ financial-evidence serve-demo
 Acceptance criteria:
 
 ```text
-CLI help is complete
-bad input has clear errors
-missing corpus, model, or PDF fails gracefully
-no hidden network dependency
-CLI smoke tests pass
+[x] CLI help is complete
+[x] bad input has clear errors
+[x] missing corpus, model, or PDF fails gracefully
+[x] no hidden network dependency
+[x] CLI smoke tests pass
 ```
 
 Suggested commit:

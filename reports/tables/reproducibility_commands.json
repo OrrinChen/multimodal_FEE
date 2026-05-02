@@ -93,8 +93,12 @@
       "step": 22
     },
     {
-      "command": "python3 scripts/smoke_final_report_package.py",
+      "command": "python3 scripts/smoke_cli_workflow.py",
       "step": 23
+    },
+    {
+      "command": "python3 scripts/smoke_final_report_package.py",
+      "step": 24
     }
   ],
   "table_id": "reproducibility_commands",

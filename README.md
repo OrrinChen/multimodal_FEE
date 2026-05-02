@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, Phase 16 trace/reproducibility hardening slice, Phase 17 portfolio report artifact, and Phase 18 lightweight local demo UI are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, Phase 16 trace/reproducibility hardening slice, Phase 17 portfolio report artifact, Phase 18 lightweight local demo UI, and Phase 19 local production workflow are complete.
 
 The repository now includes:
 
@@ -92,9 +92,11 @@ The repository now includes:
 - portfolio-ready report generator with Markdown, PDF, figure specs, table specs, resume bullet, and manifest artifacts
 - lightweight local Streamlit demo over existing artifacts
 - local claim-verification demo path that requires no API key
-- Phase 0 through Phase 18 tests under `tests/`
+- `financial-evidence` CLI commands for local verification, corpus, evaluation, case-study, report, and demo workflows
+- offline config profiles, structured error taxonomy, artifact versioning, cache invalidation plans, and provenance checks
+- Phase 0 through Phase 19 tests under `tests/`
 
-The next recommended action is Phase 19: harden the local CLI and production workflow. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
+The next recommended action is Phase 20: package the final resume and interview materials. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
 
 ## Portfolio Case Studies
 
@@ -166,4 +168,19 @@ Offline smoke checks:
 ```bash
 python3 scripts/smoke_demo_ui.py
 python3 scripts/smoke_streamlit_start.py
+```
+
+## Local CLI
+
+Phase 19 adds a production-oriented local CLI.
+
+```bash
+PYTHONPATH=src python3 -m financial_evidence_engine.cli --help
+PYTHONPATH=src python3 -m financial_evidence_engine.cli verify-claim --claim "Apple FY2024 revenue was $391.035 billion."
+```
+
+Smoke check:
+
+```bash
+python3 scripts/smoke_cli_workflow.py
 ```
