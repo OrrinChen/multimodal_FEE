@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, and Phase 16 trace/reproducibility hardening slice are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, Phase 16 trace/reproducibility hardening slice, and Phase 17 portfolio report artifact are complete.
 
 The repository now includes:
 
@@ -89,9 +89,10 @@ The repository now includes:
 - SQLite-backed trace store with run, retrieval, verification, evidence, memo, and artifact manifests
 - reproducibility trace artifacts for the three portfolio case studies
 - case-study regeneration from trace records
-- Phase 0 through Phase 16 tests under `tests/`
+- portfolio-ready report generator with Markdown, PDF, figure specs, table specs, resume bullet, and manifest artifacts
+- Phase 0 through Phase 17 tests under `tests/`
 
-The next recommended action is Phase 17: build the polished portfolio-ready technical report artifact. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
+The next recommended action is Phase 18: add a lightweight local demo UI over existing artifacts. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
 
 ## Portfolio Case Studies
 
@@ -136,3 +137,16 @@ python3 scripts/smoke_trace_reproducibility.py
 
 - SQLite trace DB: `experiments/traces/phase16_trace.sqlite`
 - Artifact manifest: `reports/traces/phase16_artifact_manifest.json`
+
+## Portfolio Report
+
+Phase 17 builds the recruiter-facing technical artifact.
+
+```bash
+python3 scripts/build_portfolio_report.py
+```
+
+- PDF: [final_report.pdf](reports/final_report.pdf)
+- Markdown: [final_report.md](reports/final_report.md)
+- Manifest: `reports/portfolio_report_manifest.json`
+- Resume bullet: `reports/resume_bullet.txt`

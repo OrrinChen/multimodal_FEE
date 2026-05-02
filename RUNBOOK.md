@@ -109,6 +109,10 @@ python3 scripts/smoke_adversarial_evaluation.py
 python3 scripts/smoke_trace_reproducibility.py
 ```
 
+```bash
+python3 scripts/build_portfolio_report.py
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.

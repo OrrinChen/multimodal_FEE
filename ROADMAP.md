@@ -133,10 +133,17 @@ Completed:
   - config hash, corpus version, method, task id, retrieved chunks, validator results, final verdict, runtime, and artifact paths recorded per run
   - case-study regeneration from trace records
   - README one-command trace reproduction
+- [x] Phase 17 portfolio report artifact implemented:
+  - one-command `scripts/build_portfolio_report.py`
+  - 10-page PDF-ready report under `reports/final_report.pdf`
+  - Markdown report under `reports/final_report.md`
+  - figure specs under `reports/figures/`
+  - table specs under `reports/tables/`
+  - report manifest and generated resume bullet
 
 Current phase:
 
-- Phase 16 evidence trace and reproducibility hardening complete; Phase 17 polished technical report ready
+- Phase 17 portfolio report artifact complete; Phase 18 lightweight demo UI ready
 
 Urgent short-term data action:
 
@@ -158,10 +165,11 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 17 polished technical report artifact:
-  - add one-command report generation
-  - produce a 6-10 page portfolio report artifact
-  - include real case studies, investor-deck/chart case, limitations, and reproducibility
+- Implement Phase 18 lightweight local demo UI:
+  - use existing local artifacts
+  - replay the three case studies
+  - show retrieved evidence, validator checks, verdict, numeric reconciliation, and memo
+  - avoid auth, cloud, or external API requirements
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -170,7 +178,6 @@ Next recommended action:
   - Phase 13: validator-gated LLM decomposition
   - Phase 14: narrative/causal claim verification
   - Phase 15: adversarial/red-team evaluation
-  - Phase 17: polished technical report
   - Phase 18: lightweight demo UI
   - Phase 19: local productionization
   - Phase 20: final resume/interview packaging
@@ -1514,11 +1521,11 @@ chart evidence reconciliation
 Acceptance criteria:
 
 ```text
-one command generates the report
-PDF is no more than 10 pages
-report includes real case studies
-report includes limitations
-resume bullet is generated
+[x] one command generates the report
+[x] PDF is no more than 10 pages
+[x] report includes real case studies
+[x] report includes limitations
+[x] resume bullet is generated
 ```
 
 Suggested commit:

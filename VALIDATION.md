@@ -183,6 +183,14 @@ Run this once reproducible evidence trace manifests exist:
 python3 scripts/smoke_trace_reproducibility.py
 ```
 
+## Phase 17 Portfolio Report Build Check
+
+Run this once portfolio report artifacts exist:
+
+```bash
+python3 scripts/build_portfolio_report.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:
