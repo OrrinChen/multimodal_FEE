@@ -191,6 +191,18 @@ Run this once portfolio report artifacts exist:
 python3 scripts/build_portfolio_report.py
 ```
 
+## Phase 18 Demo UI Smoke Checks
+
+Run these once the lightweight local demo UI exists:
+
+```bash
+python3 scripts/smoke_demo_ui.py
+```
+
+```bash
+python3 scripts/smoke_streamlit_start.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

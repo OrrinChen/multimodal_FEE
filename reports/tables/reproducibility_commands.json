@@ -85,8 +85,16 @@
       "step": 20
     },
     {
-      "command": "python3 scripts/smoke_final_report_package.py",
+      "command": "python3 scripts/smoke_demo_ui.py",
       "step": 21
+    },
+    {
+      "command": "python3 scripts/smoke_streamlit_start.py",
+      "step": 22
+    },
+    {
+      "command": "python3 scripts/smoke_final_report_package.py",
+      "step": 23
     }
   ],
   "table_id": "reproducibility_commands",

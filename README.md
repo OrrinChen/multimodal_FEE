@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, Phase 16 trace/reproducibility hardening slice, and Phase 17 portfolio report artifact are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, Phase 16 trace/reproducibility hardening slice, Phase 17 portfolio report artifact, and Phase 18 lightweight local demo UI are complete.
 
 The repository now includes:
 
@@ -90,9 +90,11 @@ The repository now includes:
 - reproducibility trace artifacts for the three portfolio case studies
 - case-study regeneration from trace records
 - portfolio-ready report generator with Markdown, PDF, figure specs, table specs, resume bullet, and manifest artifacts
-- Phase 0 through Phase 17 tests under `tests/`
+- lightweight local Streamlit demo over existing artifacts
+- local claim-verification demo path that requires no API key
+- Phase 0 through Phase 18 tests under `tests/`
 
-The next recommended action is Phase 18: add a lightweight local demo UI over existing artifacts. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
+The next recommended action is Phase 19: harden the local CLI and production workflow. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
 
 ## Portfolio Case Studies
 
@@ -150,3 +152,18 @@ python3 scripts/build_portfolio_report.py
 - Markdown: [final_report.md](reports/final_report.md)
 - Manifest: `reports/portfolio_report_manifest.json`
 - Resume bullet: `reports/resume_bullet.txt`
+
+## Local Demo
+
+Phase 18 adds a local demo UI over checked-in artifacts. It has four views: claim verification, case study browser, retrieval method comparison, and memo view.
+
+```bash
+python3 -m streamlit run app.py
+```
+
+Offline smoke checks:
+
+```bash
+python3 scripts/smoke_demo_ui.py
+python3 scripts/smoke_streamlit_start.py
+```

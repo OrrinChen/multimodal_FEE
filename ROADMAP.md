@@ -140,10 +140,17 @@ Completed:
   - figure specs under `reports/figures/`
   - table specs under `reports/tables/`
   - report manifest and generated resume bullet
+- [x] Phase 18 lightweight local demo UI implemented:
+  - `app.py` Streamlit entry point
+  - four demo views for claim verification, case studies, retrieval comparison, and memo
+  - local artifact-backed state loader
+  - replay for three portfolio case studies
+  - local claim verification path with no API key
+  - smoke checks for demo state and Streamlit startup
 
 Current phase:
 
-- Phase 17 portfolio report artifact complete; Phase 18 lightweight demo UI ready
+- Phase 18 lightweight demo UI complete; Phase 19 local productionization ready
 
 Urgent short-term data action:
 
@@ -165,11 +172,10 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 18 lightweight local demo UI:
-  - use existing local artifacts
-  - replay the three case studies
-  - show retrieved evidence, validator checks, verdict, numeric reconciliation, and memo
-  - avoid auth, cloud, or external API requirements
+- Implement Phase 19 local productionization:
+  - add CLI commands for verify-claim, build-corpus, run-eval, build-case-studies, build-report, and serve-demo
+  - add config profiles, structured logging, error taxonomy, artifact versioning, cache invalidation, and provenance checks
+  - keep all commands offline and gracefully handle missing optional dependencies
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -178,7 +184,6 @@ Next recommended action:
   - Phase 13: validator-gated LLM decomposition
   - Phase 14: narrative/causal claim verification
   - Phase 15: adversarial/red-team evaluation
-  - Phase 18: lightweight demo UI
   - Phase 19: local productionization
   - Phase 20: final resume/interview packaging
 
@@ -1572,11 +1577,11 @@ chatbot-style UI
 Acceptance criteria:
 
 ```text
-streamlit run app.py starts locally
-demo uses local artifacts
-no API key required
-3 case studies are replayable
-one new local claim can run through the local pipeline
+[x] streamlit run app.py starts locally
+[x] demo uses local artifacts
+[x] no API key required
+[x] 3 case studies are replayable
+[x] one new local claim can run through the local pipeline
 ```
 
 Suggested commit:

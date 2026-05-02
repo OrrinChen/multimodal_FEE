@@ -113,6 +113,14 @@ python3 scripts/smoke_trace_reproducibility.py
 python3 scripts/build_portfolio_report.py
 ```
 
+```bash
+python3 scripts/smoke_demo_ui.py
+```
+
+```bash
+python3 scripts/smoke_streamlit_start.py
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.
