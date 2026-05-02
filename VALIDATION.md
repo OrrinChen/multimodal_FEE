@@ -115,6 +115,14 @@ Run this once real local retrieval baselines exist:
 python3 scripts/smoke_real_retrieval_evaluation.py
 ```
 
+## Phase 9 Portfolio Case Studies Smoke Check
+
+Run this once case-study artifacts exist:
+
+```bash
+python3 scripts/smoke_case_studies.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

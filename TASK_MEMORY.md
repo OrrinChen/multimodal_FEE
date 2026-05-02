@@ -11,37 +11,43 @@ codex/ashare-radar-phase1a
 Latest commit:
 
 ```text
-docs: add big-tech proof-chain roadmap
+feat: add portfolio case studies for retrieval failures
 ```
 
 Current phase:
 
 ```text
-Phase 9 ready to start: Portfolio Case Study Layer
+Phase 9 complete: Portfolio Case Study Layer
 ```
 
 Main blocker:
 
 ```text
-None for the local real-retrieval benchmark. Remaining work is case-study packaging and real investor-deck/chart extraction.
+None for Phase 9. Remaining work starts with Phase 10 investor-deck PDF/chart extraction.
 ```
 
 Next recommended action:
 
 ```text
-Implement Phase 9 case studies first, then Phase 10 investor-deck PDF/chart extraction. Do not build UI before evidence quality and report artifacts are credible.
+Implement Phase 10 investor-deck PDF/chart extraction. Do not build UI before the chart/PDF evidence loop is real.
 ```
 
 Latest workflow update:
 
 ```text
-Updated ROADMAP.md with the big-tech portfolio proof-chain roadmap from Phase 9 through Phase 20.
+Completed Phase 9 portfolio case studies.
 
 Added:
-- strategic proof chain: real retrieval credibility -> multimodal fulfillment -> raw document realism -> LLM/AI system capability -> engineering/demo polish -> resume/interview packaging
-- strict phase order from Phase 9 to Phase 20
-- detailed acceptance criteria, build targets, and commit suggestions for each remaining phase
-- explicit do-not-build list to prevent generic agent framework, premature UI, cloud SaaS, or 100% accuracy chasing
+- case-study models for gold evidence, retrieved evidence, validator checks, method results, and Markdown rendering
+- 3 case studies generated from the real retrieval run:
+  - fiscal-period confusion
+  - numeric/unit mismatch
+  - unsupported narrative claim
+- JSON artifacts under experiments/case_studies/
+- Markdown artifacts under reports/case_studies/
+- README case-study summary
+- scripts/smoke_case_studies.py
+- test coverage for selection, serialization, rendering, artifact writing, and README summary rendering
 ```
 
 Latest validation:
@@ -62,8 +68,9 @@ Passed:
 - phase6 task set smoke check: tasks=60 families=6 verdicts=3
 - phase7 evaluation smoke check: tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
 - real retrieval evaluation smoke check: tasks=60 corpus_documents=320 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase9 case studies smoke check: case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=12 sample_memo_verdict=support markdown_lines=122
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=13 sample_memo_verdict=support markdown_lines=123
 
 Skipped:
 - none
@@ -680,6 +687,66 @@ GraphRAG is represented by metadata-constrained retrieval over the local corpus,
 The full-engine real run intentionally fails investor-deck chart tasks because chart/PDF extraction is still deferred.
 ```
 
+### Phase 9: Portfolio Case Study Layer
+
+Commit:
+
+```text
+feat: add portfolio case studies for retrieval failures
+```
+
+What changed:
+
+```text
+Turned the real retrieval benchmark into recruiter-facing case studies.
+
+Added:
+- case-study package under src/financial_evidence_engine/case_studies/
+- PortfolioCaseStudy, MethodCaseResult, EvidenceReference, ValidatorCheck, and CaseStudyArtifactManifest models
+- deterministic case selection from run_real_retrieval_evaluation()
+- fiscal_period_confusion, numeric_unit_mismatch, and unsupported_narrative_claim cases
+- JSON artifacts under experiments/case_studies/
+- Markdown artifacts and index under reports/case_studies/
+- README case-study summary
+- scripts/smoke_case_studies.py
+- tests/test_case_studies.py
+```
+
+Validation:
+
+```text
+Red-green TDD:
+- python3 -m pytest tests/test_case_studies.py -q initially failed because the case_studies package did not exist.
+- After implementation, tests/test_case_studies.py passed.
+
+Final checks:
+- required workflow files exist
+- git diff --check
+- markdown trailing-whitespace scan
+- python3 -m compileall src scripts
+- python3 -m pytest
+- config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
+- phase1 registry smoke check printed companies=3 documents=6 aligned_periods=3
+- phase2 extraction smoke check printed sections=4 xbrl=1 transcripts=1 tables=1
+- phase3 normalization smoke check printed company=AAPL period=FY2024 metric=revenue left_amount=391035000000.000 right_amount=391035000000 comparable=True
+- phase4 evidence graph smoke check printed nodes=8 edges=14 claim_evidence=2 metric_evidence=2
+- phase5 claim verification smoke check printed verdict=support subclaims=1 evidence=1 checks=5
+- phase6 task set smoke check printed tasks=60 families=6 verdicts=3
+- phase7 evaluation smoke check printed tasks=60 baselines=6 ablations=6 full_verdict_accuracy=1 validators_matter=True naive_rag_fails=True
+- real retrieval evaluation smoke check printed tasks=60 corpus_documents=320 methods=5 bm25_numeric_correctness=0 full_verdict_accuracy=0.8333333333333333333333333333 failure_cases=346
+- phase9 case studies smoke check printed case_studies=3 methods=5 json_artifacts=3 markdown_artifacts=3 summary=reports/case_studies/index.md
+- phase8 memo smoke check printed verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
+- final report package smoke check printed tasks=60 charts=4 tables=3 commands=13 sample_memo_verdict=support markdown_lines=123
+```
+
+Known limitations:
+
+```text
+Case studies are generated from the current 320-document local retrieval benchmark, not raw filing paragraphs or PDF pages.
+The numeric/unit mismatch case currently reflects numeric validator failure in the local benchmark rather than a raw extracted unit-scale error.
+Investor-deck PDF/chart extraction is still deferred to Phase 10.
+```
+
 ## Current State
 
 Project folder created as:
@@ -705,7 +772,7 @@ src/financial_evidence_engine/
 tests/
 ```
 
-Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document corpus, auditable memo generation, and final report packaging. Raw-document semantic retrieval, rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
+Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XBRL source metadata registry, source payload caching, version hashes, local extraction into evidence units, financial normalization guardrails, local evidence graph construction, deterministic claim verification, a 60-task due-diligence gold specification, a deterministic evaluation/ablation harness, real local retrieval baselines over a 320-document corpus, portfolio case studies, auditable memo generation, and final report packaging. Raw-document semantic retrieval, rendered PDF/deck output, broad chart extraction, and LLM-assisted decomposition are not implemented yet.
 
 ## Project Identity
 

@@ -75,10 +75,19 @@ Completed:
   - metadata-constrained graph retrieval
   - validator-augmented full-engine run with explicit chart extraction gap
   - failure-case output for period confusion, entity mismatch, citation mismatch, numeric validation gaps, missed contradictions, unsupported claims, and chart extraction gaps
+- [x] Phase 9 portfolio case study layer implemented:
+  - three case studies generated from the real retrieval run
+  - fiscal-period confusion case
+  - numeric/unit mismatch case
+  - unsupported narrative claim case
+  - JSON artifacts under `experiments/case_studies/`
+  - Markdown artifacts under `reports/case_studies/`
+  - README case-study summary
+  - case-study smoke check and tests
 
 Current phase:
 
-- Real retrieval baseline hardening complete
+- Phase 9 portfolio case studies complete; Phase 10 investor deck PDF/chart extraction ready
 
 Urgent short-term data action:
 
@@ -100,13 +109,12 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Build the recruiter-facing evidence package:
-  - turn the real-retrieval run into 3 case studies:
-    - period confusion
-    - numeric or unit mismatch
-    - narrative contradiction or unsupported management claim
-  - add one real investor-deck PDF/chart extraction case
-  - package a lightweight demo UI or notebook only after the case studies and chart case are real
+- Implement Phase 10 investor-deck PDF/chart extraction:
+  - add one real or fixture investor-deck PDF/chart verification loop
+  - extract at least one chart/table-like financial evidence item
+  - preserve page/source span/value/metric/period/company
+  - reconcile against XBRL or filing evidence where possible
+  - return insufficient rather than hallucinated support when reconciliation is not possible
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -988,12 +996,12 @@ memo snippet
 Acceptance criteria:
 
 ```text
-3 case studies are generated from the real retrieval run
-each case has a JSON artifact
-each case has Markdown rendering
-README can embed a case study summary
-smoke output includes case_studies=3 methods=5
-pytest passes
+[x] 3 case studies are generated from the real retrieval run
+[x] each case has a JSON artifact
+[x] each case has Markdown rendering
+[x] README can embed a case study summary
+[x] smoke output includes case_studies=3 methods=5
+[x] pytest passes
 ```
 
 Suggested commit:

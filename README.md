@@ -28,7 +28,7 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP is complete through final report packaging, and the first real-retrieval hardening slice is implemented.
+The local portfolio-ready MVP, real-retrieval hardening slice, and Phase 9 portfolio case studies are complete.
 
 The repository now includes:
 
@@ -63,8 +63,17 @@ The repository now includes:
 - auditable due-diligence memo generation with executive summary, key claims, evidence table, numeric reconciliation, contradictions, risk flags, unresolved issues, limitations, and traceable conclusions
 - markdown serialization that separates evidence from inference
 - final report packaging with chart specs, result tables, sample memo, reproducibility commands, and polished resume bullets
-- Phase 0 through final report package tests under `tests/`
+- portfolio case studies that turn the real retrieval failures into recruiter-facing JSON and Markdown artifacts
+- Phase 0 through Phase 9 tests under `tests/`
 
-The next recommended action is to turn the real-retrieval results into three case studies and add one real investor-deck PDF/chart extraction case. The dense retrieval path is currently an offline deterministic token-vector proxy, not a neural embedding model or external vector database.
+The next recommended action is Phase 10: add one real or fixture investor-deck PDF/chart extraction loop. The dense retrieval path is currently an offline deterministic token-vector proxy, not a neural embedding model or external vector database.
+
+## Portfolio Case Studies
+
+| Case | Failure mode | Claim | Full-engine verdict | Artifact |
+| --- | --- | --- | --- | --- |
+| `fiscal_period_confusion` | `period_confusion` | Apple's FY2024 revenue grew versus FY2023. | `support` | [Markdown](reports/case_studies/fiscal_period_confusion.md) |
+| `numeric_unit_mismatch` | `numeric_validation_gap` | Apple's FY2024 operating margin exceeded Microsoft's FY2024 operating margin. | `support` | [Markdown](reports/case_studies/numeric_unit_mismatch.md) |
+| `unsupported_narrative_claim` | `unsupported_claim` | Apple's FY2024 margin expansion was driven by durable operating leverage. | `insufficient` | [Markdown](reports/case_studies/unsupported_narrative_claim.md) |
 
 See `ROADMAP.md` and `TASK_MEMORY.md` before starting work.
