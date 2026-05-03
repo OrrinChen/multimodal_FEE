@@ -219,6 +219,14 @@ Run this once final resume and interview packaging exists:
 python3 scripts/smoke_interview_packaging.py
 ```
 
+## Portfolio Screenshot Build Check
+
+Run this before refreshing README screenshots:
+
+```bash
+python3 scripts/build_portfolio_screenshots.py
+```
+
 ## Public Portfolio Freeze Audit
 
 Run this before publishing the repository or using the project for applications:

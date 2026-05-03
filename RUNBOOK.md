@@ -130,6 +130,10 @@ python3 scripts/smoke_interview_packaging.py
 ```
 
 ```bash
+python3 scripts/build_portfolio_screenshots.py
+```
+
+```bash
 python3 -m pytest tests/test_public_portfolio_packaging.py -q
 ```
 

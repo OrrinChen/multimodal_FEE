@@ -1,8 +1,12 @@
 # Multimodal Financial Due-Diligence Evidence Engine
 
-This repository is a claim-level financial evidence verification engine for due diligence.
+Claim-level financial evidence verification for auditable due-diligence workflows.
 
 The project goal is to verify financial due-diligence claims across SEC filings, XBRL facts, earnings transcripts, investor decks, tables, charts, and financial metrics without hallucinating evidence.
+
+| Claim verification | Case-study replay | Memo and trace view |
+| --- | --- | --- |
+| ![Claim verification demo](docs/assets/claim_verification_demo.png) | ![Case study replay](docs/assets/case_study_replay.png) | ![Memo and trace view](docs/assets/memo_trace_demo.png) |
 
 ## Core Workflow
 
@@ -42,6 +46,7 @@ The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio
 2-minute read:
 
 - [Interview story](docs/interview_story.md)
+- [60-second pitch](docs/sixty_second_pitch.md)
 - [Resume bullets](docs/resume_bullets.md)
 - [Failure modes](docs/failure_modes.md)
 
@@ -55,6 +60,7 @@ The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio
 
 ```bash
 python3 -m pytest
+python3 scripts/build_portfolio_screenshots.py
 python3 scripts/smoke_trace_reproducibility.py
 python3 scripts/build_portfolio_report.py
 python3 scripts/smoke_demo_ui.py

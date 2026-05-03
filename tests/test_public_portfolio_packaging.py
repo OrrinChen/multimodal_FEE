@@ -6,6 +6,7 @@ PUBLIC_TEXT_PATHS = (
     Path("ROADMAP.md"),
     Path("TASK_MEMORY.md"),
     Path("docs/interview_story.md"),
+    Path("docs/sixty_second_pitch.md"),
     Path("docs/resume_bullets.md"),
     Path("docs/system_design_notes.md"),
     Path("docs/failure_modes.md"),
@@ -57,3 +58,18 @@ def test_resume_bullets_avoid_overclaiming_optional_backends():
     assert "SEC/FMP data" not in generated_bullet
     assert "general chart" not in combined.lower()
     assert "trained neural" not in combined.lower()
+
+
+def test_readme_has_portfolio_screenshots_and_pitch():
+    readme = Path("README.md").read_text(encoding="utf-8")
+    assert "docs/sixty_second_pitch.md" in readme
+
+    asset_paths = (
+        Path("docs/assets/claim_verification_demo.png"),
+        Path("docs/assets/case_study_replay.png"),
+        Path("docs/assets/memo_trace_demo.png"),
+    )
+    for path in asset_paths:
+        assert str(path) in readme
+        assert path.exists(), path
+        assert path.stat().st_size > 10_000

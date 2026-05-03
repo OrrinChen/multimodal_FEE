@@ -7,6 +7,7 @@ from pathlib import Path
 
 DOCS = (
     Path("docs/interview_story.md"),
+    Path("docs/sixty_second_pitch.md"),
     Path("docs/resume_bullets.md"),
     Path("docs/system_design_notes.md"),
     Path("docs/failure_modes.md"),

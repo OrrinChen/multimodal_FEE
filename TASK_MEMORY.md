@@ -5,13 +5,13 @@
 Current branch:
 
 ```text
-codex/financial-evidence-freeze-audit
+codex/financial-evidence-release-packaging
 ```
 
 Latest commit:
 
 ```text
-docs: clean public portfolio packaging
+docs: add release assets and portfolio pitch
 ```
 
 Current phase:
@@ -35,14 +35,16 @@ Use the portfolio report, local demo, and interview docs for applications. Futur
 Latest workflow update:
 
 ```text
-Completed public portfolio freeze audit after Phase 20.
+Prepared release packaging after the public portfolio freeze audit.
 
-Cleaned:
-- removed stale project branch/path references from public-facing notes
-- replaced internal self-rating language with neutral portfolio positioning
-- rewrote the old MVP implementation checklist to separate completed scope from out-of-scope work
-- tightened resume/report wording around dense-proxy retrieval, local raw corpus scope, and narrow investor-deck evidence extraction
-- added tests/test_public_portfolio_packaging.py to keep these public packaging constraints from regressing
+Added:
+- README top visual strip with three portfolio screenshots
+- scripts/build_portfolio_screenshots.py for deterministic local screenshot asset generation
+- docs/assets/claim_verification_demo.png
+- docs/assets/case_study_replay.png
+- docs/assets/memo_trace_demo.png
+- docs/sixty_second_pitch.md with English and Chinese pitch scripts
+- portfolio screenshot build command in README/VALIDATION/RUNBOOK/report reproducibility commands
 ```
 
 Latest validation:
@@ -76,10 +78,11 @@ Passed:
 - phase18 demo UI smoke check: pages=4 case_studies=3 methods=5 local_claim_verdict=support api_key_required=False app=app.py
 - phase18 Streamlit start smoke check: streamlit_started=True url=http://127.0.0.1:54900 app=app.py
 - phase19 CLI workflow smoke check: commands=6 verify_verdict=support raw_chunks=482 eval_tasks=60 case_studies=3 report_pages=10 serve_demo=True network_enabled=False
-- phase20 interview packaging smoke check: docs=5 readme_2min=True report_10min=True repo_30min=True evidence_framing=True
+- phase20 interview packaging smoke check: docs=6 readme_2min=True report_10min=True repo_30min=True evidence_framing=True
+- portfolio screenshot build check: screenshots=3 claim=docs/assets/claim_verification_demo.png case=docs/assets/case_study_replay.png memo=docs/assets/memo_trace_demo.png
 - public portfolio freeze audit test: 3 passed
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=26 sample_memo_verdict=support markdown_lines=143
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=27 sample_memo_verdict=support markdown_lines=144
 
 Skipped:
 - none
