@@ -154,10 +154,18 @@ Completed:
   - structured error taxonomy
   - artifact versioning, cache invalidation planning, and provenance checks
   - CLI smoke check covering all six commands
+- [x] Phase 20 final resume / interview packaging implemented:
+  - `docs/interview_story.md`
+  - `docs/resume_bullets.md`
+  - `docs/system_design_notes.md`
+  - `docs/failure_modes.md`
+  - `docs/demo_script.md`
+  - README 2-minute, 10-minute, and 30-minute entry points
+  - interview packaging smoke check
 
 Current phase:
 
-- Phase 19 local productionization complete; Phase 20 final resume/interview packaging ready
+- Phase 20 final resume/interview packaging complete; roadmap complete through portfolio packaging
 
 Urgent short-term data action:
 
@@ -179,10 +187,7 @@ Urgent short-term data action:
 
 Next recommended action:
 
-- Implement Phase 20 final resume/interview packaging:
-  - add interview story, resume bullets, system design notes, failure modes, and demo script
-  - make README readable in 2 minutes and repo reproducible in 30 minutes
-  - frame the project as claim-level financial evidence verification, not generic RAG
+- No remaining incomplete roadmap phase in the current portfolio packaging plan.
 - Continue strictly in this order:
   - Phase 9: portfolio case studies
   - Phase 10: investor deck PDF/chart extraction
@@ -191,7 +196,7 @@ Next recommended action:
   - Phase 13: validator-gated LLM decomposition
   - Phase 14: narrative/causal claim verification
   - Phase 15: adversarial/red-team evaluation
-  - Phase 20: final resume/interview packaging
+  - all phases through Phase 20 are complete
 
 Near-term vertical slice:
 
@@ -1682,10 +1687,10 @@ Built a multimodal financial due-diligence evidence engine over SEC filings, XBR
 Acceptance criteria:
 
 ```text
-README can be understood in 2 minutes
-report is believable in 10 minutes
-repo is reproducible in 30 minutes
-interview story explains every major design choice
+[x] README can be understood in 2 minutes
+[x] report is believable in 10 minutes
+[x] repo is reproducible in 30 minutes
+[x] interview story explains every major design choice
 ```
 
 Suggested commit:

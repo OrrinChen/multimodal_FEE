@@ -28,7 +28,32 @@ financial claim
 
 ## Current Status
 
-The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, Phase 16 trace/reproducibility hardening slice, Phase 17 portfolio report artifact, Phase 18 lightweight local demo UI, and Phase 19 local production workflow are complete.
+The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, Phase 16 trace/reproducibility hardening slice, Phase 17 portfolio report artifact, Phase 18 lightweight local demo UI, Phase 19 local production workflow, and Phase 20 final interview packaging are complete.
+
+## Portfolio Entry Points
+
+2-minute read:
+
+- [Interview story](docs/interview_story.md)
+- [Resume bullets](docs/resume_bullets.md)
+- [Failure modes](docs/failure_modes.md)
+
+10-minute artifact:
+
+- [Portfolio report PDF](reports/final_report.pdf)
+- [Portfolio report Markdown](reports/final_report.md)
+- [Demo script](docs/demo_script.md)
+
+30-minute reproduction:
+
+```bash
+python3 -m pytest
+python3 scripts/smoke_trace_reproducibility.py
+python3 scripts/build_portfolio_report.py
+python3 scripts/smoke_demo_ui.py
+python3 scripts/smoke_cli_workflow.py
+python3 scripts/smoke_interview_packaging.py
+```
 
 The repository now includes:
 
@@ -94,9 +119,10 @@ The repository now includes:
 - local claim-verification demo path that requires no API key
 - `financial-evidence` CLI commands for local verification, corpus, evaluation, case-study, report, and demo workflows
 - offline config profiles, structured error taxonomy, artifact versioning, cache invalidation plans, and provenance checks
-- Phase 0 through Phase 19 tests under `tests/`
+- final interview story, resume bullets, system design notes, failure-mode guide, and demo script
+- Phase 0 through Phase 20 tests under `tests/`
 
-The next recommended action is Phase 20: package the final resume and interview materials. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
+The roadmap is complete through Phase 20. The default dense retrieval path remains an offline deterministic token-vector proxy; real embedding and live LLM providers are optional and skipped gracefully when unavailable.
 
 ## Portfolio Case Studies
 
@@ -183,4 +209,18 @@ Smoke check:
 
 ```bash
 python3 scripts/smoke_cli_workflow.py
+```
+
+## Interview Package
+
+Phase 20 packages the project for applications and interviews.
+
+- [Interview story](docs/interview_story.md)
+- [Resume bullets](docs/resume_bullets.md)
+- [System design notes](docs/system_design_notes.md)
+- [Failure modes](docs/failure_modes.md)
+- [Demo script](docs/demo_script.md)
+
+```bash
+python3 scripts/smoke_interview_packaging.py
 ```

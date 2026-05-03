@@ -211,6 +211,14 @@ Run this once local production CLI commands exist:
 python3 scripts/smoke_cli_workflow.py
 ```
 
+## Phase 20 Interview Packaging Smoke Check
+
+Run this once final resume and interview packaging exists:
+
+```bash
+python3 scripts/smoke_interview_packaging.py
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

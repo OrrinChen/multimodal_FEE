@@ -52,6 +52,7 @@ REPRODUCIBILITY_COMMANDS: Tuple[str, ...] = (
     "python3 scripts/smoke_demo_ui.py",
     "python3 scripts/smoke_streamlit_start.py",
     "python3 scripts/smoke_cli_workflow.py",
+    "python3 scripts/smoke_interview_packaging.py",
     "python3 scripts/smoke_final_report_package.py",
 )
 

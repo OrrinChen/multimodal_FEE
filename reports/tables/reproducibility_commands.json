@@ -97,8 +97,12 @@
       "step": 23
     },
     {
-      "command": "python3 scripts/smoke_final_report_package.py",
+      "command": "python3 scripts/smoke_interview_packaging.py",
       "step": 24
+    },
+    {
+      "command": "python3 scripts/smoke_final_report_package.py",
+      "step": 25
     }
   ],
   "table_id": "reproducibility_commands",

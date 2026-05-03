@@ -125,6 +125,10 @@ python3 scripts/smoke_streamlit_start.py
 python3 scripts/smoke_cli_workflow.py
 ```
 
+```bash
+python3 scripts/smoke_interview_packaging.py
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.
