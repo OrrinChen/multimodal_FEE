@@ -1775,8 +1775,8 @@ sample memo
 
 Long version:
 
-> Built a multimodal financial due-diligence evidence engine combining SEC/FMP data, earnings transcripts, investor decks, GraphRAG, table/chart extraction, and claim-level validators to reconcile financial narratives, detect unsupported claims, numeric mismatches, fiscal-period errors, and cross-document contradictions.
+> Built a multimodal financial due-diligence evidence engine for claim-level verification over SEC/XBRL filings, earnings transcripts, and investor-deck evidence; benchmarked BM25, dense-proxy, hybrid, graph, and validator-augmented retrieval on 60 due-diligence tasks and 120 adversarial cases, generating auditable memos with numeric reconciliation, citation validation, fiscal-period checks, contradiction detection, and reproducible evidence traces.
 
 Short version:
 
-> Built a multimodal financial evidence engine that verifies due-diligence claims across SEC filings, transcripts, tables, and investor-deck charts using GraphRAG, numeric reconciliation, and citation validators.
+> Built a multimodal financial evidence engine that compares BM25, hybrid, graph, and validator-augmented retrieval for SEC/XBRL, transcript, and investor-deck evidence, detecting numeric, citation, fiscal-period, contradiction, and unsupported-claim failures in auditable due-diligence memos.

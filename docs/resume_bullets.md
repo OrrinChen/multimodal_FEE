@@ -2,7 +2,7 @@
 
 ## Primary
 
-Built a multimodal financial due-diligence evidence engine over SEC filings, XBRL facts, earnings transcripts, investor-deck evidence, and local raw-document chunks, benchmarking BM25, dense proxy, hybrid retrieval, graph retrieval, and a validator-augmented full engine on 60+ due-diligence tasks.
+Built a claim-level financial due-diligence evidence engine over SEC/XBRL filings, earnings transcripts, and investor-deck evidence; benchmarked BM25, dense-proxy, hybrid, graph, and validator-augmented retrieval on 60 due-diligence tasks and 120 adversarial cases.
 
 ## Reliability
 
@@ -15,3 +15,9 @@ Packaged the system into a local CLI, Streamlit demo, portfolio PDF/Markdown rep
 ## Short Version
 
 Built a validator-augmented financial evidence engine that verifies due-diligence claims across SEC/XBRL, transcripts, tables, and investor-deck chart evidence with auditable memos and retrieval failure analysis.
+
+## Claim Boundaries
+
+Use "investor-deck evidence extraction," not broad visual chart understanding.
+Use "dense-proxy retrieval" unless an optional real embedding backend is explicitly enabled.
+Use "local raw financial-document corpus," not "full SEC archive."

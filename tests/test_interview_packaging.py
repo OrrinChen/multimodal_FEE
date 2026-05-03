@@ -24,7 +24,7 @@ def test_interview_packaging_docs_exist_and_frame_project_correctly():
 
     assert "ordinary RAG" in interview_story
     assert "claim-level evidence engine" in interview_story
-    assert "60+" in resume_bullets
+    assert "60 due-diligence tasks" in resume_bullets
     assert "validator-augmented" in resume_bullets
     assert "Evidence graph" in system_design
     assert "fiscal-period confusion" in failure_modes

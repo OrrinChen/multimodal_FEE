@@ -237,7 +237,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 23 0 R >>
 endobj
 23 0 obj
-<< /Length 465 >>
+<< /Length 604 >>
 stream
 BT
 /F1 10 Tf
@@ -247,13 +247,15 @@ BT
 T*
 (Resume bullet) Tj
 T*
-(Built a multimodal financial due-diligence evidence engine combining SEC/FMP data, earnings) Tj
+(Built a multimodal financial due-diligence evidence engine for claim-level verification) Tj
 T*
-(transcripts, investor decks, GraphRAG, table/chart extraction, and claim-level validators) Tj
+(over SEC/XBRL filings, earnings transcripts, and investor-deck evidence; benchmarked BM25,) Tj
 T*
-(to reconcile financial narratives, detect unsupported claims, numeric mismatches,) Tj
+(dense-proxy, hybrid, graph, and validator-augmented retrieval on 60 due-diligence tasks and) Tj
 T*
-(fiscal-period errors, and cross-document contradictions.) Tj
+(120 adversarial cases, generating auditable memos with numeric reconciliation, citation) Tj
+T*
+(validation, fiscal-period checks, contradiction detection, and reproducible evidence traces.) Tj
 T*
 ET
 endstream
@@ -287,5 +289,5 @@ xref
 trailer
 << /Size 24 /Root 1 0 R >>
 startxref
-6311
+6450
 %%EOF

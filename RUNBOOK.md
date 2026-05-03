@@ -129,6 +129,10 @@ python3 scripts/smoke_cli_workflow.py
 python3 scripts/smoke_interview_packaging.py
 ```
 
+```bash
+python3 -m pytest tests/test_public_portfolio_packaging.py -q
+```
+
 ## Development Notes
 
 - Keep early work focused on a narrow vertical slice.

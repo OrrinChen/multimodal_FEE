@@ -30,6 +30,13 @@ financial claim
 
 The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio case studies, Phase 10 investor-deck chart extraction slice, Phase 11 raw corpus indexing slice, Phase 12 embedding/reranking backend slice, Phase 13 validator-gated LLM decomposition slice, Phase 14 narrative/causal verification slice, Phase 15 adversarial/red-team evaluation slice, Phase 16 trace/reproducibility hardening slice, Phase 17 portfolio report artifact, Phase 18 lightweight local demo UI, Phase 19 local production workflow, and Phase 20 final interview packaging are complete.
 
+## Public Claim Boundaries
+
+- Investor-deck evidence extraction is a narrow text-extractable PDF/chart slice, not a general visual chart parser.
+- Dense retrieval defaults to a deterministic token-vector proxy; optional real embedding providers are disabled unless explicitly configured.
+- The raw corpus is a local reproducible fixture with SEC-like filing paragraphs, XBRL facts, transcript chunks, and deck evidence; it is not a full SEC archive.
+- The project is a claim-level financial evidence verification system, not a generic RAG chatbot or a trained neural retrieval model.
+
 ## Portfolio Entry Points
 
 2-minute read:
@@ -80,7 +87,7 @@ The repository now includes:
 - a 60-task seed set across 10 companies and 6 due-diligence task families
 - expected evidence units, numeric checks, allowed source types, verdicts, and known distractors for each task
 - deterministic evaluation metrics for evidence recall, citation exactness, numeric correctness, fiscal-period correctness, entity correctness, verdict accuracy, contradiction detection, unsupported-claim rate, answer faithfulness, memo usefulness, latency, and cost
-- six diagnostic baseline profiles: BM25 RAG, dense RAG, hybrid retrieval + reranker, GraphRAG only, multimodal extraction only, and full evidence engine
+- six diagnostic baseline profiles: BM25 RAG, dense-proxy RAG, hybrid retrieval + reranker, graph retrieval, multimodal extraction only, and full evidence engine
 - six ablation profiles covering graph, numeric validator, fiscal-period validator, chart/table extraction, contradiction detector, and reranker removal
 - a local real-retrieval evaluation slice over a 320-document corpus built from gold evidence specs plus known distractors
 - real BM25, deterministic token-vector dense proxy, hybrid, graph-constrained, and validator-augmented retrieval runs

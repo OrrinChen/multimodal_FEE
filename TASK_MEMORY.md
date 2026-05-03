@@ -5,13 +5,13 @@
 Current branch:
 
 ```text
-codex/ashare-radar-phase1a
+codex/financial-evidence-freeze-audit
 ```
 
 Latest commit:
 
 ```text
-docs: package final interview and resume story
+docs: clean public portfolio packaging
 ```
 
 Current phase:
@@ -35,17 +35,14 @@ Use the portfolio report, local demo, and interview docs for applications. Futur
 Latest workflow update:
 
 ```text
-Completed Phase 20 final resume and interview packaging.
+Completed public portfolio freeze audit after Phase 20.
 
-Added:
-- docs/interview_story.md
-- docs/resume_bullets.md
-- docs/system_design_notes.md
-- docs/failure_modes.md
-- docs/demo_script.md
-- README 2-minute read, 10-minute artifact, and 30-minute reproduction entry points
-- scripts/smoke_interview_packaging.py
-- tests/test_interview_packaging.py
+Cleaned:
+- removed stale project branch/path references from public-facing notes
+- replaced internal self-rating language with neutral portfolio positioning
+- rewrote the old MVP implementation checklist to separate completed scope from out-of-scope work
+- tightened resume/report wording around dense-proxy retrieval, local raw corpus scope, and narrow investor-deck evidence extraction
+- added tests/test_public_portfolio_packaging.py to keep these public packaging constraints from regressing
 ```
 
 Latest validation:
@@ -56,7 +53,7 @@ Passed:
 - git diff --check
 - markdown trailing-whitespace scan
 - python3 -m compileall src scripts
-- python3 -m pytest: 97 passed
+- python3 -m pytest: 100 passed
 - config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
 - phase1 registry smoke check: companies=3 documents=6 aligned_periods=3
 - phase2 extraction smoke check: sections=4 xbrl=1 transcripts=1 tables=1
@@ -80,8 +77,9 @@ Passed:
 - phase18 Streamlit start smoke check: streamlit_started=True url=http://127.0.0.1:54900 app=app.py
 - phase19 CLI workflow smoke check: commands=6 verify_verdict=support raw_chunks=482 eval_tasks=60 case_studies=3 report_pages=10 serve_demo=True network_enabled=False
 - phase20 interview packaging smoke check: docs=5 readme_2min=True report_10min=True repo_30min=True evidence_framing=True
+- public portfolio freeze audit test: 3 passed
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=25 sample_memo_verdict=support markdown_lines=142
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=26 sample_memo_verdict=support markdown_lines=143
 
 Skipped:
 - none
@@ -1525,10 +1523,10 @@ Future changes should be driven by recruiter/interviewer feedback or a new roadm
 
 ## Current State
 
-Project folder created as:
+Project root:
 
 ```text
-/Users/orynwilder/Documents/New project 2/multimodal-financial-evidence-engine
+.
 ```
 
 Phase 0 planning and repository skeleton are complete.
@@ -1554,7 +1552,7 @@ Implementation currently covers configuration loading, ticker/CIK lookup, SEC/XB
 
 **Name:** Multimodal Financial Due-Diligence Evidence Engine
 
-**Role in portfolio:** S-level AI for finance project. Business-shock project.
+**Role in portfolio:** Claim-level financial evidence verification system for due-diligence workflows.
 
 **Core question:**
 
@@ -1684,7 +1682,9 @@ management guidance vs actuals
 deck narrative vs filing evidence
 ```
 
-## Implementation Order
+## Original MVP checklist
+
+This historical checklist records the original build order. It is no longer the active roadmap; Phase 9 through Phase 20 are complete. Items that remain intentionally outside the public portfolio scope are listed below as out-of-scope rather than unchecked work.
 
 ### Step 1: Planning and Skeleton
 
@@ -1704,12 +1704,11 @@ deck narrative vs filing evidence
 
 ```text
 [x] Implement SEC client
-[ ] Implement FMP client module (local snapshot captured; reusable code path still deferred)
 [x] Implement document registry
 [x] Implement cache/version hash
 [x] Store filing metadata
 [x] Store local FMP transcript payloads and metadata sidecars
-[ ] Store investor deck metadata
+[x] Store investor-deck fixture metadata for the Phase 10 chart evidence slice
 ```
 
 ### Step 3: Extraction Layer
@@ -1720,8 +1719,19 @@ deck narrative vs filing evidence
 [x] Parse XBRL facts
 [x] Parse transcripts
 [x] Extract tables
-[ ] Add deck PDF parsing
-[ ] Add chart extraction only after table/text pipeline works
+[x] Add text-extractable deck PDF parsing for the Phase 10 fixture
+[x] Add narrow investor-deck chart evidence extraction for one reproducible case
+```
+
+### Known out-of-scope items
+
+```text
+- reusable live FMP client as a required runtime path
+- broad investor-deck registry
+- general visual chart understanding, OCR, axis detection, or plot digitization
+- full SEC archive indexing
+- trained neural retrieval model
+- live LLM decomposition as a default dependency
 ```
 
 ### Step 4: Normalization Layer
@@ -1836,7 +1846,7 @@ Final bullet should communicate:
 ```text
 multimodal financial documents
 claim-level evidence verification
-GraphRAG
+BM25, dense-proxy, hybrid, graph, and validator-augmented retrieval
 numeric reconciliation
 citation validation
 fiscal-period checks
@@ -1846,4 +1856,4 @@ due-diligence memo
 
 Preferred bullet:
 
-> Built a multimodal financial due-diligence evidence engine combining SEC/FMP data, earnings transcripts, investor decks, GraphRAG, table/chart extraction, and claim-level validators to reconcile financial narratives, detect unsupported claims, numeric mismatches, fiscal-period errors, and cross-document contradictions.
+> Built a multimodal financial due-diligence evidence engine for claim-level verification over SEC/XBRL filings, earnings transcripts, and investor-deck evidence; benchmarked BM25, dense-proxy, hybrid, graph, and validator-augmented retrieval on 60 due-diligence tasks and 120 adversarial cases, generating auditable memos with numeric reconciliation, citation validation, fiscal-period checks, contradiction detection, and reproducible evidence traces.

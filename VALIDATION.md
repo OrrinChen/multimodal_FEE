@@ -219,6 +219,14 @@ Run this once final resume and interview packaging exists:
 python3 scripts/smoke_interview_packaging.py
 ```
 
+## Public Portfolio Freeze Audit
+
+Run this before publishing the repository or using the project for applications:
+
+```bash
+python3 -m pytest tests/test_public_portfolio_packaging.py -q
+```
+
 ## Phase 8 Due-Diligence Memo Smoke Check
 
 Run this once auditable memo generation exists:

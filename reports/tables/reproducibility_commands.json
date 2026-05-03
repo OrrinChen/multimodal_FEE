@@ -101,8 +101,12 @@
       "step": 24
     },
     {
-      "command": "python3 scripts/smoke_final_report_package.py",
+      "command": "python3 -m pytest tests/test_public_portfolio_packaging.py -q",
       "step": 25
+    },
+    {
+      "command": "python3 scripts/smoke_final_report_package.py",
+      "step": 26
     }
   ],
   "table_id": "reproducibility_commands",

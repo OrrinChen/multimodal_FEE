@@ -91,7 +91,9 @@ def test_final_report_package_contains_charts_tables_sample_memo_and_resume_bull
     assert "python3 scripts/smoke_narrative_causal.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_phase8_memo.py" in package.reproducibility_commands
     assert "python3 scripts/smoke_trace_reproducibility.py" in package.reproducibility_commands
-    assert "claim-level validators" in package.resume_bullet_long
+    assert "claim-level verification" in package.resume_bullet_long
+    assert "dense-proxy" in package.resume_bullet_long
+    assert "GraphRAG" not in package.resume_bullet_long
     assert package.resume_bullet_short.startswith("Built a multimodal financial evidence engine")
 
 
