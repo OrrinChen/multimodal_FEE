@@ -2,11 +2,30 @@
 
 Claim-level financial evidence verification for auditable due-diligence workflows.
 
-The project goal is to verify financial due-diligence claims across SEC filings, XBRL facts, earnings transcripts, investor decks, tables, charts, and financial metrics without hallucinating evidence.
+Ordinary RAG can retrieve plausible but unauditable evidence in financial due diligence.
+This project verifies financial claims through claim decomposition, evidence graph linking, numeric reconciliation, and validator gates before generating an auditable memo.
+
+**Portfolio entry:** [PORTFOLIO.md](PORTFOLIO.md)
+
+Fast local demo:
+
+```bash
+make portfolio-demo
+```
+
+Expected output includes `screenshots=3`, `commands=6`, `verify_verdict=support`, `docs=6`, and `api_key_required=False`.
 
 | Claim verification | Case-study replay | Memo and trace view |
 | --- | --- | --- |
 | ![Claim verification demo](docs/assets/claim_verification_demo.png) | ![Case study replay](docs/assets/case_study_replay.png) | ![Memo and trace view](docs/assets/memo_trace_demo.png) |
+
+![Killer metrics: Full engine accuracy, surfaced failure cases, and adversarial detection](docs/assets/killer_metrics.png)
+
+| Killer Result | Value |
+| --- | ---: |
+| Full engine accuracy | 83.3% |
+| Surfaced retrieval/validator failure cases | 346 |
+| Adversarial detection accuracy | 75.0% |
 
 ## Core Workflow
 

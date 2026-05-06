@@ -11,7 +11,7 @@ codex/financial-evidence-release-packaging
 Latest commit:
 
 ```text
-docs: add release assets and portfolio pitch
+docs: add public portfolio landing entrypoint
 ```
 
 Current phase:
@@ -35,16 +35,15 @@ Use the portfolio report, local demo, and interview docs for applications. Futur
 Latest workflow update:
 
 ```text
-Prepared release packaging after the public portfolio freeze audit.
+Prepared public portfolio polish after the public portfolio freeze audit.
 
 Added:
-- README top visual strip with three portfolio screenshots
-- scripts/build_portfolio_screenshots.py for deterministic local screenshot asset generation
-- docs/assets/claim_verification_demo.png
-- docs/assets/case_study_replay.png
-- docs/assets/memo_trace_demo.png
-- docs/sixty_second_pitch.md with English and Chinese pitch scripts
-- portfolio screenshot build command in README/VALIDATION/RUNBOOK/report reproducibility commands
+- PORTFOLIO.md as the recruiter-facing entry point
+- Makefile with make portfolio-demo as the shortest local demo path
+- README first-screen public landing content with killer results and portfolio links
+- docs/assets/killer_metrics.png for the main result visual
+- deterministic killer-metric generation in scripts/build_portfolio_screenshots.py
+- AI infra, financial AI, and RAG/eval resume bullets in PORTFOLIO.md
 ```
 
 Latest validation:
@@ -55,7 +54,7 @@ Passed:
 - git diff --check
 - markdown trailing-whitespace scan
 - python3 -m compileall src scripts
-- python3 -m pytest: 100 passed
+- python3 -m pytest: 101 passed
 - config smoke check loaded ['AAPL', 'MSFT', 'NVDA']
 - phase1 registry smoke check: companies=3 documents=6 aligned_periods=3
 - phase2 extraction smoke check: sections=4 xbrl=1 transcripts=1 tables=1
@@ -79,10 +78,11 @@ Passed:
 - phase18 Streamlit start smoke check: streamlit_started=True url=http://127.0.0.1:54900 app=app.py
 - phase19 CLI workflow smoke check: commands=6 verify_verdict=support raw_chunks=482 eval_tasks=60 case_studies=3 report_pages=10 serve_demo=True network_enabled=False
 - phase20 interview packaging smoke check: docs=6 readme_2min=True report_10min=True repo_30min=True evidence_framing=True
-- portfolio screenshot build check: screenshots=3 claim=docs/assets/claim_verification_demo.png case=docs/assets/case_study_replay.png memo=docs/assets/memo_trace_demo.png
-- public portfolio freeze audit test: 3 passed
+- portfolio demo check: screenshots=3 commands=6 verify_verdict=support docs=6 api_key_required=False
+- portfolio screenshot build check: screenshots=3 claim=docs/assets/claim_verification_demo.png case=docs/assets/case_study_replay.png memo=docs/assets/memo_trace_demo.png killer_metric=docs/assets/killer_metrics.png
+- public portfolio freeze audit test: 6 passed
 - phase8 memo smoke check: verdict=support sections=8 evidence_rows=1 numeric_rows=1 unsupported=0
-- final report package smoke check: tasks=60 charts=4 tables=3 commands=27 sample_memo_verdict=support markdown_lines=144
+- final report package smoke check: tasks=60 charts=4 tables=3 commands=28 sample_memo_verdict=support markdown_lines=145
 
 Skipped:
 - none

@@ -134,6 +134,10 @@ python3 scripts/build_portfolio_screenshots.py
 ```
 
 ```bash
+make portfolio-demo
+```
+
+```bash
 python3 -m pytest tests/test_public_portfolio_packaging.py -q
 ```
 

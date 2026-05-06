@@ -40,12 +40,14 @@ def main() -> None:
     _draw_case_study(case).save(ASSET_DIR / "case_study_replay.png")
 
     _draw_memo_trace(state.memo_markdown).save(ASSET_DIR / "memo_trace_demo.png")
+    _draw_killer_metrics().save(ASSET_DIR / "killer_metrics.png")
 
     print(
         "screenshots=3 "
         "claim=docs/assets/claim_verification_demo.png "
         "case=docs/assets/case_study_replay.png "
-        "memo=docs/assets/memo_trace_demo.png"
+        "memo=docs/assets/memo_trace_demo.png "
+        "killer_metric=docs/assets/killer_metrics.png"
     )
 
 
@@ -136,6 +138,27 @@ def _draw_memo_trace(memo_markdown: str) -> Image.Image:
         (902, 188),
         fonts,
     )
+    return image
+
+
+def _draw_killer_metrics() -> Image.Image:
+    image, draw, fonts = _canvas("Why Validator-Gated Evidence Beats Ordinary RAG")
+    draw.text(
+        (54, 128),
+        "Ordinary RAG can retrieve plausible but unauditable financial evidence.",
+        fill=INK,
+        font=fonts["heading"],
+    )
+    metrics = (
+        ("Full engine accuracy", "83.3%", "60 local due-diligence tasks", ACCENT),
+        ("Surfaced failure cases", "346", "period, entity, citation, numeric, unsupported-claim gaps", WARNING),
+        ("Adversarial detection", "75.0%", "120 red-team cases; failures remain explainable", BLUE),
+    )
+    x_positions = (54, 456, 858)
+    for x, (label, value, detail, color) in zip(x_positions, metrics):
+        _panel(draw, (x, 214, x + 368, 620), label, fonts)
+        draw.text((x + 28, 292), value, fill=color, font=fonts["metric"])
+        _text(draw, detail, (x + 28, 386), fonts["body"], width=29)
     return image
 
 

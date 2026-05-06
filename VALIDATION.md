@@ -227,6 +227,14 @@ Run this before refreshing README screenshots:
 python3 scripts/build_portfolio_screenshots.py
 ```
 
+## Portfolio Demo Entry Point
+
+Run this before using the repository for applications:
+
+```bash
+make portfolio-demo
+```
+
 ## Public Portfolio Freeze Audit
 
 Run this before publishing the repository or using the project for applications:
