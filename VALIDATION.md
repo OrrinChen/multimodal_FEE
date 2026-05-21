@@ -115,6 +115,15 @@ Run this once real local retrieval baselines exist:
 python3 scripts/smoke_real_retrieval_evaluation.py
 ```
 
+## Data Platform Artifact Smoke Check
+
+Run this for the AI data platform framing layer:
+
+```bash
+python3 scripts/build_data_platform_artifacts.py
+python3 scripts/smoke_data_platform_artifacts.py
+```
+
 ## Phase 9 Portfolio Case Studies Smoke Check
 
 Run this once case-study artifacts exist:

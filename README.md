@@ -57,8 +57,21 @@ The local portfolio-ready MVP, real-retrieval hardening slice, Phase 9 portfolio
 
 - Investor-deck evidence extraction is a narrow text-extractable PDF/chart slice, not a general visual chart parser.
 - Dense retrieval defaults to a deterministic token-vector proxy; optional real embedding providers are disabled unless explicitly configured.
-- The raw corpus is a local reproducible fixture with SEC-like filing paragraphs, XBRL facts, transcript chunks, and deck evidence; it is not a full SEC archive.
+- The raw corpus is a local reproducible fixture with SEC-like filing paragraphs, XBRL facts, transcript chunks, and deck evidence; it is not broad SEC-scale ingestion.
 - The project is a claim-level financial evidence verification system, not a generic RAG chatbot or a trained neural retrieval model.
+
+## Data Platform View
+
+For AI data platform roles, the same evidence engine can be presented as an
+unstructured financial-document pipeline: document metadata, raw chunks,
+evidence requirements, claim labels, citation coverage, and fiscal-period /
+unit normalization quality checks.
+
+- Framing doc: [data_platform_framing.md](docs/data_platform_framing.md)
+- Tables: `reports/tables/document_metadata.csv`, `chunks.csv`,
+  `evidence_units.csv`, `claims.csv`, `citation_coverage.csv`, and
+  `normalization_quality_checks.csv`
+- Build command: `python3 scripts/build_data_platform_artifacts.py`
 
 ## Portfolio Entry Points
 

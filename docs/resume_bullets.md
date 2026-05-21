@@ -12,6 +12,10 @@ Designed claim-level validators for citation support, fiscal-period alignment, e
 
 Packaged the system into a local CLI, Streamlit demo, portfolio PDF/Markdown report, case studies, and interview-ready documentation without requiring API keys or cloud services.
 
+## Data Platform
+
+Built a reproducible unstructured financial-document pipeline that converts SEC/XBRL-style filings, transcripts, and investor-deck evidence into document metadata, chunk, evidence, claim, citation-coverage, and normalization-quality artifacts for auditable retrieval and claim verification.
+
 ## Short Version
 
 Built a validator-augmented financial evidence engine that verifies due-diligence claims across SEC/XBRL, transcripts, tables, and investor-deck chart evidence with auditable memos and retrieval failure analysis.
@@ -20,4 +24,4 @@ Built a validator-augmented financial evidence engine that verifies due-diligenc
 
 Use "investor-deck evidence extraction," not broad visual chart understanding.
 Use "dense-proxy retrieval" unless an optional real embedding backend is explicitly enabled.
-Use "local raw financial-document corpus," not "full SEC archive."
+Use "local raw financial-document corpus," not broad SEC-scale ingestion.

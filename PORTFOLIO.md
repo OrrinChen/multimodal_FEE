@@ -29,6 +29,23 @@ claim decomposition -> evidence graph -> numeric reconciliation -> validator gat
 
 The system verifies company, fiscal period, metric, unit, currency, citation support, contradictions, and unsupported narrative claims before issuing a final verdict.
 
+## Data Platform View
+
+For AI data platform interviews, the same system can be described as a local
+unstructured financial-document pipeline: document metadata -> raw chunks ->
+evidence units -> claim labels -> citation coverage -> fiscal-period and unit
+normalization quality checks.
+
+Artifacts:
+
+- [Data platform framing](docs/data_platform_framing.md)
+- `reports/tables/document_metadata.csv`
+- `reports/tables/chunks.csv`
+- `reports/tables/evidence_units.csv`
+- `reports/tables/claims.csv`
+- `reports/tables/citation_coverage.csv`
+- `reports/tables/normalization_quality_checks.csv`
+
 ## 30-minute reproduction
 
 ```bash
@@ -78,4 +95,4 @@ Boundaries:
 
 - Investor-deck evidence extraction is a narrow text-extractable slice, not broad visual chart understanding.
 - Dense retrieval defaults to a deterministic token-vector proxy unless an optional backend is explicitly configured.
-- The raw corpus is a local reproducible fixture, not a full SEC archive.
+- The raw corpus is a local reproducible fixture, not broad SEC-scale ingestion.

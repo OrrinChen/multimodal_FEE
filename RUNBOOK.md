@@ -74,6 +74,11 @@ python3 scripts/smoke_real_retrieval_evaluation.py
 ```
 
 ```bash
+python3 scripts/build_data_platform_artifacts.py
+python3 scripts/smoke_data_platform_artifacts.py
+```
+
+```bash
 python3 scripts/smoke_case_studies.py
 ```
 

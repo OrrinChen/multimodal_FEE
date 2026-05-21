@@ -1,5 +1,6 @@
 """Report generation package."""
 
+from .data_platform import DataPlatformArtifactManifest, write_data_platform_artifacts
 from .final_report import (
     ChartSpec,
     FinalReportPackage,
@@ -28,6 +29,7 @@ from .portfolio_report import (
 
 __all__ = [
     "ChartSpec",
+    "DataPlatformArtifactManifest",
     "DueDiligenceMemo",
     "EvidenceTableRow",
     "FigureSpec",
@@ -46,4 +48,5 @@ __all__ = [
     "build_final_report_package",
     "build_portfolio_report_package",
     "write_portfolio_report_artifacts",
+    "write_data_platform_artifacts",
 ]

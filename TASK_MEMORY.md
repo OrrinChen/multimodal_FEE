@@ -35,7 +35,7 @@ Use the portfolio report, local demo, and interview docs for applications. Futur
 Latest workflow update:
 
 ```text
-Prepared public portfolio polish after the public portfolio freeze audit.
+Prepared AI data platform framing polish after the public portfolio freeze audit.
 
 Added:
 - PORTFOLIO.md as the recruiter-facing entry point
@@ -44,6 +44,16 @@ Added:
 - docs/assets/killer_metrics.png for the main result visual
 - deterministic killer-metric generation in scripts/build_portfolio_screenshots.py
 - AI infra, financial AI, and RAG/eval resume bullets in PORTFOLIO.md
+- Data Platform View in README and PORTFOLIO
+- docs/data_platform_framing.md
+- reports/tables/document_metadata.csv
+- reports/tables/chunks.csv
+- reports/tables/evidence_units.csv
+- reports/tables/claims.csv
+- reports/tables/citation_coverage.csv
+- reports/tables/normalization_quality_checks.csv
+- scripts/build_data_platform_artifacts.py
+- scripts/smoke_data_platform_artifacts.py
 ```
 
 Latest validation:
@@ -78,6 +88,7 @@ Passed:
 - phase18 Streamlit start smoke check: streamlit_started=True url=http://127.0.0.1:54900 app=app.py
 - phase19 CLI workflow smoke check: commands=6 verify_verdict=support raw_chunks=482 eval_tasks=60 case_studies=3 report_pages=10 serve_demo=True network_enabled=False
 - phase20 interview packaging smoke check: docs=6 readme_2min=True report_10min=True repo_30min=True evidence_framing=True
+- data platform artifact smoke check: document_metadata.csv=31 chunks.csv=482 evidence_units.csv=200 claims.csv=60 citation_coverage.csv=5 normalization_quality_checks.csv=8
 - portfolio demo check: screenshots=3 commands=6 verify_verdict=support docs=6 api_key_required=False
 - portfolio screenshot build check: screenshots=3 claim=docs/assets/claim_verification_demo.png case=docs/assets/case_study_replay.png memo=docs/assets/memo_trace_demo.png killer_metric=docs/assets/killer_metrics.png
 - public portfolio freeze audit test: 6 passed
