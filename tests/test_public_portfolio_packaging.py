@@ -42,9 +42,13 @@ def test_readme_is_the_public_entrypoint():
     assert "Synthetic benchmark generated in this repo" in lead
     assert "6 fictional issuers, 156 passages, 65 claims" in lead
     assert "not real SEC or EDGAR filings" in lead
-    assert "0.1590909090909090909090909091" in lead
-    assert "0.4659090909090909090909090909" in lead
-    assert "0.9659090909090909090909090909" in lead
+    assert "0.159" in lead
+    assert "0.466" in lead
+    assert "0.966" in lead
+    assert "18/47 (38.3%)" in lead
+    assert "9/47 (19.1%)" in lead
+    assert "33/47 (70.2%)" in lead
+    assert "1.000" in lead
     assert "47/47" not in lead
     assert "100%" not in lead
     assert "favors the full engine" in lead

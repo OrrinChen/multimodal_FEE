@@ -62,9 +62,17 @@ def test_readme_keeps_original_headline_and_quotes_hard_benchmark_test_split():
     assert "75.0%" in results_and_after
     assert "47/47" not in lead
     assert "100%" not in lead
-    assert "47/47" in results_and_after
+    assert "47/47 (100%)" in results_and_after
     assert original["reported_metrics"]["bm25"]["evidence_recall_at_k"] == "0.995"
     assert original["reported_metrics"]["dense_lsa"]["evidence_recall_at_k"] == "1"
-    for method in ("bm25", "dense_lsa", "dense_minilm", "full_engine"):
-        assert committed["methods"][method]["test"]["recall_at_5"] in readme
+    rounded_recall = {
+        "bm25": "0.159",
+        "dense_lsa": "0.182",
+        "dense_minilm": "0.466",
+        "full_engine": "1.000",
+    }
+    for method, rounded in rounded_recall.items():
+        assert committed["methods"][method]["test"]["recall_at_5"] not in readme or method == "full_engine"
+        assert rounded in readme
+    assert committed["methods"]["bm25"]["test"]["recall_at_5"] == "0.1590909090909090909090909091"
     assert "not yet run" in readme

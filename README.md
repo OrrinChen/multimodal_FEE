@@ -10,12 +10,12 @@ On the 47-claim test split, BM25, MiniLM, MiniLM with metadata reranking, and th
 
 | Method | Recall@5 | Verdict accuracy |
 | --- | --- | --- |
-| BM25 | `0.1590909090909090909090909091` | 18/47 = `0.3829787234042553191489361702` |
-| MiniLM | `0.4659090909090909090909090909` | 9/47 = `0.1914893617021276595744680851` |
-| MiniLM + metadata rerank | `0.9659090909090909090909090909` | 33/47 = `0.7021276595744680851063829787` |
-| Metadata-constrained full engine | `1` | `1` |
+| BM25 | 0.159 | 18/47 (38.3%) |
+| MiniLM | 0.466 | 9/47 (19.1%) |
+| MiniLM + metadata rerank | 0.966 | 33/47 (70.2%) |
+| Metadata-constrained full engine | 1.000 | 1.000 |
 
-Metadata reranking raises MiniLM recall@5 from `0.4659090909090909090909090909` to `0.9659090909090909090909090909`, and verdict accuracy from 9/47 = `0.1914893617021276595744680851` to 33/47 = `0.7021276595744680851063829787`. BM25 recall@5 moves from `0.1590909090909090909090909091` to `0.1818181818181818181818181818`, and its verdict accuracy stays 18/47.
+Metadata reranking raises MiniLM recall@5 from 0.466 to 0.966, and verdict accuracy from 9/47 (19.1%) to 33/47 (70.2%). BM25 recall@5 moves from 0.159 to 0.182, and its verdict accuracy stays 18/47 (38.3%).
 
 ### Limitations
 
@@ -126,15 +126,15 @@ Reported rows are the **test** split (47 tasks). Recall and nDCG are macro-avera
 
 | Method | Recall@5 | nDCG@5 | Verdict accuracy |
 | --- | --- | --- | --- |
-| BM25 | `0.1590909090909090909090909091` | `0.0976213145` | 18/47 = `0.3829787234042553191489361702` |
-| BM25 + metadata rerank | `0.1818181818181818181818181818` | `0.1074094181` | 18/47 = `0.3829787234042553191489361702` |
-| TF-IDF SVD | `0.1818181818181818181818181818` | `0.1388823989` | 15/47 = `0.3191489361702127659574468085` |
-| TF-IDF SVD + metadata rerank | `0.8181818181818181818181818182` | `0.5259237652` | 19/47 = `0.4042553191489361702127659574` |
-| MiniLM | `0.4659090909090909090909090909` | `0.2056573066` | 9/47 = `0.1914893617021276595744680851` |
-| MiniLM + metadata rerank | `0.9659090909090909090909090909` | `0.8641760412` | 33/47 = `0.7021276595744680851063829787` |
-| Metadata-constrained full engine | `1` | `1.0000000000` | 47/47 = `1` |
+| BM25 | 0.159 | 0.098 | 18/47 (38.3%) |
+| BM25 + metadata rerank | 0.182 | 0.107 | 18/47 (38.3%) |
+| TF-IDF SVD | 0.182 | 0.139 | 15/47 (31.9%) |
+| TF-IDF SVD + metadata rerank | 0.818 | 0.526 | 19/47 (40.4%) |
+| MiniLM | 0.466 | 0.206 | 9/47 (19.1%) |
+| MiniLM + metadata rerank | 0.966 | 0.864 | 33/47 (70.2%) |
+| Metadata-constrained full engine | 1.000 | 1.000 | 47/47 (100%) |
 
-MiniLM is `sentence-transformers/all-MiniLM-L6-v2`, sentence-transformers `6.2.0`, torch `2.15.0+cpu`. Queries are the claim text only. The metadata reranker still sees the target company, fiscal period, and metric. The full-engine row ranks passages by those extracted fields and then runs `FiscalPeriodValidator` and `NumericValidator`. On this corpus that rank puts the canonical filing first, so its `47/47` verdict agreement is the index plus the validators, not a text-ranking score. MiniLM's higher recall@5 than BM25 (`0.4659…` versus `0.1590…`) comes with a lower verdict accuracy (`9/47` versus `18/47`): the verdict reads the first matching passage, and a lexical trap ranked above the filing carries the wrong amount.
+MiniLM is `sentence-transformers/all-MiniLM-L6-v2`, sentence-transformers `6.2.0`, torch `2.15.0+cpu`. Queries are the claim text only. The metadata reranker still sees the target company, fiscal period, and metric. The full-engine row ranks passages by those extracted fields and then runs `FiscalPeriodValidator` and `NumericValidator`. On this corpus that rank puts the canonical filing first, so its `47/47` verdict agreement is the index plus the validators, not a text-ranking score. MiniLM's higher recall@5 than BM25 (0.466 versus 0.159) comes with a lower verdict accuracy (9/47 versus 18/47): the verdict reads the first matching passage, and a lexical trap ranked above the filing carries the wrong amount.
 
 ```bash
 python3 scripts/run_hard_benchmark.py
