@@ -55,13 +55,16 @@ def test_readme_keeps_original_headline_and_quotes_hard_benchmark_test_split():
     committed = json.loads(ARTIFACT.read_text(encoding="utf-8"))
     original = json.loads(ORIGINAL_LSA.read_text(encoding="utf-8"))
 
-    assert readme.index("## Results") < readme.index("## Hard benchmark")
-    assert "83.3%" in readme.split("## Hard benchmark")[0]
-    assert "66.7%" in readme.split("## Hard benchmark")[0]
-    assert "75.0%" in readme.split("## Hard benchmark")[0]
+    lead, results_and_after = readme.split("## Results", 1)
+    assert "## Hard benchmark" in lead
+    assert "83.3%" in results_and_after
+    assert "66.7%" in results_and_after
+    assert "75.0%" in results_and_after
+    assert "47/47" not in lead
+    assert "100%" not in lead
+    assert "47/47" in results_and_after
     assert original["reported_metrics"]["bm25"]["evidence_recall_at_k"] == "0.995"
     assert original["reported_metrics"]["dense_lsa"]["evidence_recall_at_k"] == "1"
     for method in ("bm25", "dense_lsa", "dense_minilm", "full_engine"):
         assert committed["methods"][method]["test"]["recall_at_5"] in readme
-    assert "47/47" in readme
     assert "not yet run" in readme

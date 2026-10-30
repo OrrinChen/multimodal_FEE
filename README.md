@@ -2,7 +2,24 @@
 
 Claim-level financial evidence verification for auditable due diligence: decompose a claim, retrieve evidence, reconcile the numbers, and gate the verdict before writing a memo.
 
-Ordinary retrieval can return plausible but unauditable support. This engine records a `support`, `contradict`, or `insufficient` verdict only after citation, fiscal-period, entity, and numeric checks.
+## Hard benchmark
+
+Synthetic benchmark generated in this repo: 6 fictional issuers, 156 passages, 65 claims. These are not real SEC or EDGAR filings.
+
+On the 47-claim test split, BM25, MiniLM, MiniLM with metadata reranking, and the metadata-constrained full engine separate. Recall@5 is the macro-average over the 44 test claims that have a required filing. Verdict accuracy counts correct verdicts over all 47 test claims. The metadata reranker is the large gain.
+
+| Method | Recall@5 | Verdict accuracy |
+| --- | --- | --- |
+| BM25 | `0.1590909090909090909090909091` | 18/47 = `0.3829787234042553191489361702` |
+| MiniLM | `0.4659090909090909090909090909` | 9/47 = `0.1914893617021276595744680851` |
+| MiniLM + metadata rerank | `0.9659090909090909090909090909` | 33/47 = `0.7021276595744680851063829787` |
+| Metadata-constrained full engine | `1` | `1` |
+
+Metadata reranking raises MiniLM recall@5 from `0.4659090909090909090909090909` to `0.9659090909090909090909090909`, and verdict accuracy from 9/47 = `0.1914893617021276595744680851` to 33/47 = `0.7021276595744680851063829787`. BM25 recall@5 moves from `0.1590909090909090909090909091` to `0.1818181818181818181818181818`, and its verdict accuracy stays 18/47.
+
+### Limitations
+
+This synthetic set likely favors the full engine. Claims were generated along the same company, period, and metric fields the engine indexes, so a metadata rank can place the canonical passage first. The full-engine verdict count is in the [results table](#hard-benchmark-results) below.
 
 ## Results
 
@@ -99,9 +116,9 @@ FINANCIAL_EVIDENCE_ENABLE_LOCAL_EMBEDDINGS=1 python3 scripts/run_sentence_transf
 
 Without that environment variable the script leaves the checked-in artifact in place and prints `not yet run`.
 
-## Hard benchmark
+## Hard benchmark results
 
-The 60-task corpus above copies the claim into the passages, so recall@5 cannot separate BM25 from TF-IDF SVD. This section is a different benchmark. It does not change those verdict figures.
+The 60-task corpus above copies the claim into the passages, so recall@5 cannot separate BM25 from TF-IDF SVD. This table is a different benchmark. It does not change those verdict figures. The full-engine verdict count is in this table.
 
 Construction is synthetic and labeled: 6 fictional issuers, 156 passages, 65 claims. Canonical lines say "Net sales were 48,090 million USD". Claims say "about forty-eight billion" and keep the legal name. Lexical traps reuse the claim wording with the prior-year amount, the thousands scale, or a calendar-year recap. Margin and cross-company claims need two filings. Six claims have no supporting passage and are labeled `insufficient`. No EDGAR text is included. Details, license, and the dev/test split are in [hard benchmark construction](docs/hard_benchmark.md).
 

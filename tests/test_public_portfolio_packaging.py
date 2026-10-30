@@ -36,12 +36,21 @@ def test_public_packaging_has_no_local_or_self_rating_leaks():
 
 def test_readme_is_the_public_entrypoint():
     readme = Path("README.md").read_text(encoding="utf-8")
-    first_screen = readme[:2500]
 
     assert readme.startswith("# Financial Evidence Engine")
-    assert "83.3%" in first_screen
-    assert "66.7%" in first_screen
-    assert "75.0%" in first_screen
+    lead, results_and_after = readme.split("## Results", 1)
+    assert "Synthetic benchmark generated in this repo" in lead
+    assert "6 fictional issuers, 156 passages, 65 claims" in lead
+    assert "not real SEC or EDGAR filings" in lead
+    assert "0.1590909090909090909090909091" in lead
+    assert "0.4659090909090909090909090909" in lead
+    assert "0.9659090909090909090909090909" in lead
+    assert "47/47" not in lead
+    assert "100%" not in lead
+    assert "favors the full engine" in lead
+    assert "83.3%" in results_and_after
+    assert "66.7%" in results_and_after
+    assert "75.0%" in results_and_after
     assert "346" not in readme
     assert "```mermaid" in readme
     assert "## Limitations" in readme
