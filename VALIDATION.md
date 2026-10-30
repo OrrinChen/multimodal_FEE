@@ -285,6 +285,20 @@ python3 -m pip install "sentence-transformers==6.2.0"
 FINANCIAL_EVIDENCE_ENABLE_LOCAL_EMBEDDINGS=1 python3 scripts/run_sentence_transformer_baseline.py --config configs/dense_sentence_transformer.yaml
 ```
 
+## Hard benchmark
+
+Synthetic labeled set, separate from the 60-task verdict numbers:
+
+```bash
+python3 scripts/run_hard_benchmark.py
+```
+
+MiniLM on that set:
+
+```bash
+FINANCIAL_EVIDENCE_ENABLE_LOCAL_EMBEDDINGS=1 python3 scripts/run_hard_benchmark.py
+```
+
 ## Phase-Specific Validation
 
 Run the smoke checks above when the corresponding entry point exists.

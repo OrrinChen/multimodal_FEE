@@ -14,6 +14,8 @@ PUBLIC_TEXT_PATHS = (
     Path("reports/resume_bullet.txt"),
     Path("reports/dense_lsa/dense_lsa_rerank_ablation.md"),
     Path("reports/dense_sentence_transformer/dense_sentence_transformer_rerank_ablation.md"),
+    Path("docs/hard_benchmark.md"),
+    Path("reports/hard_benchmark/hard_benchmark.md"),
 )
 
 

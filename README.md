@@ -99,6 +99,33 @@ FINANCIAL_EVIDENCE_ENABLE_LOCAL_EMBEDDINGS=1 python3 scripts/run_sentence_transf
 
 Without that environment variable the script leaves the checked-in artifact in place and prints `not yet run`.
 
+## Hard benchmark
+
+The 60-task corpus above copies the claim into the passages, so recall@5 cannot separate BM25 from TF-IDF SVD. This section is a different benchmark. It does not change those verdict figures.
+
+Construction is synthetic and labeled: 6 fictional issuers, 156 passages, 65 claims. Canonical lines say "Net sales were 48,090 million USD". Claims say "about forty-eight billion" and keep the legal name. Lexical traps reuse the claim wording with the prior-year amount, the thousands scale, or a calendar-year recap. Margin and cross-company claims need two filings. Six claims have no supporting passage and are labeled `insufficient`. No EDGAR text is included. Details, license, and the dev/test split are in [hard benchmark construction](docs/hard_benchmark.md).
+
+Reported rows are the **test** split (47 tasks). Recall and nDCG are macro-averages over the 44 test tasks that have a required filing. Verdict accuracy is correct verdicts over all 47. nDCG@5 is the computed float64 average to 10 decimal places. Recall@1, recall@10, and nDCG@10 are in the [full table](reports/hard_benchmark/hard_benchmark.md).
+
+| Method | Recall@5 | nDCG@5 | Verdict accuracy |
+| --- | --- | --- | --- |
+| BM25 | `0.1590909090909090909090909091` | `0.0976213145` | 18/47 = `0.3829787234042553191489361702` |
+| BM25 + metadata rerank | `0.1818181818181818181818181818` | `0.1074094181` | 18/47 = `0.3829787234042553191489361702` |
+| TF-IDF SVD | `0.1818181818181818181818181818` | `0.1388823989` | 15/47 = `0.3191489361702127659574468085` |
+| TF-IDF SVD + metadata rerank | `0.8181818181818181818181818182` | `0.5259237652` | 19/47 = `0.4042553191489361702127659574` |
+| MiniLM | `0.4659090909090909090909090909` | `0.2056573066` | 9/47 = `0.1914893617021276595744680851` |
+| MiniLM + metadata rerank | `0.9659090909090909090909090909` | `0.8641760412` | 33/47 = `0.7021276595744680851063829787` |
+| Metadata-constrained full engine | `1` | `1.0000000000` | 47/47 = `1` |
+
+MiniLM is `sentence-transformers/all-MiniLM-L6-v2`, sentence-transformers `6.2.0`, torch `2.15.0+cpu`. Queries are the claim text only. The metadata reranker still sees the target company, fiscal period, and metric. The full-engine row ranks passages by those extracted fields and then runs `FiscalPeriodValidator` and `NumericValidator`. On this corpus that rank puts the canonical filing first, so its `47/47` verdict agreement is the index plus the validators, not a text-ranking score. MiniLM's higher recall@5 than BM25 (`0.4659…` versus `0.1590…`) comes with a lower verdict accuracy (`9/47` versus `18/47`): the verdict reads the first matching passage, and a lexical trap ranked above the filing carries the wrong amount.
+
+```bash
+python3 scripts/run_hard_benchmark.py
+FINANCIAL_EVIDENCE_ENABLE_LOCAL_EMBEDDINGS=1 python3 scripts/run_hard_benchmark.py
+```
+
+The checked-in artifact was produced with the second command. The first command reruns the CPU methods and records MiniLM as `not yet run`.
+
 ## Reproduction
 
 ### 2-minute read
