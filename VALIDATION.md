@@ -11,7 +11,8 @@ git status --short --branch
 ```
 
 ```bash
-test -f AGENTS.md && test -f README.md && test -f ROADMAP.md && test -f TASK_MEMORY.md && test -f VALIDATION.md && test -f RUNBOOK.md
+test -f README.md && test -f LICENSE && test -f VALIDATION.md && test -f pyproject.toml
+test ! -f AGENTS.md && test ! -f TASK_MEMORY.md && test ! -f RUNBOOK.md && test ! -f ROADMAP.md
 ```
 
 ```bash
@@ -268,9 +269,25 @@ Run this once final report packaging exists:
 python3 scripts/smoke_final_report_package.py
 ```
 
+## CPU dense retrieval experiments
+
+TF-IDF SVD baseline and metadata-rerank ablation. This run does not use a neural model:
+
+```bash
+python3 scripts/run_dense_lsa_experiment.py --config configs/dense_lsa.yaml
+```
+
+Optional CPU MiniLM baseline. Without the environment variable, an existing artifact is left in place and the script prints `not yet run`:
+
+```bash
+python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+python3 -m pip install "sentence-transformers==6.2.0"
+FINANCIAL_EVIDENCE_ENABLE_LOCAL_EMBEDDINGS=1 python3 scripts/run_sentence_transformer_baseline.py --config configs/dense_sentence_transformer.yaml
+```
+
 ## Phase-Specific Validation
 
-For each phase, run the phase acceptance checks listed in `ROADMAP.md`.
+Run the smoke checks above when the corresponding entry point exists.
 
 Required smoke checks should be added here when new entry points are created:
 
@@ -280,4 +297,4 @@ Required smoke checks should be added here when new entry points are created:
 - evaluation scripts
 - report generation scripts
 
-When a check is skipped, record the reason in `TASK_MEMORY.md`.
+When a check is skipped, record the command and the reason next to the result you are reporting. Do not replace a skipped run with an estimated number.

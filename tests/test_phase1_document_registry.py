@@ -1,5 +1,4 @@
 from datetime import date, datetime, timezone
-from pathlib import Path
 
 from financial_evidence_engine.config import CompanyUniverseEntry
 

@@ -4,8 +4,6 @@ from pathlib import Path
 PUBLIC_TEXT_PATHS = (
     Path("PORTFOLIO.md"),
     Path("README.md"),
-    Path("ROADMAP.md"),
-    Path("TASK_MEMORY.md"),
     Path("docs/interview_story.md"),
     Path("docs/sixty_second_pitch.md"),
     Path("docs/resume_bullets.md"),
@@ -14,6 +12,8 @@ PUBLIC_TEXT_PATHS = (
     Path("docs/demo_script.md"),
     Path("reports/final_report.md"),
     Path("reports/resume_bullet.txt"),
+    Path("reports/dense_lsa/dense_lsa_rerank_ablation.md"),
+    Path("reports/dense_sentence_transformer/dense_sentence_transformer_rerank_ablation.md"),
 )
 
 
@@ -32,20 +32,37 @@ def test_public_packaging_has_no_local_or_self_rating_leaks():
         assert fragment not in combined
 
 
-def test_public_packaging_has_no_stale_unchecked_mvp_items():
-    task_memory = Path("TASK_MEMORY.md").read_text(encoding="utf-8")
+def test_readme_is_the_public_entrypoint():
+    readme = Path("README.md").read_text(encoding="utf-8")
+    first_screen = readme[:2500]
 
-    stale_items = (
-        "[ ] Implement FMP client module",
-        "[ ] Store investor deck metadata",
-        "[ ] Add deck PDF parsing",
-        "[ ] Add chart extraction only after table/text pipeline works",
+    assert readme.startswith("# Financial Evidence Engine")
+    assert "83.3%" in first_screen
+    assert "66.7%" in first_screen
+    assert "75.0%" in first_screen
+    assert "346" not in readme
+    assert "```mermaid" in readme
+    assert "## Limitations" in readme
+    assert "AGENTS.md" not in readme
+    assert "TASK_MEMORY.md" not in readme
+    assert "RUNBOOK.md" not in readme
+    assert "ROADMAP.md" not in readme
+    for fragment in ("/Users/", "/home/", "C:/Users", "C:\\Users"):
+        assert fragment not in readme
+
+    demo_shots = (
+        Path("docs/assets/claim_verification_demo.png"),
+        Path("docs/assets/case_study_replay.png"),
+        Path("docs/assets/memo_trace_demo.png"),
     )
-    for item in stale_items:
-        assert item not in task_memory
-
-    assert "Original MVP checklist" in task_memory
-    assert "Known out-of-scope items" in task_memory
+    for path in demo_shots:
+        assert str(path) in readme
+        assert path.exists(), path
+        assert path.stat().st_size > 10_000
+    killer_metrics = Path("docs/assets/killer_metrics.png")
+    assert killer_metrics.exists()
+    assert "docs/assets/killer_metrics.png" not in readme
+    assert "docs/sixty_second_pitch.md" in readme
 
 
 def test_resume_bullets_avoid_overclaiming_optional_backends():
@@ -61,31 +78,10 @@ def test_resume_bullets_avoid_overclaiming_optional_backends():
     assert "trained neural" not in combined.lower()
 
 
-def test_readme_has_portfolio_screenshots_and_pitch():
-    readme = Path("README.md").read_text(encoding="utf-8")
-    first_screen = readme[:2500]
-
-    assert "PORTFOLIO.md" in first_screen
-    assert "make portfolio-demo" in first_screen
-    assert "docs/assets/killer_metrics.png" in first_screen
-    assert "Full engine accuracy" in first_screen
-    assert "docs/sixty_second_pitch.md" in readme
-
-    asset_paths = (
-        Path("docs/assets/claim_verification_demo.png"),
-        Path("docs/assets/case_study_replay.png"),
-        Path("docs/assets/memo_trace_demo.png"),
-        Path("docs/assets/killer_metrics.png"),
-    )
-    for path in asset_paths:
-        assert str(path) in readme
-        assert path.exists(), path
-        assert path.stat().st_size > 10_000
-
-
 def test_portfolio_md_is_recruiter_entrypoint():
     portfolio = Path("PORTFOLIO.md").read_text(encoding="utf-8")
 
+    assert portfolio.startswith("# Financial Evidence Engine")
     assert "Claim-level financial evidence verification" in portfolio
     assert "docs/assets/claim_verification_demo.png" in portfolio
     assert "docs/assets/case_study_replay.png" in portfolio

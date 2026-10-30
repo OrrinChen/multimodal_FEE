@@ -1,5 +1,12 @@
 """Evidence retrieval package."""
 
+from .dense_lsa import (
+    CorpusTfidfSvdEmbeddingProvider,
+    DenseLsaConfig,
+    RetrievalAblationResult,
+    load_dense_lsa_config,
+    run_dense_lsa_experiment,
+)
 from .embeddings import (
     DeterministicTokenEmbeddingProvider,
     EMBEDDING_METHOD_NOTES,
@@ -42,6 +49,8 @@ from .raw_corpus import (
 
 __all__ = [
     "BM25EvidenceRetriever",
+    "CorpusTfidfSvdEmbeddingProvider",
+    "DenseLsaConfig",
     "ChunkIndexManifest",
     "ChunkProvenance",
     "CorpusVersionManifest",
@@ -63,6 +72,7 @@ __all__ = [
     "OpenAIEmbeddingProvider",
     "REAL_RETRIEVAL_METHODS",
     "RawCorpusBuilder",
+    "RetrievalAblationResult",
     "RawFinancialCorpus",
     "RealRetrievalEvaluationResult",
     "RetrievalCorpus",
@@ -71,6 +81,8 @@ __all__ = [
     "RetrievalResult",
     "Reranker",
     "build_raw_financial_corpus",
+    "load_dense_lsa_config",
+    "run_dense_lsa_experiment",
     "build_retrieval_corpus",
     "run_embedding_retrieval_evaluation",
     "run_real_retrieval_evaluation",

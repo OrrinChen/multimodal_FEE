@@ -28,6 +28,7 @@ from financial_evidence_engine.retrieval.real_baselines import (
 
 TOKEN_PATTERN = re.compile(r"[A-Za-z0-9]+")
 EMBEDDING_INDEX_CREATED_AT = datetime(2026, 5, 2, 12, 30, tzinfo=timezone.utc)
+_SENTENCE_TRANSFORMER_CACHE: Dict[str, object] = {}
 
 
 class EmbeddingBackendUnavailable(RuntimeError):
@@ -95,9 +96,7 @@ class LocalSentenceTransformerProvider:
     def embed_texts(self, texts: Sequence[str]) -> Tuple[Tuple[float, ...], ...]:
         if not self.is_available():
             raise EmbeddingBackendUnavailable(self.unavailable_reason())
-        from sentence_transformers import SentenceTransformer  # type: ignore
-
-        model = SentenceTransformer(self.model_name)
+        model = _load_sentence_transformer(self.model_name)
         vectors = model.encode(list(texts), normalize_embeddings=True)
         return tuple(tuple(float(value) for value in vector) for vector in vectors)
 
@@ -443,6 +442,17 @@ def run_embedding_retrieval_evaluation(
         method_notes=EMBEDDING_METHOD_NOTES,
         embedding_index_manifest=proxy_index.manifest,
     )
+
+
+def _load_sentence_transformer(model_name: str) -> object:
+    cached = _SENTENCE_TRANSFORMER_CACHE.get(model_name)
+    if cached is not None:
+        return cached
+    from sentence_transformers import SentenceTransformer  # type: ignore
+
+    model = SentenceTransformer(model_name)
+    _SENTENCE_TRANSFORMER_CACHE[model_name] = model
+    return model
 
 
 def _embed_deterministic(text: str, dimension: int) -> Tuple[float, ...]:

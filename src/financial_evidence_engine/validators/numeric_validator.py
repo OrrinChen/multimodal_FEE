@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from decimal import Decimal
-
 from financial_evidence_engine.reasoning.models import CheckStatus, EvidenceReference, Subclaim, ValidatorCheck
 
 

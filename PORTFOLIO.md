@@ -1,4 +1,4 @@
-# Portfolio: Multimodal Financial Due-Diligence Evidence Engine
+# Financial Evidence Engine
 
 Claim-level financial evidence verification for auditable due-diligence workflows.
 
