@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Dict, Mapping, Tuple
+from typing import Mapping, Tuple
 
 from .metrics import EvaluationReport, EvaluationRun, RetrievedEvidence, TaskPrediction, evaluate_run
 from .task_set import DueDiligenceTask, DueDiligenceTaskSet, EvidenceRequirement

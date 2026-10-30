@@ -10,14 +10,12 @@ if str(SRC_ROOT) not in sys.path:
 
 def test_phase0_required_repository_files_exist():
     expected_files = [
-        "AGENTS.md",
         "README.md",
-        "ROADMAP.md",
-        "RUNBOOK.md",
-        "TASK_MEMORY.md",
+        "LICENSE",
         "VALIDATION.md",
         "pyproject.toml",
         "configs/companies.yaml",
+        "configs/dense_lsa.yaml",
         "src/financial_evidence_engine/__init__.py",
     ]
 
@@ -28,6 +26,12 @@ def test_phase0_required_repository_files_exist():
     ]
 
     assert missing == []
+
+
+def test_agent_working_files_are_not_committed():
+    removed = ["AGENTS.md", "TASK_MEMORY.md", "RUNBOOK.md", "ROADMAP.md"]
+    present = [name for name in removed if (PROJECT_ROOT / name).exists()]
+    assert present == []
 
 
 def test_initial_company_universe_loads_three_large_cap_companies():
